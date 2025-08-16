@@ -1,43 +1,117 @@
-export type Status = "correct" | "present" | "absent";
-
 export type GuessRecord = {
   timestamp: number;
-  guess: string[];
-  statuses: Status[];
-  row: number;
+  guess: [number, string[]][];
   lang: "ko" | "en";
+};
+
+export type StatsRacord = {
+  bestStreak: number;
+  currentStreak: number;
+  totalStreak: number;
+  successRate: number;
+  lang: "ko" | "en";
+  winDistribution: number[];
 };
 
 const isBrowser = () => typeof window !== "undefined";
 
-function makeKey(gameId: string, dateKey?: string) {
-  return dateKey ? `widdle:${gameId}:${dateKey}` : `widdle:${gameId}`;
+function makeKey(gameId: string, key: string) {
+  return `${key}:${gameId}`;
 }
 
-export function loadHistory(gameId: string, dateKey?: string): GuessRecord[] {
-  if (!isBrowser()) return [];
+export function loadGuessRecord(key: string): GuessRecord | null {
+  if (!isBrowser()) return null;
   try {
-    const raw = localStorage.getItem(makeKey(gameId, dateKey));
-    return raw ? (JSON.parse(raw) as GuessRecord[]) : [];
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as GuessRecord) : null;
   } catch {
-    return [];
+    return null;
   }
 }
 
-export function saveGuess(
-  gameId: string,
-  record: GuessRecord,
-  dateKey?: string,
-  maxItems = 10
-) {
+export function saveGuess(lang: "ko" | "en", guess: string[]) {
   if (!isBrowser()) return;
-  const key = makeKey(gameId, dateKey);
-  const prev = loadHistory(gameId, dateKey);
-  const next = [...prev, record].slice(-maxItems); // 최신 maxItems개만 유지
+  const key = makeKey(lang, "gameState");
+  const prev = loadGuessRecord(key);
+  if (prev !== null && !isSameDay(prev.timestamp, Date.now())) {
+    localStorage.removeItem(key);
+  }
+
+  const next: GuessRecord = prev
+    ? {
+        timestamp: prev.timestamp,
+        guess: [...prev.guess, [prev.guess.length, guess]],
+        lang,
+      }
+    : {
+        timestamp: Date.now(),
+        guess: [[0, guess]],
+        lang,
+      };
+
   localStorage.setItem(key, JSON.stringify(next));
 }
 
-export function clearHistory(gameId: string, dateKey?: string) {
+export function loadStatsRacord(key: string): StatsRacord | null {
+  if (!isBrowser()) return null;
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as StatsRacord) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveStats(record: StatsRacord) {
   if (!isBrowser()) return;
-  localStorage.removeItem(makeKey(gameId, dateKey));
+  const key = makeKey(record.lang, "gameStats");
+  const prev = loadStatsRacord(key);
+  const next = prev ? makeStats(prev, record) : record;
+
+  localStorage.setItem(key, JSON.stringify(next));
+}
+
+function makeStats(prev: StatsRacord, record: StatsRacord): StatsRacord {
+  if (!prev) {
+    return record;
+  }
+
+  const currentStreak = record.currentStreak
+    ? prev.currentStreak + record.currentStreak
+    : 0;
+  const bestStreak = currentStreak
+    ? currentStreak >= prev.bestStreak
+      ? currentStreak
+      : prev.bestStreak
+    : record.bestStreak;
+
+  const winDistribution = [];
+  for (let i = 0; i < prev.winDistribution.length; i++) {
+    winDistribution[i] = prev.winDistribution[i] + record.winDistribution[i];
+  }
+
+  return {
+    bestStreak: bestStreak,
+    currentStreak: currentStreak,
+    totalStreak: prev.totalStreak + 1,
+    successRate: prev.successRate,
+    lang: prev.lang,
+    winDistribution: winDistribution,
+  };
+}
+
+function isSameDay(ts1: number, ts2: number): boolean {
+  const d1 = new Date(ts1);
+  const d2 = new Date(ts2);
+
+  return (
+    d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate()
+  );
+}
+
+export function clearHistory(gameId: string, key: string) {
+  if (!isBrowser()) return;
+  localStorage.removeItem(makeKey(gameId, key));
 }
