@@ -6,10 +6,12 @@ export default function KoreanKeyboard({
   onKeyPress,
   onBackspace,
   onEnter,
+  keyColors = {},
 }: {
   onKeyPress: (ch: string) => void;
   onBackspace?: () => void;
   onEnter?: () => void;
+  keyColors?: Record<string, number>;
 }) {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -22,7 +24,12 @@ export default function KoreanKeyboard({
         }}
       >
         {["ㅂ", "ㅈ", "ㄷ", "ㄱ", "ㅅ", "ㅛ", "ㅕ", "ㅑ"].map((ch) => (
-          <Keyboard key={ch} text={ch} onClick={() => onKeyPress(ch)} />
+          <Keyboard
+            key={ch}
+            text={ch}
+            colorIndex={keyColors[ch] ?? 0}
+            onClick={() => onKeyPress(ch)}
+          />
         ))}
       </div>
 
@@ -35,7 +42,12 @@ export default function KoreanKeyboard({
         }}
       >
         {["ㅁ", "ㄴ", "ㅇ", "ㄹ", "ㅎ", "ㅗ", "ㅓ", "ㅏ", "ㅣ"].map((ch) => (
-          <Keyboard key={ch} text={ch} onClick={() => onKeyPress(ch)} />
+          <Keyboard
+            key={ch}
+            text={ch}
+            colorIndex={keyColors[ch] ?? 0}
+            onClick={() => onKeyPress(ch)}
+          />
         ))}
       </div>
 
@@ -59,6 +71,7 @@ export default function KoreanKeyboard({
           <Keyboard
             key={ch}
             text={ch}
+            colorIndex={keyColors[ch] ?? 0}
             widthSize={30}
             onClick={() => onKeyPress(ch)}
           />

@@ -1,5 +1,7 @@
 "use client";
 
+import { colors } from "@/utils/word-utils";
+
 type KeyboardProps = {
   widthSize?: number;
   heightSize?: number;
@@ -7,13 +9,6 @@ type KeyboardProps = {
   text?: string;
   onClick?: () => void;
 };
-
-const colors = [
-  "#dfdfdfff",
-  "rgba(238, 190, 0, 1)",
-  "rgba(17, 198, 0, 1)",
-  "#a4a4a4ff",
-];
 
 export default function Keyboard({
   heightSize = 58,

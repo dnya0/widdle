@@ -15,7 +15,7 @@ export type StatsRacord = {
 
 const isBrowser = () => typeof window !== "undefined";
 
-function makeKey(gameId: string, key: string) {
+export function makeKey(gameId: string, key: string) {
   return `${key}:${gameId}`;
 }
 

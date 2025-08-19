@@ -1,10 +1,10 @@
+import { colors } from "@/utils/word-utils";
+
 type SquareProps = {
   size?: number; // 네모 크기
   colorIndex?: number;
   text?: string;
 };
-
-const colors = ["#fff", "rgba(238, 190, 0, 1)", "rgba(17, 198, 0, 1)", "#a4a4a4ff"];
 
 function getBorderColor({
   colorIndex,
