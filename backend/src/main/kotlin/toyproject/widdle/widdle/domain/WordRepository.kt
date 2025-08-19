@@ -9,4 +9,6 @@ interface WordRepository : JpaRepository<Word, String> {
 
     @Query(value = "select w from Word w where w.isUsed = false")
     fun findAllByNotUsedWord(): List<Word>
+
+    fun existsByWordJamo(wordJamo: List<String>): Boolean
 }

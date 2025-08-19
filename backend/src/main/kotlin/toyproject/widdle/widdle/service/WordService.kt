@@ -3,6 +3,7 @@ package toyproject.widdle.widdle.service
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import toyproject.widdle.widdle.controller.dto.WordRequest
 import toyproject.widdle.widdle.controller.dto.WordResponse
 import toyproject.widdle.widdle.controller.dto.WordSaveRequest
 import toyproject.widdle.widdle.controller.dto.toResponseDto
@@ -25,6 +26,8 @@ class WordService(
         val idx = indexFor(date, list.size)
         return list[idx].toResponseDto()
     }
+
+    fun hasWord(request: WordRequest): Boolean = wordRepository.existsByWordJamo(request.word)
 
     @Transactional
     fun save(request: WordSaveRequest): String {
