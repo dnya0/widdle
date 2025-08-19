@@ -11,6 +11,20 @@ export const colors = [
   "rgba(17, 198, 0, 1)",
 ];
 
+
+export const mergeKeyColor = (oldC: number | undefined, newC: number) => {
+  if (newC === 3) return 3;
+  if (newC === 2) return oldC === 3 ? 3 : 2;
+  if (newC === 1) return oldC && oldC > 1 ? oldC : 1;
+  return oldC ?? 0;
+};
+
+export function initBoard(rows = 6, cols = 6): Cell[][] {
+  return Array.from({ length: rows }, () =>
+    Array.from({ length: cols }, () => ({ text: ""}))
+  );
+}
+
 /**
  * 사용자가 입력한 guess와 정답 answer를 비교해서 색상 인덱스 리턴
  * colorIndex:
