@@ -77,7 +77,7 @@ object JamoSplitter {
     private fun splitVowel(ch: Char) = doubleVowels[ch] ?: listOf(ch)
 
     private fun splitHangulChar(ch: Char): List<String> {
-        if (isHangul(ch)) return listOf(ch.toString())
+        if (!isHangul(ch)) return listOf(ch.toString())
 
         val code = ch.code - 0xAC00
         val cho = code / (21 * 28)

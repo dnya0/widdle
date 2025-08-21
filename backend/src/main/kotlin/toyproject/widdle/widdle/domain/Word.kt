@@ -6,6 +6,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
+import java.time.LocalDate
 import java.util.UUID
 
 @Entity
@@ -29,11 +30,15 @@ class Word(
     var isUsed: Boolean = false,
 
     @Column
+    var usedDateBy: LocalDate? = null,
+
+    @Column
     val isKorean: Boolean = true
 ) {
 
     fun use() {
         this.isUsed = true
+        this.usedDateBy = LocalDate.now()
     }
 
 }
