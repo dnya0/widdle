@@ -1,6 +1,7 @@
 package toyproject.widdle.widdle.service
 
 import org.springframework.cache.annotation.Cacheable
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import toyproject.widdle.widdle.controller.dto.WordRequest
@@ -21,13 +22,17 @@ class WordService(
     private val zone = ZoneId.of("Asia/Seoul")
 
     @Cacheable(value = ["dailyWord"], key = "#date.toString()", sync = true)
-    fun getDailyWord(date: LocalDate = LocalDate.now(zone)): WordResponse {
-        val list = wordRepository.findAllByNotUsedWord()
+    fun getDailyWord(isKr: Boolean, date: LocalDate = LocalDate.now(zone)): WordResponse {
+        val list = wordRepository.findAllByNotUsedWord(isKr)
         val idx = indexFor(date, list.size)
         return list[idx].toResponseDto()
     }
 
     fun hasWord(request: WordRequest): Boolean = wordRepository.existsByWordJamo(request.word)
+
+    @Transactional
+    fun use(id: String) = wordRepository.findByIdOrNull(id)?.use()
+        ?: throw WiddleException("단어가 존재하지 않습니다.")
 
     @Transactional
     fun save(request: WordSaveRequest): String {

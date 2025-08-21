@@ -26,10 +26,14 @@ class Word(
     val length: Int = 6,
 
     @Column(nullable = false)
-    val isUsed: Boolean = false,
+    var isUsed: Boolean = false,
 
     @Column
     val isKorean: Boolean = true
 ) {
+
+    fun use() {
+        this.isUsed = true
+    }
 
 }
