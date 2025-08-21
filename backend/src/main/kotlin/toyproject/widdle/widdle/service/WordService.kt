@@ -4,7 +4,6 @@ import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import toyproject.widdle.widdle.controller.dto.WordRequest
 import toyproject.widdle.widdle.controller.dto.WordResponse
 import toyproject.widdle.widdle.controller.dto.WordSaveRequest
 import toyproject.widdle.widdle.controller.dto.toResponseDto
@@ -28,7 +27,7 @@ class WordService(
         return list[idx].toResponseDto()
     }
 
-    fun hasWord(request: WordRequest): Boolean = wordRepository.existsByWordJamo(request.word)
+    fun hasWord(word: List<String>): Boolean = wordRepository.existsByWordJamo(word)
 
     @Transactional
     fun use(id: String) = wordRepository.findByIdOrNull(id)?.use()
