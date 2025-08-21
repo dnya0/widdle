@@ -11,6 +11,7 @@ export const colors = [
   "rgba(17, 198, 0, 1)",
 ];
 
+export const colorRed = "#ff6868ff"
 
 export const mergeKeyColor = (oldC: number | undefined, newC: number) => {
   if (newC === 3) return 3;

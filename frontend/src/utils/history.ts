@@ -21,9 +21,17 @@ export function makeKey(gameId: string, key: string) {
 
 export function loadGuessRecord(key: string): GuessRecord | null {
   if (!isBrowser()) return null;
+
   try {
     const raw = localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as GuessRecord) : null;
+    const prev = raw ? (JSON.parse(raw) as GuessRecord) : null;
+
+    //guess 저장된 기록이 오늘 날짜가 아닐 경우 삭제
+    if (prev !== null && !isSameDay(prev.timestamp, Date.now())) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return prev;
   } catch {
     return null;
   }
@@ -33,9 +41,6 @@ export function saveGuess(lang: "ko" | "en", guess: string[]) {
   if (!isBrowser()) return;
   const key = makeKey(lang, "gameState");
   const prev = loadGuessRecord(key);
-  if (prev !== null && !isSameDay(prev.timestamp, Date.now())) {
-    localStorage.removeItem(key);
-  }
 
   const next: GuessRecord = prev
     ? {

@@ -1,4 +1,4 @@
-import { colors } from "@/utils/word-utils";
+import { colorRed, colors } from "@/utils/word-utils";
 
 type SquareProps = {
   size?: number; // 네모 크기
@@ -23,8 +23,16 @@ export default function Square({ size = 54, colorIndex, text }: SquareProps) {
       ? colors[colorIndex]
       : "#fff";
   const borderColor = getBorderColor({ colorIndex, text });
+  // const textColor =
+  //   colorIndex !== undefined && colors[colorIndex] ? "#fff" : "#000";
+
   const textColor =
-    colorIndex !== undefined && colors[colorIndex] ? "#fff" : "#000";
+    colorIndex !== undefined && colorIndex >= 0
+      ? "#fff"
+      : colorIndex === -1
+      ? colorRed
+      : "#000";
+
   const textSet = text === undefined || text === null ? " " : text;
 
   return (

@@ -15,6 +15,7 @@ import {
   saveGuess,
   saveStats,
 } from "@/utils/history";
+import { api, hasWord } from "@/utils/api";
 
 const ROWS = 6,
   COLS = 6;
@@ -25,7 +26,15 @@ export default function KrClient() {
   const [cur, setCur] = useState({ row: 0, col: 0 });
   const [isGameOver, setIsGameOver] = useState(false);
 
-  const answer = ["ㄱ", "ㅏ", "ㄷ", "ㅏ", "ㄴ", "ㅣ"];
+  const [jamo, setJamo] = useState<string[]>([]);
+  const [word, setWord] = useState<string>("");
+
+  useEffect(() => {
+    api.get("/kr").then((res) => {
+      setJamo(res.data.jamo);
+      setWord(res.data.word);
+    });
+  }, []);
 
   useEffect(() => {
     const key = makeKey("ko", "gameState");
@@ -37,7 +46,7 @@ export default function KrClient() {
 
       record.guess.forEach(([rowIdx, guess]) => {
         // 각 행 정답 채점
-        const colors = evaluateGuess(guess, answer);
+        const colors = evaluateGuess(guess, jamo);
 
         // 보드 채우기
         guess.forEach((ch, colIdx) => {
@@ -72,7 +81,7 @@ export default function KrClient() {
       return;
     }
     console.log(guess);
-    const colors = evaluateGuess(guess, answer);
+    const colors = evaluateGuess(guess, jamo);
 
     setBoard((prev) => {
       const copy = prev.map((r) => r.map((c) => ({ ...c })));
@@ -133,6 +142,23 @@ export default function KrClient() {
       const copy = prev.map((r) => r.map((c) => ({ ...c })));
       copy[cur.row][cur.col].text = ch;
       setCur({ row: cur.row, col: Math.min(cur.col + 1, COLS) });
+
+      const word = copy[cur.row].map((c) => c.text);
+
+      if (cur.col === COLS - 1) {
+        hasWord(word).then((exists) => {
+          if (!exists) {
+            setBoard((prev) => {
+              const copy = prev.map((r) => r.map((c) => ({ ...c })));
+              copy[cur.row] = copy[cur.row].map((c) => ({
+                ...c,
+                colorIndex: -1,
+              }));
+              return copy;
+            });
+          }
+        });
+      }
       return copy;
     });
   };
@@ -148,6 +174,11 @@ export default function KrClient() {
       const copy = prev.map((r) => r.map((c) => ({ ...c })));
       copy[row][lastFilled].text = "";
       setCur({ row, col: lastFilled });
+
+      copy[row] = copy[row].map((c) => ({
+        ...c,
+        colorIndex: undefined,
+      }));
       return copy;
     });
   };
@@ -162,6 +193,11 @@ export default function KrClient() {
       }}
     >
       <KoreanTextBox squares={board} />
+      <div
+        style={{
+          margin: 10,
+        }}
+      ></div>
       <KoreanKeyboard
         onKeyPress={onKeyPress}
         onBackspace={onBackspace}
