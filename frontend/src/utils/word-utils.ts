@@ -1,4 +1,3 @@
-// src/utils/word-utils.ts
 export type Cell = { text: string; colorIndex?: number };
 
 export const ROWS = 6;
@@ -11,7 +10,7 @@ export const colors = [
   "rgba(17, 198, 0, 1)",
 ];
 
-export const colorRed = "#ff6868ff"
+export const colorRed = "#ff6868ff";
 
 export const mergeKeyColor = (oldC: number | undefined, newC: number) => {
   if (newC === 3) return 3;
@@ -22,7 +21,7 @@ export const mergeKeyColor = (oldC: number | undefined, newC: number) => {
 
 export function initBoard(rows = 6, cols = 6): Cell[][] {
   return Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => ({ text: ""}))
+    Array.from({ length: cols }, () => ({ text: "" }))
   );
 }
 

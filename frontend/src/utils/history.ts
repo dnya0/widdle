@@ -37,6 +37,39 @@ export function loadGuessRecord(key: string): GuessRecord | null {
   }
 }
 
+export function makeStateAndSave(
+  colors: number[],
+  cur: {
+    row: number;
+    col: number;
+  },
+  ROWS: number
+) {
+  const winDistribution = [0, 0, 0, 0, 0, 0];
+
+  if (cur.row === ROWS - 1 && !colors.every((c) => c === 3)) {
+    saveStats({
+      bestStreak: 0,
+      currentStreak: 0,
+      totalStreak: 1,
+      successRate: 0,
+      lang: "ko",
+      winDistribution: winDistribution,
+    });
+    return;
+  }
+  winDistribution[cur.row] = 1;
+
+  saveStats({
+    bestStreak: 1,
+    currentStreak: 1,
+    totalStreak: 1,
+    successRate: 100,
+    lang: "ko",
+    winDistribution: winDistribution,
+  });
+}
+
 export function saveGuess(lang: "ko" | "en", guess: string[]) {
   if (!isBrowser()) return;
   const key = makeKey(lang, "gameState");
