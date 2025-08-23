@@ -27,8 +27,14 @@ class WordTransactionalService(
 
         log.info(wordJamo.toString())
 
-        if (wordJamo.size !in 5..6) {
-            throw WiddleException("단어는 5~6 글자여야 합니다. (현재 ${wordJamo.size} 글자)")
+        val (expectedLength, message) = if (request.isKorean) {
+            6 to "단어는 6 글자여야 합니다. (현재 ${wordJamo.size} 글자)"
+        } else {
+            5 to "Words must be exactly 5 characters (currently ${wordJamo.size} characters)."
+        }
+
+        if (wordJamo.size != expectedLength) {
+            throw WiddleException(message)
         }
 
         val word = Word(
