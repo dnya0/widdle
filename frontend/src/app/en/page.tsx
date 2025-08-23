@@ -1,7 +1,7 @@
 import Header from "@/components/header";
-import KrClient from "./components/kr-client";
+import EnClient from "./components/en-client";
 
-export default function kr() {
+export default function Home() {
   return (
     <div
       style={{
@@ -18,8 +18,8 @@ export default function kr() {
           justifyContent: "center",
         }}
       >
-        <Header text={"위들 - 한국어"}></Header>
-        <KrClient></KrClient>
+        <Header text="Widdle" />
+        <EnClient></EnClient>
       </div>
     </div>
   );

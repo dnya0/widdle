@@ -1,0 +1,88 @@
+"use client";
+
+import Keyboard from "@/components/keyboard";
+
+export default function EnglishKeyboard({
+  onKeyPress,
+  onBackspace,
+  onEnter,
+  keyColors = {},
+}: {
+  onKeyPress: (ch: string) => void;
+  onBackspace?: () => void;
+  onEnter?: () => void;
+  keyColors?: Record<string, number>;
+}) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      {/* 1열 */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"].map((ch) => (
+          <Keyboard
+            key={ch}
+            text={ch}
+            widthSize={33}
+            colorIndex={keyColors[ch] ?? 0}
+            onClick={() => onKeyPress(ch)}
+          />
+        ))}
+      </div>
+
+      {/* 2열 */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {["A", "S", "D", "F", "G", "H", "J", "K", "L"].map((ch) => (
+          <Keyboard
+            key={ch}
+            text={ch}
+            colorIndex={keyColors[ch] ?? 0}
+            onClick={() => onKeyPress(ch)}
+          />
+        ))}
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Keyboard
+          text="Enter"
+          widthSize={60}
+          onClick={() => {
+            console.log("[Keyboard] enter clicked");
+            onEnter?.();
+          }}
+        />
+
+        {["Z", "X", "C", "V", "B", "N", "M"].map((ch) => (
+          <Keyboard
+            key={ch}
+            text={ch}
+            colorIndex={keyColors[ch] ?? 0}
+            widthSize={30}
+            onClick={() => onKeyPress(ch)}
+          />
+        ))}
+        <Keyboard
+          text="Delete"
+          widthSize={60}
+          onClick={() => onBackspace?.()}
+        />
+      </div>
+    </div>
+  );
+}

@@ -41,10 +41,10 @@ export const useHandleEnter = (
 
     if (colors.every((c) => c === 3) || cur.row === ROWS - 1) {
       setIsGameOver(true);
-      makeStateAndSave(colors, cur, ROWS);
+      makeStateAndSave("kr", colors, cur, ROWS);
     }
 
-    saveGuess("ko", guess);
+    saveGuess("kr", guess);
 
     setCur({ row: Math.min(cur.row + 1, ROWS - 1), col: 0 });
   };

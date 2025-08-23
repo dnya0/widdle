@@ -1,7 +1,7 @@
 export type GuessRecord = {
   timestamp: number;
   guess: [number, string[]][];
-  lang: "ko" | "en";
+  lang: "kr" | "en";
 };
 
 export type StatsRacord = {
@@ -9,7 +9,7 @@ export type StatsRacord = {
   currentStreak: number;
   totalStreak: number;
   successRate: number;
-  lang: "ko" | "en";
+  lang: "kr" | "en";
   winDistribution: number[];
 };
 
@@ -38,6 +38,7 @@ export function loadGuessRecord(key: string): GuessRecord | null {
 }
 
 export function makeStateAndSave(
+  lang: "kr" | "en",
   colors: number[],
   cur: {
     row: number;
@@ -53,7 +54,7 @@ export function makeStateAndSave(
       currentStreak: 0,
       totalStreak: 1,
       successRate: 0,
-      lang: "ko",
+      lang: lang,
       winDistribution: winDistribution,
     });
     return;
@@ -65,12 +66,12 @@ export function makeStateAndSave(
     currentStreak: 1,
     totalStreak: 1,
     successRate: 100,
-    lang: "ko",
+    lang: lang,
     winDistribution: winDistribution,
   });
 }
 
-export function saveGuess(lang: "ko" | "en", guess: string[]) {
+export function saveGuess(lang: "kr" | "en", guess: string[]) {
   if (!isBrowser()) return;
   const key = makeKey(lang, "gameState");
   const prev = loadGuessRecord(key);

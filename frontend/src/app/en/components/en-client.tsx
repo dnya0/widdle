@@ -1,22 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import KoreanTextBox from "./kr-text-box";
-import KoreanKeyboard from "./kr-keyboard";
+
 import { Cell, initBoard } from "@/utils/word-utils";
 import { useBackspace } from "@/hooks/use-backspace";
 import { useKeyPress } from "@/hooks/use-key-press";
 import { useHandleEnter } from "@/hooks/use-handle-enter";
 import { useFetchGameData } from "@/hooks/use-fetch-game-data";
 import { useRestoreGameState } from "@/hooks/use-restore-game-state";
+import EnglishKeyboard from "./en-keyboard";
+import EnglishTextBox from "./en-text-box";
 
-const ROWS = 6,
-  COLS = 6;
+const ROWS = 5,
+  COLS = 5;
 
-const LANG = "kr";
+const LANG = "en";
 
-export default function KrClient() {
-  const [board, setBoard] = useState<Cell[][]>(initBoard());
+export default function EnClient() {
+  const [board, setBoard] = useState<Cell[][]>(initBoard(5, 5));
   const [keyColors, setKeyColors] = useState<Record<string, number>>({});
   const [cur, setCur] = useState({ row: 0, col: 0 });
   const [isGameOver, setIsGameOver] = useState(false);
@@ -51,13 +52,13 @@ export default function KrClient() {
         alignItems: "center",
       }}
     >
-      <KoreanTextBox squares={board} />
+      <EnglishTextBox squares={board} />
       <div
         style={{
           margin: 10,
         }}
       ></div>
-      <KoreanKeyboard
+      <EnglishKeyboard
         onKeyPress={onKeyPress}
         onBackspace={onBackspace}
         onEnter={handleEnter}

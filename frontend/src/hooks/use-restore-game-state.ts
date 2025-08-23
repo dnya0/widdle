@@ -1,15 +1,21 @@
 import { useEffect } from "react";
-import { initBoard, evaluateGuess, mergeKeyColor, Cell } from "@/utils/word-utils";
+import {
+  initBoard,
+  evaluateGuess,
+  mergeKeyColor,
+  Cell,
+} from "@/utils/word-utils";
 import { loadGuessRecord, makeKey } from "@/utils/history";
 
 export const useRestoreGameState = (
-  jamo: string[], 
-  setBoard: React.Dispatch<React.SetStateAction<Cell[][]>>, 
-  setCur: React.Dispatch<React.SetStateAction<{ row: number; col: number }>>, 
+  lang: "kr" | "en",
+  jamo: string[],
+  setBoard: React.Dispatch<React.SetStateAction<Cell[][]>>,
+  setCur: React.Dispatch<React.SetStateAction<{ row: number; col: number }>>,
   setKeyColors: React.Dispatch<React.SetStateAction<Record<string, number>>>
 ) => {
   useEffect(() => {
-    const key = makeKey("ko", "gameState");
+    const key = makeKey(lang, "gameState");
     const record = loadGuessRecord(key);
 
     if (record && record.guess.length > 0) {
@@ -35,5 +41,5 @@ export const useRestoreGameState = (
       setCur({ row: record.guess.length, col: 0 });
       setKeyColors(restoredKeyColors);
     }
-  }, [jamo, setBoard, setCur, setKeyColors]);
+  }, [jamo, lang, setBoard, setCur, setKeyColors]);
 };
