@@ -1,7 +1,8 @@
 import Header from "@/components/header";
 import KrClient from "./components/kr-client";
+import ToasterClient from "@/components/toast";
 
-export default function kr() {
+export default function krPage() {
   return (
     <div
       style={{
@@ -19,6 +20,7 @@ export default function kr() {
         }}
       >
         <Header text={"위들 - 한국어"}></Header>
+        <ToasterClient />
         <KrClient></KrClient>
       </div>
     </div>

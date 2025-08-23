@@ -1,5 +1,7 @@
 import { Cell, evaluateGuess, mergeKeyColor } from "@/utils/word-utils";
 import { makeStateAndSave, saveGuess } from "@/utils/history";
+import { hasWord } from "@/utils/api";
+import toast from "react-hot-toast";
 
 export const useHandleEnter = (
   isGameOver: boolean,
@@ -12,11 +14,17 @@ export const useHandleEnter = (
   jamo: string[],
   ROWS: number
 ) => {
-  const handleEnter = () => {
+  const handleEnter = async () => {
     if (isGameOver) return;
 
     const guess = board[cur.row].map((c) => c.text);
     if (guess.includes("") || guess.includes(" ")) {
+      return;
+    }
+
+    const exists = await hasWord(guess);
+    if (!exists) {
+      toast.error("단어가 존재하지 않습니다.");
       return;
     }
 
@@ -41,6 +49,7 @@ export const useHandleEnter = (
 
     if (colors.every((c) => c === 3) || cur.row === ROWS - 1) {
       setIsGameOver(true);
+      //틀렷을 경우 정답을 알려주는 토스트메세지 추가
       makeStateAndSave("kr", colors, cur, ROWS);
     }
 

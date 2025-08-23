@@ -1,7 +1,9 @@
 import Header from "@/components/header";
 import EnClient from "./components/en-client";
+import { Toaster } from "react-hot-toast";
+import ToasterClient from "@/components/toast";
 
-export default function Home() {
+export default function enPage() {
   return (
     <div
       style={{
@@ -19,6 +21,7 @@ export default function Home() {
         }}
       >
         <Header text="Widdle" />
+        <ToasterClient />
         <EnClient></EnClient>
       </div>
     </div>
