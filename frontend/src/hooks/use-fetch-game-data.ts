@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { api } from "@/utils/api";
+import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 export const useFetchGameData = (
   locale: "kr" | "en",
@@ -15,7 +17,9 @@ export const useFetchGameData = (
         setJamo(res.data.jamo);
         setWord(res.data.word);
       })
-      .catch(() => {});
+      .catch((err) => {
+        if (err instanceof AxiosError) toast(err.response?.data ?? "요청 실패");
+      });
     return () => {
       mounted = false;
     };

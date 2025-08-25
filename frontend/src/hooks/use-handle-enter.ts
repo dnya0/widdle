@@ -12,7 +12,9 @@ export const useHandleEnter = (
   setKeyColors: React.Dispatch<React.SetStateAction<Record<string, number>>>,
   setIsGameOver: React.Dispatch<React.SetStateAction<boolean>>,
   jamo: string[],
-  ROWS: number
+  ROWS: number,
+  word: string,
+  lang: "kr" | "en"
 ) => {
   const handleEnter = async () => {
     if (isGameOver) return;
@@ -24,7 +26,9 @@ export const useHandleEnter = (
 
     const exists = await hasWord(guess);
     if (!exists) {
-      toast.error("단어가 존재하지 않습니다.");
+      const message =
+        lang === "kr" ? "단어가 존재하지 않습니다." : "Word does not exist.";
+      toast.error(message);
       return;
     }
 
@@ -49,8 +53,11 @@ export const useHandleEnter = (
 
     if (colors.every((c) => c === 3) || cur.row === ROWS - 1) {
       setIsGameOver(true);
-      //틀렷을 경우 정답을 알려주는 토스트메세지 추가
+      const message =
+        lang === "kr" ? `정답은 '${word}' 입니다.` : `The answer is ${word}.`;
+      toast(message);
       makeStateAndSave("kr", colors, cur, ROWS);
+      // 모달
     }
 
     saveGuess("kr", guess);

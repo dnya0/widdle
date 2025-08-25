@@ -37,7 +37,9 @@ export default function EnClient() {
     setKeyColors,
     setIsGameOver,
     jamo,
-    ROWS
+    ROWS,
+    word,
+    LANG
   );
 
   const onKeyPress = useKeyPress(isGameOver, cur, setBoard, setCur, COLS);

@@ -1,9 +1,8 @@
 import Header from "@/components/header";
 import EnClient from "./components/en-client";
-import { Toaster } from "react-hot-toast";
 import ToasterClient from "@/components/toast";
 
-export default function enPage() {
+export default function EnPage() {
   return (
     <div
       style={{

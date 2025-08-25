@@ -2,7 +2,7 @@ import Header from "@/components/header";
 import KrClient from "./components/kr-client";
 import ToasterClient from "@/components/toast";
 
-export default function krPage() {
+export default function KrPage() {
   return (
     <div
       style={{
