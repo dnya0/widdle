@@ -1,6 +1,5 @@
 "use client";
 
-import ToasterClient from "@/components/toast";
 import { addWord, WordSaveRequest } from "@/utils/api";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -48,7 +47,6 @@ export default function SaveWordPage() {
             display: "flex",
             fontSize: "1.3rem",
             padding: 10,
-            // width: "20rem",
             alignItems: "center",
             flexDirection: "row",
             justifyContent: "center",
@@ -119,7 +117,6 @@ export default function SaveWordPage() {
               />
             </label>
           </div>
-          <ToasterClient />
           <div
             className="flex gap-4 items-center flex-col sm:flex-row"
             style={{

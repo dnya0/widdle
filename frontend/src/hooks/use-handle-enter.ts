@@ -2,6 +2,8 @@ import { Cell, evaluateGuess, mergeKeyColor } from "@/utils/word-utils";
 import { makeStateAndSave, saveGuess } from "@/utils/history";
 import { hasWord } from "@/utils/api";
 import toast from "react-hot-toast";
+import { useCallback } from "react";
+import { showSuccess } from "@/utils/showToast";
 
 export const useHandleEnter = (
   isGameOver: boolean,
@@ -13,10 +15,10 @@ export const useHandleEnter = (
   setIsGameOver: React.Dispatch<React.SetStateAction<boolean>>,
   jamo: string[],
   ROWS: number,
-  word: string,
-  lang: "kr" | "en"
+  lang: "kr" | "en",
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
-  const handleEnter = async () => {
+  const handleEnter = useCallback(async () => {
     if (isGameOver) return;
 
     const guess = board[cur.row].map((c) => c.text);
@@ -53,17 +55,27 @@ export const useHandleEnter = (
 
     if (colors.every((c) => c === 3) || cur.row === ROWS - 1) {
       setIsGameOver(true);
-      const message =
-        lang === "kr" ? `정답은 '${word}' 입니다.` : `The answer is ${word}.`;
-      toast(message);
+      showSuccess(lang === "kr" ? `축하드립니다! 🎉🎉🎉` : `Congrats! 🎉🎉🎉`);
       makeStateAndSave("kr", colors, cur, ROWS);
-      // 모달
+      setShowModal(true);
     }
 
     saveGuess("kr", guess);
 
     setCur({ row: Math.min(cur.row + 1, ROWS - 1), col: 0 });
-  };
+  }, [
+    isGameOver,
+    board,
+    cur,
+    setBoard,
+    setCur,
+    setKeyColors,
+    setIsGameOver,
+    jamo,
+    ROWS,
+    lang,
+    setShowModal,
+  ]);
 
   return handleEnter;
 };

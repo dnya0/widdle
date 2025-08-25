@@ -1,6 +1,5 @@
 import Header from "@/components/header";
-import KrClient from "./components/kr-client";
-import ToasterClient from "@/components/toast";
+import GameClient from "@/components/game-client";
 
 export default function KrPage() {
   return (
@@ -20,8 +19,13 @@ export default function KrPage() {
         }}
       >
         <Header text={"위들 - 한국어"}></Header>
-        <ToasterClient />
-        <KrClient></KrClient>
+
+        <GameClient
+          key="kr"
+          lang="kr"
+          rows={6}
+          cols={6}
+        />
       </div>
     </div>
   );

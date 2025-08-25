@@ -1,4 +1,5 @@
 import { Cell } from "@/utils/word-utils";
+import { useCallback } from "react";
 
 export const useBackspace = (
   isGameOver: boolean,
@@ -6,7 +7,7 @@ export const useBackspace = (
   setBoard: React.Dispatch<React.SetStateAction<Cell[][]>>,
   setCur: React.Dispatch<React.SetStateAction<{ row: number; col: number }>>
 ) => {
-  const onBackspace = () => {
+  const onBackspace = useCallback(() => {
     if (isGameOver) return;
 
     setBoard((prev) => {
@@ -24,7 +25,7 @@ export const useBackspace = (
       }));
       return copy;
     });
-  };
+  }, [isGameOver, cur, setBoard, setCur]);
 
   return onBackspace;
 };

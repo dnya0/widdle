@@ -23,8 +23,6 @@ export default function Square({ size = 54, colorIndex, text }: SquareProps) {
       ? colors[colorIndex]
       : "#fff";
   const borderColor = getBorderColor({ colorIndex, text });
-  // const textColor =
-  //   colorIndex !== undefined && colors[colorIndex] ? "#fff" : "#000";
 
   const textColor =
     colorIndex !== undefined && colorIndex >= 0

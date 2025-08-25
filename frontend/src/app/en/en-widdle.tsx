@@ -1,6 +1,5 @@
 import Header from "@/components/header";
-import EnClient from "./components/en-client";
-import ToasterClient from "@/components/toast";
+import GameClient from "@/components/game-client";
 
 export default function EnPage() {
   return (
@@ -20,8 +19,12 @@ export default function EnPage() {
         }}
       >
         <Header text="Widdle" />
-        <ToasterClient />
-        <EnClient></EnClient>
+        <GameClient
+          key="en"
+          lang="en"
+          rows={5}
+          cols={5}
+        />
       </div>
     </div>
   );

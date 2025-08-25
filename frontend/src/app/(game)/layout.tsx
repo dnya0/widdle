@@ -1,16 +1,11 @@
+import ToasterByPath from "@/components/toaster-by-path";
 import { ReactNode } from "react";
 
-export default function GameLayout({
-  children,
-  modal,
-}: {
-  children: ReactNode;
-  modal: ReactNode;
-}) {
+export default function GameLayout({ children }: { children: ReactNode }) {
   return (
     <div>
       {children}
-      {modal}
+      <ToasterByPath />
     </div>
   );
 }
