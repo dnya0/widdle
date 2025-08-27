@@ -41,3 +41,6 @@ out/
 
 ### settings ###
 /src/main/resources/application-dev.properties
+
+### docker app ###
+/app.tar
