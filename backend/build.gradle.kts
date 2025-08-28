@@ -1,3 +1,7 @@
+// ./gradlew clean build -Pspring.profiles.active=prod
+// docker buildx build --platform=linux/amd64 -t widdle-app:prod -f ./Dockerfile --load .
+// docker save widdle-app:prod > app.tar
+
 plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
@@ -29,6 +33,7 @@ dependencies {
     //spring
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     //kotlin

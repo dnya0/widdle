@@ -32,10 +32,8 @@ class WordService(
 
     fun use(id: String) = wordTransactionalService.use(id)
 
-    fun hasWord(word: List<String>): Boolean {
-        log.info(word.toString())
-        return wordRepository.existsByWordJamo(word.toTypedArray())
-    }
+    @Cacheable(value = ["hasWord"], key = "#word")
+    fun hasWord(word: List<String>): Boolean = wordRepository.existsByWordJamo(word.toTypedArray())
 
     fun save(request: WordSaveRequest): String = wordTransactionalService.save(request)
 
