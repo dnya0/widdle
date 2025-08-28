@@ -14,6 +14,8 @@ interface WordRepository : JpaRepository<Word, String> {
 
     fun findByUsedDateBy(date: LocalDate): Word?
 
+    fun existsByWordText(wordText: String): Boolean
+
     @Query(
         value = """
             select exists(

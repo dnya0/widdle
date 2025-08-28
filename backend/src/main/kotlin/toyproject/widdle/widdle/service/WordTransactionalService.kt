@@ -23,6 +23,9 @@ class WordTransactionalService(
         ?: throw WiddleException("단어가 존재하지 않습니다.")
 
     fun save(request: WordSaveRequest): String {
+        if (wordRepository.existsByWordText(request.word))
+            throw WiddleException(if (request.isKorean) "이미 존재하는 단어입니다." else "Already exists.")
+
         val wordJamo = request.jamo ?: splitToJamoOrChar(request.word, request.isKorean)
 
         log.info(wordJamo.toString())
