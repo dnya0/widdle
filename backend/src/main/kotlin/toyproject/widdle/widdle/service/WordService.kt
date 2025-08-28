@@ -19,7 +19,7 @@ class WordService(
 
     private val log = logger()
 
-    @Cacheable(value = ["dailyWord"], key = "#date.toString() + ':' + isKr", sync = true)
+    @Cacheable(value = ["dailyWord"], key = "#p1.toString() + ':' + #p0", sync = true)
     fun getDailyWord(isKr: Boolean, date: LocalDate = getToday()): WordResponse {
         wordRepository.findByUsedDateBy(date)?.let { return it.toResponseDto() }
 
