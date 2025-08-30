@@ -40,8 +40,9 @@ class WordService(
         if (wordRepository.existsByWordText(request.word))
             throw WiddleException(if (request.isKorean) "이미 존재하는 단어입니다." else "Already exists.")
 
-        val wordJamo = request.jamo ?: splitToJamoOrChar(request.word, request.isKorean)
-        return wordTransactionalService.save(request.word, wordJamo, request.isKorean)
+        val word = request.word.uppercase()
+        val wordJamo = request.jamo ?: splitToJamoOrChar(word, request.isKorean)
+        return wordTransactionalService.save(word, wordJamo, request.isKorean)
     }
 
     private fun indexFor(date: LocalDate, size: Int): Int = runCatching {

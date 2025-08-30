@@ -97,7 +97,7 @@ object JamoSplitter {
             return text.toCharArray().flatMap { splitHangulChar(it) }
         }
 
-        return text.uppercase().toCharArray().map { it.toString() }.toMutableList()
+        return text.toCharArray().map { it.toString() }.toMutableList()
     }
 
     private fun isHangul(ch: Char) = ch.code in 0xAC00..0xD7A3
