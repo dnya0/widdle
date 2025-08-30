@@ -16,7 +16,7 @@
 
 #### Backend
 
-<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=SpringBoot&logoColor=white" alt="#"/> <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=flat&logo=kotlin&logoColor=white" alt="#"/> <img src="https://img.shields.io/badge/PostgresSQL-4479A1?style=flat&logo=postgresql&logoColor=white" alt="#"/> 
+<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=SpringBoot&logoColor=white" alt="#"/> <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=flat&logo=kotlin&logoColor=white" alt="#"/> <img src="https://img.shields.io/badge/PostgresSQL-4479A1?style=flat&logo=postgresql&logoColor=white" alt="#"/> <img src="https://img.shields.io/badge/Redis-FF4438?style=flat&logo=redis&logoColor=white" alt="#"/> 
 
 ### 📱 소개
 
