@@ -89,7 +89,7 @@ object JamoSplitter {
         result.addAll(splitVowel(JUNG[jung]))
         JONG[jong]?.let { result.addAll(splitConsonant(it)) }
 
-        return result.map {  it.toString() }
+        return result.map { it.toString() }
     }
 
     fun splitToJamoOrChar(text: String, isKorean: Boolean): List<String> {
@@ -97,7 +97,7 @@ object JamoSplitter {
             return text.toCharArray().flatMap { splitHangulChar(it) }
         }
 
-        return text.toCharArray().map {  it.toString() }.toMutableList()
+        return text.uppercase().toCharArray().map { it.toString() }.toMutableList()
     }
 
     private fun isHangul(ch: Char) = ch.code in 0xAC00..0xD7A3
