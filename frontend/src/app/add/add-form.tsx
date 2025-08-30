@@ -73,7 +73,7 @@ export default function SaveWordPage() {
               <input
                 style={{
                   marginLeft: 50,
-                  borderBottom: "1px solid black",
+                  borderBottom: "1px solid",
                   fontFamily: "Pretendard-Regular",
                   fontSize: "1rem",
                   padding: 10,
