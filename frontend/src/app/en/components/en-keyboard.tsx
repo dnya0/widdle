@@ -1,6 +1,7 @@
 "use client";
 
 import Keyboard from "@/components/keyboard";
+import { usePhysicalKeyboard } from "@/hooks/use-key-handler";
 
 export default function EnglishKeyboard({
   onKeyPress,
@@ -13,6 +14,7 @@ export default function EnglishKeyboard({
   onEnter?: () => void;
   keyColors?: Record<string, number>;
 }) {
+  usePhysicalKeyboard({ lang: "en", onKeyPress, onBackspace, onEnter });
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       {/* 1열 */}
