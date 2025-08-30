@@ -8,6 +8,7 @@ import toyproject.widdle.widdle.controller.dto.toResponseDto
 import toyproject.widdle.widdle.domain.WordRepository
 import toyproject.widdle.widdle.exception.WiddleException
 import toyproject.widdle.widdle.logger.logger
+import toyproject.widdle.widdle.support.JamoSplitter.splitToJamoOrChar
 import toyproject.widdle.widdle.support.getToday
 import java.time.LocalDate
 
@@ -35,7 +36,13 @@ class WordService(
     @Cacheable(value = ["hasWord"], key = "#word.toString()")
     fun hasWord(word: List<String>): Boolean = wordRepository.existsByWordJamo(word.toTypedArray())
 
-    fun save(request: WordSaveRequest): String = wordTransactionalService.save(request)
+    fun save(request: WordSaveRequest): String {
+        if (wordRepository.existsByWordText(request.word))
+            throw WiddleException(if (request.isKorean) "이미 존재하는 단어입니다." else "Already exists.")
+
+        val wordJamo = request.jamo ?: splitToJamoOrChar(request.word, request.isKorean)
+        return wordTransactionalService.save(request.word, wordJamo, request.isKorean)
+    }
 
     private fun indexFor(date: LocalDate, size: Int): Int = runCatching {
         val seed = date.toString().hashCode()
