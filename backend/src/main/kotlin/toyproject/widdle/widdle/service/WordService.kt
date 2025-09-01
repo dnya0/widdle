@@ -22,7 +22,7 @@ class WordService(
 
     @Cacheable(value = ["dailyWord"], key = "#p1.toString() + ':' + #p0", sync = true)
     fun getDailyWord(isKr: Boolean, date: LocalDate = getToday()): WordResponse {
-        wordRepository.findByUsedDateBy(date)?.let { return it.toResponseDto() }
+        wordRepository.findByUsedDateByAndKoreanIs(date, isKr)?.let { return it.toResponseDto() }
 
         val list = wordRepository.findAllByNotUsedWord(isKr)
         val idx = indexFor(date, list.size)

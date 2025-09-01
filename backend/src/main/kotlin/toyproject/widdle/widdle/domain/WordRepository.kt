@@ -12,7 +12,8 @@ interface WordRepository : JpaRepository<Word, String> {
     @Query(value = "select w from Word w where w.isUsed = false and w.isKorean = :isKorean")
     fun findAllByNotUsedWord(isKorean: Boolean): List<Word>
 
-    fun findByUsedDateBy(date: LocalDate): Word?
+    @Query(value = "select w from Word w where w.usedDateBy = :date and w.isKorean = :isKorean")
+    fun findByUsedDateByAndKoreanIs(date: LocalDate, isKorean: Boolean): Word?
 
     fun existsByWordText(wordText: String): Boolean
 
