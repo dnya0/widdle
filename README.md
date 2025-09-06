@@ -1,6 +1,10 @@
 # Widdle
 
-> 단어 퀴즈 게임
+> 단어 퀴즈 게임! 매일 갱신되는 새로운 단어를 맞춰보세요!
+
+![](./images/widdle.png)
+
+<br>
 
 ## 프로젝트 소개
 
@@ -18,8 +22,11 @@
 
 <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=SpringBoot&logoColor=white" alt="#"/> <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=flat&logo=kotlin&logoColor=white" alt="#"/> <img src="https://img.shields.io/badge/PostgresSQL-4479A1?style=flat&logo=postgresql&logoColor=white" alt="#"/> <img src="https://img.shields.io/badge/Redis-FF4438?style=flat&logo=redis&logoColor=white" alt="#"/> 
 
+<br>
+
 ### 📱 소개
 
+<br>
 
 ### ⚙️ System Architecture
 
