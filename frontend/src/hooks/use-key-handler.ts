@@ -16,8 +16,6 @@ const MAP_2SET: Record<string, string> = {
   KeyY: "ㅛ",
   KeyU: "ㅕ",
   KeyI: "ㅑ",
-  KeyO: "ㅐ",
-  KeyP: "ㅔ",
 
   KeyA: "ㅁ",
   KeyS: "ㄴ",

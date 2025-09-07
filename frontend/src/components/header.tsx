@@ -1,6 +1,12 @@
+"use client";
+
+import { useState } from "react";
 import QuestionMark from "./question";
+import HelpModal from "./how-to-play";
 
 export default function Header({ text }: { text: string }) {
+  const [showHelpModal, setShowHelpModal] = useState(false);
+
   return (
     <div
       style={{
@@ -16,8 +22,10 @@ export default function Header({ text }: { text: string }) {
       <div style={{ margin: 10 }}>{text}</div>
 
       <div style={{ alignItems: "right" }}>
-        <QuestionMark></QuestionMark>
+        <QuestionMark onClick={() => setShowHelpModal(true)} />
       </div>
+
+      <HelpModal open={showHelpModal} onClose={() => setShowHelpModal(false)} />
     </div>
   );
 }
