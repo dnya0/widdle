@@ -26,7 +26,7 @@ export default function ResultModal({
   if (!isGameOver) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 z-50">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-800/50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[320px] text-center relative">
         <button
           onClick={onClose}
