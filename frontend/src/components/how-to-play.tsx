@@ -2,12 +2,7 @@
 
 import { useEffect } from "react";
 import Square from "./alphabet";
-
-interface HelpModalProps {
-  open: boolean;
-  lang: "kr" | "en";
-  onClose: () => void;
-}
+import { ModalProps } from "@/utils/word-utils";
 
 type Cell = {
   text: string;
@@ -65,7 +60,7 @@ const board_en: Cell[][] = [
   ],
 ];
 
-export default function HelpModal({ open, lang, onClose }: HelpModalProps) {
+export default function HelpModal({ open, lang, onClose }: ModalProps) {
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "auto";
   }, [open]);

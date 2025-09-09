@@ -7,7 +7,7 @@ import { useRestoreGameState } from "@/hooks/use-restore-game-state";
 import { useHandleEnter } from "@/hooks/use-handle-enter";
 import { useKeyPress } from "@/hooks/use-key-press";
 import { useBackspace } from "@/hooks/use-backspace";
-import ResultModal from "@/components/modal";
+import ResultModal from "@/components/result-modal";
 import dynamic from "next/dynamic";
 
 type Lang = "kr" | "en";

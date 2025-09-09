@@ -1,71 +1,9 @@
 "use client";
 
+import { ModalProps } from "@/utils/word-utils";
 import { useEffect } from "react";
-import Square from "./alphabet";
 
-interface HelpModalProps {
-  open: boolean;
-  lang: "kr" | "en";
-  onClose: () => void;
-}
-
-type Cell = {
-  text: string;
-  colorIndex?: number;
-};
-
-const board: Cell[][] = [
-  [
-    { text: "ㄱ", colorIndex: 3 },
-    { text: "ㅕ", colorIndex: undefined },
-    { text: "ㅣ", colorIndex: undefined },
-    { text: "ㅈ", colorIndex: undefined },
-    { text: "ㅓ", colorIndex: undefined },
-    { text: "ㅇ", colorIndex: undefined },
-  ],
-  [
-    { text: "ㅇ", colorIndex: undefined },
-    { text: "ㅜ", colorIndex: 2 },
-    { text: "ㅣ", colorIndex: undefined },
-    { text: "ㅅ", colorIndex: undefined },
-    { text: "ㅏ", colorIndex: undefined },
-    { text: "ㅇ", colorIndex: undefined },
-  ],
-  [
-    { text: "ㅎ", colorIndex: undefined },
-    { text: "ㅗ", colorIndex: undefined },
-    { text: "ㅣ", colorIndex: undefined },
-    { text: "ㅈ", colorIndex: undefined },
-    { text: "ㅓ", colorIndex: undefined },
-    { text: "ㄴ", colorIndex: 1 },
-  ],
-];
-
-const board_en: Cell[][] = [
-  [
-    { text: "a", colorIndex: 3 },
-    { text: "p", colorIndex: undefined },
-    { text: "p", colorIndex: undefined },
-    { text: "l", colorIndex: undefined },
-    { text: "e", colorIndex: undefined },
-  ],
-  [
-    { text: "c", colorIndex: undefined },
-    { text: "o", colorIndex: 2 },
-    { text: "u", colorIndex: undefined },
-    { text: "n", colorIndex: undefined },
-    { text: "t", colorIndex: undefined },
-  ],
-  [
-    { text: "t", colorIndex: undefined },
-    { text: "r", colorIndex: undefined },
-    { text: "i", colorIndex: undefined },
-    { text: "c", colorIndex: undefined },
-    { text: "k", colorIndex: 1 },
-  ],
-];
-
-export default function SettingModal({ open, lang, onClose }: HelpModalProps) {
+export default function SettingModal({ open, lang, onClose }: ModalProps) {
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "auto";
   }, [open]);

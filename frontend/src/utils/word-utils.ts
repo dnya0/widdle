@@ -12,6 +12,12 @@ export const colors = [
 
 export const colorRed = "#ff6868ff";
 
+export interface ModalProps {
+  open: boolean;
+  lang: "kr" | "en";
+  onClose: () => void;
+}
+
 export const mergeKeyColor = (oldC: number | undefined, newC: number) => {
   if (newC === 3) return 3;
   if (newC === 2) return oldC === 3 ? 3 : 2;
