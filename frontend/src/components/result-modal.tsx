@@ -1,8 +1,11 @@
 "use client";
 
+import { loadStatsRacord, makeKey } from "@/utils/history";
 import { useEffect } from "react";
+import WinDistributionChart from "./win-distribution-chart";
 
 interface ResultModalProps {
+  showModal: boolean;
   isGameOver: boolean;
   answer: string;
   lang: "kr" | "en";
@@ -10,44 +13,94 @@ interface ResultModalProps {
 }
 
 export default function ResultModal({
+  showModal,
   isGameOver,
   answer,
   lang,
   onClose,
 }: ResultModalProps) {
   useEffect(() => {
-    if (isGameOver) {
+    if (showModal) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [isGameOver]);
+  }, [showModal]);
 
-  if (!isGameOver) return null;
+  if (!showModal) return null;
+
+  const key = makeKey(lang, "gameStats");
+  const stats = loadStatsRacord(key);
+
+  const distribution = stats
+    ? stats.winDistribution
+    : lang === "kr"
+    ? [0, 0, 0, 0, 0, 0]
+    : [0, 0, 0, 0, 0];
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-800/50 z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-[320px] text-center relative">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-[400px] text-center relative">
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+          className="absolute top-5 right-6 text-gray-500 hover:text-gray-800"
         >
           ✕
         </button>
+        {isGameOver && (
+          <>
+            <h2 className="text-lg font-bold mb-4">
+              {lang === "kr" ? "게임 종료 🎉" : "Game Over 🎉"}
+            </h2>
+            <p className="mb-4" style={{ fontFamily: "Pretendard-Medium" }}>
+              {lang === "kr"
+                ? `정답은 '${answer}' 입니다.`
+                : `The answer was '${answer}'.`}
+            </p>
+          </>
+        )}
         <h2 className="text-lg font-bold mb-4">
-          {lang === "kr" ? "게임 종료 🎉" : "Game Over 🎉"}
+          {lang === "kr" ? "통계" : "Statistics"}
         </h2>
-        <p className="mb-4">
-          {lang === "kr"
-            ? `정답은 '${answer}' 입니다.`
-            : `The answer was '${answer}'.`}
-        </p>
-        <button
-          onClick={onClose}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "1rem",
+            fontFamily: "Pretendard-Medium",
+            textAlign: "center",
+          }}
         >
-          {lang === "kr" ? "닫기" : "Close"}
-        </button>
+          <div>
+            <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem" }}>
+              {stats ? stats.totalStreak : 0}
+            </div>
+            <div style={{ fontSize: "0.8rem" }}>전체도전</div>
+          </div>
+          <div>
+            <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem" }}>
+              {stats ? stats.successRate : 0}%
+            </div>
+            <div style={{ fontSize: "0.8rem" }}>정답률</div>
+          </div>
+          <div>
+            <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem" }}>
+              {stats ? stats.currentStreak : 0}
+            </div>
+            <div style={{ fontSize: "0.8rem" }}>최근 연속 정답</div>
+          </div>
+          <div>
+            <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem" }}>
+              {stats ? stats.bestStreak : 0}
+            </div>
+            <div style={{ fontSize: "0.8rem" }}>최다 연속 정답</div>
+          </div>
+        </div>
+
+        <h2 className="text-lg font-bold mb-4" style={{ marginTop: 20 }}>
+          {lang === "kr" ? "정답 분포" : "Distribution"}
+        </h2>
+        <WinDistributionChart winDistribution={distribution} />
       </div>
     </div>
   );

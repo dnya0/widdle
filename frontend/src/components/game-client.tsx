@@ -84,7 +84,8 @@ const Keyboard = useMemo(() => (
       }}
     >
       <ResultModal
-        isGameOver={showModal}
+        showModal={showModal}
+        isGameOver={isGameOver}
         answer={word}
         lang={lang}
         onClose={() => setShowModal(false)}

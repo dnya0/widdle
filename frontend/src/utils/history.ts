@@ -10,6 +10,7 @@ export type StatsRacord = {
   totalStreak: number;
   successRate: number;
   lang: "kr" | "en";
+  timestamp: number;
   winDistribution: number[];
 };
 
@@ -55,6 +56,7 @@ export function makeStateAndSave(
       totalStreak: 1,
       successRate: 0,
       lang: lang,
+      timestamp: Date.now(),
       winDistribution: winDistribution,
     });
     return;
@@ -67,6 +69,7 @@ export function makeStateAndSave(
     totalStreak: 1,
     successRate: 100,
     lang: lang,
+    timestamp: Date.now(),
     winDistribution: winDistribution,
   });
 }
@@ -105,6 +108,9 @@ export function saveStats(record: StatsRacord) {
   if (!isBrowser()) return;
   const key = makeKey(record.lang, "gameStats");
   const prev = loadStatsRacord(key);
+  if (prev?.timestamp && isSameDay(prev.timestamp, Date.now())) {
+    return;
+  }
   const next = prev ? makeStats(prev, record) : record;
 
   localStorage.setItem(key, JSON.stringify(next));
@@ -129,11 +135,20 @@ function makeStats(prev: StatsRacord, record: StatsRacord): StatsRacord {
     winDistribution[i] = prev.winDistribution[i] + record.winDistribution[i];
   }
 
+  const totalStreak = prev.totalStreak + 1;
+
+  const totalWins = winDistribution.reduce((sum, val) => sum + val, 0);
+  const successRate =
+    totalStreak === 0
+      ? 0
+      : Number(((totalWins / totalStreak) * 100).toFixed(1));
+
   return {
     bestStreak: bestStreak,
     currentStreak: currentStreak,
-    totalStreak: prev.totalStreak + 1,
-    successRate: prev.successRate,
+    totalStreak: totalStreak,
+    successRate: successRate,
+    timestamp: Date.now(),
     lang: prev.lang,
     winDistribution: winDistribution,
   };
