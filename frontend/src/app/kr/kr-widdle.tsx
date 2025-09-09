@@ -18,14 +18,8 @@ export default function KrPage() {
           justifyContent: "center",
         }}
       >
-        <Header text={"위들 - 한국어"}></Header>
-
-        <GameClient
-          key="kr"
-          lang="kr"
-          rows={6}
-          cols={6}
-        />
+        <Header text={"위들 - 한국어"} lang="kr" />
+        <GameClient key="kr" lang="kr" rows={6} cols={6} />
       </div>
     </div>
   );

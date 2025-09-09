@@ -18,13 +18,8 @@ export default function EnPage() {
           justifyContent: "center",
         }}
       >
-        <Header text="Widdle" />
-        <GameClient
-          key="en"
-          lang="en"
-          rows={5}
-          cols={5}
-        />
+        <Header text="Widdle" lang="en" />
+        <GameClient key="en" lang="en" rows={6} cols={5} />
       </div>
     </div>
   );

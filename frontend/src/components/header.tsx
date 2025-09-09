@@ -3,9 +3,18 @@
 import { useState } from "react";
 import QuestionMark from "./question";
 import HelpModal from "./how-to-play";
+import SettingsIcon from "./settings";
+import SettingModal from "./setting-modal";
 
-export default function Header({ text }: { text: string }) {
+export default function Header({
+  text,
+  lang,
+}: {
+  text: string;
+  lang: "kr" | "en";
+}) {
   const [showHelpModal, setShowHelpModal] = useState(false);
+  const [showSettingModal, setShowSettingModal] = useState(false);
 
   return (
     <div
@@ -21,11 +30,28 @@ export default function Header({ text }: { text: string }) {
     >
       <div style={{ margin: 10 }}>{text}</div>
 
-      <div style={{ alignItems: "right" }}>
+      <div
+        style={{
+          alignItems: "right",
+          display: "flex",
+          flexDirection: "row",
+          gap: "10px",
+        }}
+      >
         <QuestionMark onClick={() => setShowHelpModal(true)} />
+        <SettingsIcon onClick={() => setShowSettingModal(true)} />
       </div>
 
-      <HelpModal open={showHelpModal} onClose={() => setShowHelpModal(false)} />
+      <HelpModal
+        open={showHelpModal}
+        lang={lang}
+        onClose={() => setShowHelpModal(false)}
+      />
+      <SettingModal
+        open={showSettingModal}
+        lang={lang}
+        onClose={() => setShowSettingModal(false)}
+      />
     </div>
   );
 }

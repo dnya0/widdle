@@ -5,6 +5,7 @@ import Square from "./alphabet";
 
 interface HelpModalProps {
   open: boolean;
+  lang: "kr" | "en";
   onClose: () => void;
 }
 
@@ -40,7 +41,31 @@ const board: Cell[][] = [
   ],
 ];
 
-export default function HelpModal({ open, onClose }: HelpModalProps) {
+const board_en: Cell[][] = [
+  [
+    { text: "a", colorIndex: 3 },
+    { text: "p", colorIndex: undefined },
+    { text: "p", colorIndex: undefined },
+    { text: "l", colorIndex: undefined },
+    { text: "e", colorIndex: undefined },
+  ],
+  [
+    { text: "c", colorIndex: undefined },
+    { text: "o", colorIndex: 2 },
+    { text: "u", colorIndex: undefined },
+    { text: "n", colorIndex: undefined },
+    { text: "t", colorIndex: undefined },
+  ],
+  [
+    { text: "t", colorIndex: undefined },
+    { text: "r", colorIndex: undefined },
+    { text: "i", colorIndex: undefined },
+    { text: "c", colorIndex: undefined },
+    { text: "k", colorIndex: 1 },
+  ],
+];
+
+export default function HelpModal({ open, lang, onClose }: HelpModalProps) {
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "auto";
   }, [open]);
@@ -56,21 +81,20 @@ export default function HelpModal({ open, onClose }: HelpModalProps) {
         >
           ✕
         </button>
-        <h2 className="text-lg font-bold mb-4">❗️ 도움말 ❗️</h2>
+        <h2 className="text-lg font-bold mb-4">
+          {lang == "kr" ? "❗️ 도움말 ❗️" : "❗️ How To Play ❗️"}
+        </h2>
         <p
           className="mb-2 text-left text-sm"
           style={{ fontFamily: "Pretendard-Medium", textAlign: "center" }}
         >
-          여섯 개의 자모로 풀어쓴 한글 단어 &quot;위들&quot;을 여섯 번의 도전
-          안에 맞혀봅시다.
+          {lang == "kr"
+            ? '여섯 개의 자모로 풀어쓴 한글 단어 "위들"을 여섯 번의 도전안에 맞혀봅시다.'
+            : 'Let\'s guess the English word "Widdle" with five letters in six attempts.'}
         </p>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          {Array.from({ length: 6 }).map((_, c) => (
-            <Square
-              key={c}
-              text={board[0][c].text}
-              colorIndex={board[0][c].colorIndex}
-            />
+          {(lang === "kr" ? board[0] : board_en[0]).map((cell, c) => (
+            <Square key={c} text={cell.text} colorIndex={cell.colorIndex} />
           ))}
         </div>
         <p
@@ -81,15 +105,13 @@ export default function HelpModal({ open, onClose }: HelpModalProps) {
             textAlign: "center",
           }}
         >
-          &quot;ㄱ&quot;은 올바른 위치에 있습니다.
+          {lang == "kr"
+            ? '자음 "ㄱ"은 올바른 위치에 있습니다.'
+            : '"A" is in the correct position.'}
         </p>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          {Array.from({ length: 6 }).map((_, c) => (
-            <Square
-              key={c}
-              text={board[1][c].text}
-              colorIndex={board[1][c].colorIndex}
-            />
+          {(lang === "kr" ? board[1] : board_en[1]).map((cell, c) => (
+            <Square key={c} text={cell.text} colorIndex={cell.colorIndex} />
           ))}
         </div>
         <p
@@ -100,15 +122,13 @@ export default function HelpModal({ open, onClose }: HelpModalProps) {
             textAlign: "center",
           }}
         >
-          모음 &quot;ㅜ&quot;는 단어에 포함되어 있지만 잘못된 위치에 있습니다.
+          {lang == "kr"
+            ? '모음 "ㅜ"는 단어에 포함되어 있지만 잘못된 위치에 있습니다.'
+            : '"O" is included in the word but is in the wrong position.'}
         </p>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          {Array.from({ length: 6 }).map((_, c) => (
-            <Square
-              key={c}
-              text={board[2][c].text}
-              colorIndex={board[2][c].colorIndex}
-            />
+          {(lang === "kr" ? board[2] : board_en[2]).map((cell, c) => (
+            <Square key={c} text={cell.text} colorIndex={cell.colorIndex} />
           ))}
         </div>
         <p
@@ -119,8 +139,17 @@ export default function HelpModal({ open, onClose }: HelpModalProps) {
             textAlign: "center",
           }}
         >
-          자음 &quot;ㄴ&quot;은 단어에 포함되있지 않습니다.<br/>
-          위들은 자정에 초기화됩니다.
+          {lang == "kr"
+            ? '자음 "ㄴ"은 단어에 포함되있지 않습니다.'
+            : '"K" is not included in the word.'}
+
+          <br />
+          <br />
+          <br />
+
+          {lang == "kr"
+            ? "위들은 자정에 초기화됩니다."
+            : "The above are initialized at midnight."}
         </p>
       </div>
     </div>
