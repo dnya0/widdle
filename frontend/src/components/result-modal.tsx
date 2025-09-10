@@ -3,6 +3,7 @@
 import { loadStatsRacord, makeKey } from "@/utils/history";
 import { useEffect } from "react";
 import WinDistributionChart from "./win-distribution-chart";
+import { MidnightTimer } from "./midnight-timer";
 
 interface ResultModalProps {
   showModal: boolean;
@@ -75,25 +76,33 @@ export default function ResultModal({
             <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem" }}>
               {stats ? stats.totalStreak : 0}
             </div>
-            <div style={{ fontSize: "0.8rem" }}>전체도전</div>
+            <div style={{ fontSize: "0.8rem" }}>
+              {lang === "kr" ? "전체도전" : "TotalStreak"}
+            </div>
           </div>
           <div>
             <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem" }}>
               {stats ? stats.successRate : 0}%
             </div>
-            <div style={{ fontSize: "0.8rem" }}>정답률</div>
+            <div style={{ fontSize: "0.8rem" }}>
+              {lang === "kr" ? "정답률" : "SuccessRate"}
+            </div>
           </div>
           <div>
             <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem" }}>
               {stats ? stats.currentStreak : 0}
             </div>
-            <div style={{ fontSize: "0.8rem" }}>최근 연속 정답</div>
+            <div style={{ fontSize: "0.8rem" }}>
+              {lang === "kr" ? "최근 연속 정답" : "CurrentStreak"}
+            </div>
           </div>
           <div>
             <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem" }}>
               {stats ? stats.bestStreak : 0}
             </div>
-            <div style={{ fontSize: "0.8rem" }}>최다 연속 정답</div>
+            <div style={{ fontSize: "0.8rem" }}>
+              {lang === "kr" ? "최다 연속 정답" : "BestStreak"}
+            </div>
           </div>
         </div>
 
@@ -101,6 +110,14 @@ export default function ResultModal({
           {lang === "kr" ? "정답 분포" : "Distribution"}
         </h2>
         <WinDistributionChart winDistribution={distribution} />
+        {isGameOver && (
+          <>
+            <p className="mb-4" style={{ fontFamily: "Pretendard-Medium" }}>
+              {lang === "kr" ? "다음 게임까지" : `The answer was '${answer}'.`}
+            </p>
+            <MidnightTimer></MidnightTimer>
+          </>
+        )}
       </div>
     </div>
   );

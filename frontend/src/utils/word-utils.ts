@@ -68,3 +68,19 @@ export function evaluateGuess(guess: string[], answer: string[]): number[] {
 
   return res;
 }
+
+export function getSecondsUntilMidnight(): number {
+  const now = new Date();
+  const midnight = new Date();
+  midnight.setHours(24, 0, 0, 0);
+
+  const diffMs = midnight.getTime() - now.getTime();
+  return Math.max(0, Math.floor(diffMs / 1000));
+}
+
+export function formatSecondsToHHMMSS(seconds: number): string {
+  const h = Math.floor(seconds / 3600).toString().padStart(2, "0");
+  const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
+  const s = (seconds % 60).toString().padStart(2, "0");
+  return `${h}:${m}:${s}`;
+}
