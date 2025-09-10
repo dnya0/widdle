@@ -9,10 +9,10 @@ export function showSuccess(message: string) {
     style: {
       border: `1px solid ${colors.success.border}`,
       background: colors.success.bg,
-      color: "#fff",
+      color: "#000",
       padding: "16px",
       fontSize: "1rem",
-      fontFamily: "Pretendard-SemiBold",
+      fontFamily: "Pretendard-Medium",
     },
     icon: null,
   });

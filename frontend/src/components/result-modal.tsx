@@ -4,6 +4,7 @@ import { loadStatsRacord, makeKey } from "@/utils/history";
 import { useEffect } from "react";
 import WinDistributionChart from "./win-distribution-chart";
 import { MidnightTimer } from "./midnight-timer";
+import EmojiExporter from "./share";
 
 interface ResultModalProps {
   showModal: boolean;
@@ -112,10 +113,21 @@ export default function ResultModal({
         <WinDistributionChart winDistribution={distribution} />
         {isGameOver && (
           <>
-            <p className="mb-4" style={{ fontFamily: "Pretendard-Medium" }}>
-              {lang === "kr" ? "다음 게임까지" : `The answer was '${answer}'.`}
-            </p>
-            <MidnightTimer></MidnightTimer>
+            <div
+              className="mb-4"
+              style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}
+            >
+              <div>
+                <div style={{ fontFamily: "Pretendard-Medium" }}>
+                  {lang === "kr"
+                    ? "다음 게임까지"
+                    : `The answer was '${answer}'.`}
+                </div>
+                <MidnightTimer></MidnightTimer>
+              </div>
+
+              <EmojiExporter lang={lang}></EmojiExporter>
+            </div>
           </>
         )}
       </div>

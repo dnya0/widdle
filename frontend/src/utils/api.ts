@@ -6,6 +6,14 @@ export type WordSaveRequest = {
   isKorean: boolean;
 };
 
+export type GameData = {
+  id: string;
+  jamo: string[];
+  word: string;
+  isKorean: boolean;
+  length: number;
+};
+
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
@@ -23,5 +31,21 @@ export async function addWord(requestBody: WordSaveRequest) {
   } catch (err) {
     if (err instanceof AxiosError)
       throw new Error(err.response?.data ?? "요청 실패");
+  }
+}
+
+export async function getAnswer(locale: "kr" | "en"): Promise<GameData | null> {
+  try {
+    const res = await api.get<GameData>(`/${locale}`);
+    const data = res.data;
+
+    if (!data || !Array.isArray(data.jamo) || typeof data.word !== "string") {
+      return null;
+    }
+    return data;
+  } catch (err) {
+    const ax = err as AxiosError;
+    console.error("API error:", ax.response?.data ?? ax.message ?? err);
+    return null;
   }
 }

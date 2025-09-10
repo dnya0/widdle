@@ -1,15 +1,7 @@
 import { useEffect } from "react";
-import { api } from "@/utils/api";
+import { getAnswer } from "@/utils/api";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
-
-type GameData = {
-  id: string;
-  jamo: string[];
-  word: string;
-  isKorean: boolean;
-  length: number;
-};
 
 export const useFetchGameData = (
   locale: "kr" | "en",
@@ -22,18 +14,14 @@ export const useFetchGameData = (
 
     (async () => {
       try {
-        const res = await api.get<GameData>(`/${locale}`, {
-          signal: controller.signal,
-        });
-        const data = res.data;
+        const data = await getAnswer(locale);
 
-        if (
-          !data ||
-          !Array.isArray(data.jamo) ||
-          typeof data.word !== "string"
-        ) {
-          console.error("Unexpected API response:", data);
-          toast.error("데이터 형식이 올바르지 않습니다.");
+        if (!data) {
+          toast.error(
+            locale === "kr"
+              ? "데이터 형식이 올바르지 않습니다."
+              : "Unexpected API response"
+          );
           return;
         }
 

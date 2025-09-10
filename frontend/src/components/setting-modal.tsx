@@ -36,7 +36,7 @@ export default function SettingModal({ open, lang, onClose }: ModalProps) {
               cursor: "pointer",
             }}
             onClick={() =>
-              window.open("https://github.com/ahma0/widdle/issues", "_blank")
+              window.open("https://github.com/dnya0/widdle/issues", "_blank")
             }
           >
             <div>{lang == "kr" ? "문의하기" : "Contact us"}</div>
