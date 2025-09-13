@@ -62,7 +62,7 @@ export default function KoreanKeyboard({
       >
         <Keyboard
           text="입력"
-          widthSize={60}
+          widthSize={4.2}
           onClick={() => {
             console.log("[Keyboard] enter clicked");
             onEnter?.();
@@ -74,11 +74,11 @@ export default function KoreanKeyboard({
             key={ch}
             text={ch}
             colorIndex={keyColors[ch] ?? 0}
-            widthSize={30}
+            widthSize={1}
             onClick={() => onKeyPress(ch)}
           />
         ))}
-        <Keyboard text="삭제" widthSize={60} onClick={() => onBackspace?.()} />
+        <Keyboard text="삭제" widthSize={4.2} onClick={() => onBackspace?.()} />
       </div>
     </div>
   );

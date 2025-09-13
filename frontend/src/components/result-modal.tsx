@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import WinDistributionChart from "./win-distribution-chart";
 import { MidnightTimer } from "./midnight-timer";
 import EmojiExporter from "./share";
+import { X } from "react-feather";
 
 interface ResultModalProps {
   showModal: boolean;
@@ -40,30 +41,20 @@ export default function ResultModal({
     ? [0, 0, 0, 0, 0, 0]
     : [0, 0, 0, 0, 0];
 
+  const isAllZero = distribution.every((v) => v === 0);
+
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-800/50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[400px] text-center relative">
-        <button
-          onClick={onClose}
-          className="absolute top-5 right-6 text-gray-500 hover:text-gray-800"
-        >
-          ✕
-        </button>
-        {isGameOver && (
-          <>
-            <h2 className="text-lg font-bold mb-4">
-              {lang === "kr" ? "게임 종료 🎉" : "Game Over 🎉"}
-            </h2>
-            <p className="mb-4" style={{ fontFamily: "Pretendard-Medium" }}>
-              {lang === "kr"
-                ? `정답은 '${answer}' 입니다.`
-                : `The answer was '${answer}'.`}
-            </p>
-          </>
-        )}
-        <h2 className="text-lg font-bold mb-4">
-          {lang === "kr" ? "통계" : "Statistics"}
-        </h2>
+        <div className="relative flex items-center justify-center mb-4">
+          <h2 className="text-lg font-bold absolute left-1/2 -translate-x-1/2">
+            {lang === "kr" ? "통계" : "Statistics"}
+          </h2>
+          <X
+            className="ml-auto text-gray-500 hover:text-gray-800 cursor-pointer"
+            onClick={onClose}
+          />
+        </div>
         <div
           style={{
             display: "grid",
@@ -107,10 +98,26 @@ export default function ResultModal({
           </div>
         </div>
 
-        <h2 className="text-lg font-bold mb-4" style={{ marginTop: 20 }}>
-          {lang === "kr" ? "정답 분포" : "Distribution"}
-        </h2>
-        <WinDistributionChart winDistribution={distribution} />
+        {!isAllZero && (
+          <>
+            <h2 className="text-lg font-bold mb-4" style={{ marginTop: 20 }}>
+              {lang === "kr" ? "정답 분포" : "Distribution"}
+            </h2>
+            <WinDistributionChart winDistribution={distribution} />
+          </>
+        )}
+        {isGameOver && (
+          <>
+            <p
+              className="mb-4"
+              style={{ fontFamily: "Pretendard-Medium", fontSize: "1.1rem" }}
+            >
+              {lang === "kr"
+                ? `정답은 '${answer}' 입니다.`
+                : `The answer was '${answer}'. `}
+            </p>
+          </>
+        )}
         {isGameOver && (
           <>
             <div

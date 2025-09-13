@@ -18,7 +18,7 @@ export default function Home() {
   };
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen sm:p-20">
+    <div className="grid grid-rows-[auto_1fr_auto] items-center justify-items-center min-h-screen px-4 py-8 sm:px-12">
       <main className="flex flex-col gap-[10px] row-start-2 items-center sm:items-start">
         <TypeAnimation
           sequence={["Widdle", 5000, "위들", 4600]}
@@ -45,12 +45,7 @@ export default function Home() {
             fontFamily: "Pretendard-Regular",
           }}
         />
-        <div
-          className="flex gap-4 items-center flex-col sm:flex-row"
-          style={{
-            marginTop: "14rem",
-          }}
-        >
+        <div className="flex gap-4 items-center flex-col sm:flex-row mt-20 sm:mt-56">
           <button
             className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
             rel="noopener noreferrer"

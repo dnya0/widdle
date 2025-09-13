@@ -11,7 +11,7 @@ type KeyboardProps = {
 };
 
 export default function Keyboard({
-  heightSize = 58,
+  heightSize = 4,
   widthSize = heightSize * 0.64,
   colorIndex = 0,
   text,
@@ -22,8 +22,11 @@ export default function Keyboard({
   return (
     <button
       style={{
-        width: widthSize,
-        height: heightSize,
+
+        width: `${widthSize}vw`,
+        height: `${heightSize}vh`,
+        minWidth: "30px",
+        minHeight: "60px",
         backgroundColor: color,
         border: `2px solid ${color}`,
         borderRadius: 5,

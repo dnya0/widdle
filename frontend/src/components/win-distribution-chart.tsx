@@ -20,10 +20,7 @@ export default function WinDistributionChart({
   }));
 
   return (
-    <ResponsiveContainer
-      width="100%"
-      height={200}
-    >
+    <ResponsiveContainer width="100%" height={200}>
       <BarChart
         layout="vertical"
         data={data}

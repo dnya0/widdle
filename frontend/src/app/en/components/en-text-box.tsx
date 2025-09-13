@@ -10,7 +10,7 @@ export default function EnglishTextBox({ squares }: { squares: Cell[][] }) {
           style={{ display: "flex", justifyContent: "center" }}
         >
           {row.map((cell, c) => (
-            <Square key={c} text={cell.text} size={64} colorIndex={cell.colorIndex} />
+            <Square key={c} text={cell.text} size={4.4} colorIndex={cell.colorIndex} />
           ))}
         </div>
       ))}

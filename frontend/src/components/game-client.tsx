@@ -16,34 +16,51 @@ type GameClientProps = {
   lang: Lang;
   rows: number;
   cols: number;
+  word: string;
+  setWord: React.Dispatch<React.SetStateAction<string>>;
+  isGameOver: boolean;
+  setIsGameOver: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function GameClient({
   lang,
   rows,
   cols,
+  word,
+  setWord,
+  isGameOver,
+  setIsGameOver,
 }: GameClientProps) {
   const [board, setBoard] = useState<Cell[][]>(initBoard(rows, cols));
   const [keyColors, setKeyColors] = useState<Record<string, number>>({});
   const [cur, setCur] = useState({ row: 0, col: 0 });
-  const [isGameOver, setIsGameOver] = useState(false);
 
   const [jamo, setJamo] = useState<string[]>([]);
-  const [word, setWord] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
 
-  const TextBox = useMemo(() => (
-  lang === "kr"
-    ? dynamic(() => import("@/app/kr/components/kr-text-box"), { ssr: false })
-    : dynamic(() => import("@/app/en/components/en-text-box"), { ssr: false })
-), [lang]);
+  const TextBox = useMemo(
+    () =>
+      lang === "kr"
+        ? dynamic(() => import("@/app/kr/components/kr-text-box"), {
+            ssr: false,
+          })
+        : dynamic(() => import("@/app/en/components/en-text-box"), {
+            ssr: false,
+          }),
+    [lang]
+  );
 
-const Keyboard = useMemo(() => (
-  lang === "kr"
-    ? dynamic(() => import("@/app/kr/components/kr-keyboard"), { ssr: false })
-    : dynamic(() => import("@/app/en/components/en-keyboard"), { ssr: false })
-), [lang]);
-
+  const Keyboard = useMemo(
+    () =>
+      lang === "kr"
+        ? dynamic(() => import("@/app/kr/components/kr-keyboard"), {
+            ssr: false,
+          })
+        : dynamic(() => import("@/app/en/components/en-keyboard"), {
+            ssr: false,
+          }),
+    [lang]
+  );
 
   useFetchGameData(lang, setJamo, setWord);
   useRestoreGameState(

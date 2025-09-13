@@ -29,7 +29,7 @@ export default function EnglishKeyboard({
           <Keyboard
             key={ch}
             text={ch}
-            widthSize={33}
+            widthSize={2}
             colorIndex={keyColors[ch] ?? 0}
             onClick={() => onKeyPress(ch)}
           />
@@ -63,7 +63,7 @@ export default function EnglishKeyboard({
       >
         <Keyboard
           text="Enter"
-          widthSize={60}
+          widthSize={5}
           onClick={() => {
             console.log("[Keyboard] enter clicked");
             onEnter?.();
@@ -75,13 +75,13 @@ export default function EnglishKeyboard({
             key={ch}
             text={ch}
             colorIndex={keyColors[ch] ?? 0}
-            widthSize={30}
+            widthSize={1}
             onClick={() => onKeyPress(ch)}
           />
         ))}
         <Keyboard
           text="Delete"
-          widthSize={60}
+          widthSize={5}
           onClick={() => onBackspace?.()}
         />
       </div>

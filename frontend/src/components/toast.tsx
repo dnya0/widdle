@@ -5,7 +5,6 @@ export default function ToasterClient({ lang }: { lang: string }) {
     <Toaster
       key={lang}
       toastOptions={{
-        className: "",
         style: {
           border: "1px solid #ff8787ff",
           padding: "16px",

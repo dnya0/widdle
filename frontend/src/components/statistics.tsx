@@ -1,6 +1,6 @@
-import { Settings } from "react-feather";
+import { BarChart2 } from "react-feather";
 
-export default function SettingsIcon({
+export default function StatisticsIcon({
   size = 2,
   onClick,
 }: {
@@ -8,7 +8,7 @@ export default function SettingsIcon({
   onClick?: () => void;
 }) {
   return (
-    <Settings
+    <BarChart2
       onClick={onClick}
       style={{
         width: `${size}vw`,

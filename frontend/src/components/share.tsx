@@ -17,7 +17,11 @@ function getTodayIndex(startDateStr = "2025-08-29"): number {
   return Math.floor(diffInMs / (1000 * 60 * 60 * 24)) + 1;
 }
 
-export default function EmojiExporter({ lang }: { lang: "kr" | "en" }) {
+export default function EmojiExporter({
+  lang,
+}: {
+  lang: "kr" | "en";
+}) {
   const [exportText, setExportText] = useState<string | null>(null);
 
   const toEmoji = (colors: number[]) =>

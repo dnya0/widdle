@@ -1,7 +1,12 @@
+"use client";
+
 import Header from "@/components/header";
 import GameClient from "@/components/game-client";
+import { useState } from "react";
 
 export default function KrPage() {
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [word, setWord] = useState<string>("");
   return (
     <div
       style={{
@@ -18,8 +23,22 @@ export default function KrPage() {
           justifyContent: "center",
         }}
       >
-        <Header text={"위들 - 한국어"} lang="kr" />
-        <GameClient key="kr" lang="kr" rows={6} cols={6} />
+        <Header
+          text={"위들 - 한국어"}
+          lang="kr"
+          isGameOver={isGameOver}
+          word={word}
+        />
+        <GameClient
+          key="kr"
+          lang="kr"
+          rows={6}
+          cols={6}
+          word={word}
+          setWord={setWord}
+          isGameOver={isGameOver}
+          setIsGameOver={setIsGameOver}
+        />
       </div>
     </div>
   );

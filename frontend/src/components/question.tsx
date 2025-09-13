@@ -1,19 +1,22 @@
-import Image from "next/image";
+import { HelpCircle } from "react-feather";
 
 export default function QuestionMark({
-  size = 30,
+  size = 2,
   onClick,
 }: {
   size?: number;
   onClick?: () => void;
 }) {
   return (
-    <Image
-      src="/icons/help_outline_46dp_1F1F1F.svg" // 앞에 / 필수
-      alt="help"
-      width={size}
-      height={size}
+    <HelpCircle
       onClick={onClick}
+      style={{
+        width: `${size}vw`,
+        height: `${size}vw`,
+        minWidth: 24,
+        minHeight: 24,
+        cursor: "pointer",
+      }}
     />
   );
 }
