@@ -30,7 +30,6 @@ export default function RootLayout({
           display: "flex",
           flexDirection: "column",
           // justifyContent:"center",
-          minWidth: "100vw",
           minHeight: "100vh",
           padding: "20px",
         }}

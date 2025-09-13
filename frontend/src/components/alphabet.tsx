@@ -17,7 +17,7 @@ function getBorderColor({
   return text ? "#000" : "#ccc";
 }
 
-export default function Square({ size = 4, colorIndex, text }: SquareProps) {
+export default function Square({ size = 3, colorIndex, text }: SquareProps) {
   const backgroundColor =
     colorIndex !== undefined && colors[colorIndex]
       ? colors[colorIndex]
@@ -36,8 +36,8 @@ export default function Square({ size = 4, colorIndex, text }: SquareProps) {
   return (
     <div
       style={{
-        width: `min(${size}vw, ${size}vh)`,
-        height: `min(${size}vw, ${size}vh)`,
+        width: `${size}rem`,
+        height: `${size}rem`,
         minWidth: "40px",
         minHeight: "40px",
         backgroundColor: backgroundColor,

@@ -1,7 +1,7 @@
 import { BarChart2 } from "react-feather";
 
 export default function StatisticsIcon({
-  size = 2,
+  size = 1,
   onClick,
 }: {
   size?: number;
@@ -11,8 +11,8 @@ export default function StatisticsIcon({
     <BarChart2
       onClick={onClick}
       style={{
-        width: `${size}vw`,
-        height: `${size}vw`,
+        width: `${size}rem`,
+        height: `${size}rem`,
         minWidth: 24,
         minHeight: 24,
         cursor: "pointer",
