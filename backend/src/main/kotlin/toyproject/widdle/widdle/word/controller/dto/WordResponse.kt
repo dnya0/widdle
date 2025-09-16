@@ -1,6 +1,6 @@
-package toyproject.widdle.widdle.controller.dto
+package toyproject.widdle.widdle.word.controller.dto
 
-import toyproject.widdle.widdle.domain.Word
+import toyproject.widdle.widdle.word.domain.Word
 
 data class WordResponse(
     val id: String,

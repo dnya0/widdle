@@ -1,4 +1,4 @@
-package toyproject.widdle.widdle.domain.validator
+package toyproject.widdle.widdle.word.domain.validator
 
 import org.springframework.stereotype.Component
 import toyproject.widdle.widdle.exception.WiddleException

@@ -1,16 +1,17 @@
-package toyproject.widdle.widdle.service
+package toyproject.widdle.widdle.word.service
 
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
-import toyproject.widdle.widdle.controller.dto.WordResponse
-import toyproject.widdle.widdle.controller.dto.WordSaveRequest
-import toyproject.widdle.widdle.controller.dto.toResponseDto
-import toyproject.widdle.widdle.domain.WordRepository
+import toyproject.widdle.widdle.word.controller.dto.WordResponse
+import toyproject.widdle.widdle.word.controller.dto.WordSaveRequest
+import toyproject.widdle.widdle.word.controller.dto.toResponseDto
+import toyproject.widdle.widdle.word.domain.WordRepository
 import toyproject.widdle.widdle.exception.WiddleException
 import toyproject.widdle.widdle.logger.logger
 import toyproject.widdle.widdle.support.JamoSplitter.splitToJamoOrChar
 import toyproject.widdle.widdle.support.getToday
 import java.time.LocalDate
+import kotlin.math.abs
 
 @Service
 class WordService(
@@ -47,7 +48,7 @@ class WordService(
 
     private fun indexFor(date: LocalDate, size: Int): Int = runCatching {
         val seed = date.toString().hashCode()
-        val positive = if (seed == Int.MIN_VALUE) 0 else kotlin.math.abs(seed)
+        val positive = if (seed == Int.MIN_VALUE) 0 else abs(seed)
         positive % size
     }.getOrElse {
         throw WiddleException("단어가 존재하지 않습니다.", it)

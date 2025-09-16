@@ -1,4 +1,4 @@
-package toyproject.widdle.widdle.controller.dto
+package toyproject.widdle.widdle.word.controller.dto
 
 data class WordSaveRequest(
     val word: String,

@@ -1,4 +1,4 @@
-package toyproject.widdle.widdle.controller
+package toyproject.widdle.widdle.word.controller
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import toyproject.widdle.widdle.controller.dto.WordResponse
-import toyproject.widdle.widdle.controller.dto.WordSaveRequest
-import toyproject.widdle.widdle.service.WordService
+import toyproject.widdle.widdle.word.controller.dto.WordResponse
+import toyproject.widdle.widdle.word.controller.dto.WordSaveRequest
+import toyproject.widdle.widdle.word.service.WordService
 import toyproject.widdle.widdle.support.toResponse
 
 @RestController

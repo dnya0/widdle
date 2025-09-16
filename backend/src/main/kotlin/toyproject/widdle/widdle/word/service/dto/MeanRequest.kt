@@ -1,4 +1,4 @@
-package toyproject.widdle.widdle.service.dto
+package toyproject.widdle.widdle.word.service.dto
 
 class MeansRequest(private val key: String, private val q: String?) {
     private val part: String? = "word"

@@ -1,3 +1,3 @@
-package toyproject.widdle.widdle.event
+package toyproject.widdle.widdle.word.event
 
 data class WordSavedEvent(val jamo: List<String>)

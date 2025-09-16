@@ -14,7 +14,7 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair.fromSerializer
 import org.springframework.data.redis.serializer.RedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer
-import toyproject.widdle.widdle.controller.dto.WordResponse
+import toyproject.widdle.widdle.word.controller.dto.WordResponse
 import java.time.Duration
 
 @Configuration

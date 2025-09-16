@@ -1,4 +1,4 @@
-package toyproject.widdle.widdle.domain
+package toyproject.widdle.widdle.word.domain
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

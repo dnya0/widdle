@@ -1,13 +1,13 @@
-package toyproject.widdle.widdle.service
+package toyproject.widdle.widdle.word.service
 
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import toyproject.widdle.widdle.domain.Word
-import toyproject.widdle.widdle.domain.WordRepository
-import toyproject.widdle.widdle.domain.validator.WordValidator
-import toyproject.widdle.widdle.event.WordSavedEvent
+import toyproject.widdle.widdle.word.domain.Word
+import toyproject.widdle.widdle.word.domain.WordRepository
+import toyproject.widdle.widdle.word.domain.validator.WordValidator
+import toyproject.widdle.widdle.word.event.WordSavedEvent
 import toyproject.widdle.widdle.exception.WiddleException
 import toyproject.widdle.widdle.logger.logger
 

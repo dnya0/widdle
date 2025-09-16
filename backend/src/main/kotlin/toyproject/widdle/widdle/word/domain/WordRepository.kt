@@ -1,4 +1,4 @@
-package toyproject.widdle.widdle.domain
+package toyproject.widdle.widdle.word.domain
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
