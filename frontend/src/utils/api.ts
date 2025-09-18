@@ -21,8 +21,13 @@ export const api = axios.create({
 });
 
 export async function hasWord(words: string[]): Promise<boolean> {
-  const res = await api.get("", { params: { q: words } });
-  return res.data;
+  try {
+    const res = await api.get("", { params: { q: words } });
+    return res.data;
+  } catch (error) {
+    console.error("Error checking if word exists:", error);
+    return false; // 또는 적절한 default 값을 반환
+  }
 }
 
 export async function addWord(requestBody: WordSaveRequest) {
@@ -45,7 +50,7 @@ export async function getAnswer(locale: "kr" | "en"): Promise<GameData | null> {
     return data;
   } catch (err) {
     const ax = err as AxiosError;
-    console.error("API error:", ax.response?.data ?? ax.message ?? err);
+    // console.error("API error:", ax.response?.data ?? ax.message ?? err);
     return null;
   }
 }

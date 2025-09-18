@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import toyproject.widdle.widdle.support.toResponse
 import toyproject.widdle.widdle.word.controller.dto.WordResponse
 import toyproject.widdle.widdle.word.controller.dto.WordSaveRequest
 import toyproject.widdle.widdle.word.service.WordService
-import toyproject.widdle.widdle.support.toResponse
 
 @RestController
 @RequestMapping("/api")
@@ -25,8 +25,8 @@ class WordController(
         wordService.getDailyWord(isKorean(language)).toResponse()
 
     @GetMapping
-    fun hasWord(@RequestParam q: List<String>): ResponseEntity<Boolean> =
-        wordService.hasWord(q).toResponse()
+    fun hasWord(@RequestParam word: String, @RequestParam q: List<String>): ResponseEntity<Boolean> =
+        wordService.hasWord(word, q).toResponse()
 
     @PostMapping
     fun saveWord(@RequestBody request: WordSaveRequest): ResponseEntity<String> =

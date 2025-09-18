@@ -2,21 +2,23 @@ package toyproject.widdle.widdle.word.service
 
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
+import toyproject.widdle.widdle.exception.WiddleException
+import toyproject.widdle.widdle.logger.logger
+import toyproject.widdle.widdle.search.service.SearchService
+import toyproject.widdle.widdle.support.JamoSplitter.splitToJamoOrChar
+import toyproject.widdle.widdle.support.getToday
 import toyproject.widdle.widdle.word.controller.dto.WordResponse
 import toyproject.widdle.widdle.word.controller.dto.WordSaveRequest
 import toyproject.widdle.widdle.word.controller.dto.toResponseDto
 import toyproject.widdle.widdle.word.domain.WordRepository
-import toyproject.widdle.widdle.exception.WiddleException
-import toyproject.widdle.widdle.logger.logger
-import toyproject.widdle.widdle.support.JamoSplitter.splitToJamoOrChar
-import toyproject.widdle.widdle.support.getToday
 import java.time.LocalDate
 import kotlin.math.abs
 
 @Service
 class WordService(
     private val wordRepository: WordRepository,
-    private val wordTransactionalService: WordTransactionalService
+    private val wordTransactionalService: WordTransactionalService,
+    private val searchService: SearchService
 ) {
 
     private val log = logger()
@@ -34,8 +36,11 @@ class WordService(
 
     fun use(id: String) = wordTransactionalService.use(id)
 
-    @Cacheable(value = ["hasWord"], key = "#word.toString()")
-    fun hasWord(word: List<String>): Boolean = wordRepository.existsByWordJamo(word.toTypedArray())
+    @Cacheable(value = ["hasWord"], key = "#wordJamo.toString()")
+    fun hasWord(word: String, wordJamo: List<String>): Boolean {
+        if (wordRepository.existsByWordText(word)) return true
+        return searchService.hasWordInNaverDictionary(word, wordJamo)
+    }
 
     fun save(request: WordSaveRequest): String {
         if (wordRepository.existsByWordText(request.word))
