@@ -39,7 +39,7 @@ class WordService(
     @Cacheable(value = ["hasWord"], key = "#wordJamo.toString()")
     fun hasWord(word: String, wordJamo: List<String>): Boolean {
         if (wordRepository.existsByWordText(word)) return true
-        return searchService.hasWordInNaverDictionary(word, wordJamo)
+        return searchService.hasWordInDictionary(word, wordJamo)
     }
 
     fun save(request: WordSaveRequest): String {
@@ -48,7 +48,7 @@ class WordService(
 
         val word = request.word.uppercase()
         val wordJamo = request.jamo ?: splitToJamoOrChar(word, request.isKorean)
-        return wordTransactionalService.save(word, wordJamo, request.isKorean)
+        return wordTransactionalService.saveAndPublish(word, wordJamo, request.isKorean)
     }
 
     private fun indexFor(date: LocalDate, size: Int): Int = runCatching {

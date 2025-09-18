@@ -29,7 +29,7 @@ class SearchService(
         .baseUrl(clientProperties.en.requestUrl)
         .build()
 
-    fun hasWordInNaverDictionary(word: String, wordJamo: List<String>): Boolean {
+    fun hasWordInDictionary(word: String, wordJamo: List<String>): Boolean {
         val isKorean = word.isKorean()
         val flag = if (isKorean) {
             hasWordInNaverDictionary(word)

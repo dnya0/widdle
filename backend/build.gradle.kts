@@ -34,8 +34,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    //webflux
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    val isAppleSilicon = System.getProperty("os.name") == "Mac OS X" && System.getProperty("os.arch") == "aarch64"
+    if (isAppleSilicon) {
+        compileOnly("io.netty:netty-resolver-dns-native-macos:4.1.72.Final:osx-aarch_64")
+    }
 
     //kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
