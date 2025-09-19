@@ -1,12 +1,10 @@
 package toyproject.widdle.widdle.search.service
 
-import org.springframework.context.ApplicationEventPublisher
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import toyproject.widdle.widdle.logger.logger
 import toyproject.widdle.widdle.search.config.ClientProperties
-import toyproject.widdle.widdle.search.event.NewWordEvent
 import toyproject.widdle.widdle.search.service.dto.NaverResponse
 import toyproject.widdle.widdle.search.service.dto.WordResponse
 import java.net.URLEncoder
@@ -15,7 +13,7 @@ import java.nio.charset.StandardCharsets
 @Service
 class SearchService(
     private val clientProperties: ClientProperties,
-    private val publisher: ApplicationEventPublisher
+    private val searchTransactionalService: SearchTransactionalService
 ) {
     private val log = logger()
 
@@ -38,7 +36,7 @@ class SearchService(
         }
 
         if (flag) {
-            publisher.publishEvent(NewWordEvent(word, wordJamo, isKorean))
+            searchTransactionalService.publish(word, wordJamo, isKorean)
         }
         return flag
     }

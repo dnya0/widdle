@@ -15,7 +15,7 @@ class NewWordEventListener(
     private val log = logger()
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     fun processNewWordEvent(event: NewWordEvent) {
         wordTransactionalService.save(event.word, event.jamo, event.isKorean)
     }
