@@ -10,14 +10,19 @@ data class ClientProperties(
 
 data class Kr(
     var naver: Naver,
-    var requestUrl: String = ""
+    var dictionary: Dictionary
 )
 
 data class En(
     var requestUrl: String = ""
 )
 
+data class Dictionary(
+    var requestUrl: String = ""
+)
+
 data class Naver(
     var id: String = "",
-    var secret: String = ""
+    var secret: String = "",
+    var requestUrl: String = ""
 )

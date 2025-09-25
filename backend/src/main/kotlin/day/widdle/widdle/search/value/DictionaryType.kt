@@ -1,14 +1,13 @@
 package day.widdle.widdle.search.value
 
+import day.widdle.widdle.search.value.DictionaryType.ENGLISH
+import day.widdle.widdle.search.value.DictionaryType.KOREAN
 import day.widdle.widdle.support.isKorean
 
 enum class DictionaryType {
-    NAVER, ENGLISH;
+    NAVER, ENGLISH, KOREAN;
+}
 
-    companion object {
-        fun getType(word: String): DictionaryType? {
-            return if (word.isKorean()) NAVER else ENGLISH
-        }
-    }
-
+fun String.getDictionaryType(): DictionaryType {
+    return if (this.isKorean()) KOREAN else ENGLISH
 }
