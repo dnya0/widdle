@@ -1,3 +1,10 @@
+import {
+  assemble,
+  canBeJungseong,
+  combineCharacter,
+  combineVowels,
+} from "es-hangul";
+
 export type Cell = { text: string; colorIndex?: number };
 
 export const ROWS = 6;
