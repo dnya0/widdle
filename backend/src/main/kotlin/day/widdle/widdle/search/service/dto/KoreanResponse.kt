@@ -1,15 +1,26 @@
 package day.widdle.widdle.search.service.dto
 
-import java.time.LocalDateTime
+data class KoreanResponse(
+    val description: String?,
+    val item: List<ItemKr>?,
+    val lastBuildDate: Long?,
+    val link: String,
+    val num: Int,
+    val start: Int,
+    val title: String?,
+    val total: Int
+)
 
-data class KoreanResponse(var channel: Channel)
+data class ItemKr(
+    val link: String,
+    val pos: String,
+    val sense: List<SenseKr>,
+    val sup_no: Int?,
+    val target_code: Int?,
+    val word: String?,
+)
 
-data class Channel(
-    var title: String?,
-    var link: String?,
-    var description: String?,
-    var lastBuildDate: LocalDateTime,
-    var total: Int?,
-    var start: Int?,
-    var num: Int?,
+data class SenseKr(
+    val definition: String,
+    val sense_order: Int
 )

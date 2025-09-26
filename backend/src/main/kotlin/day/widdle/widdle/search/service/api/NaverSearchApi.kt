@@ -4,8 +4,10 @@ import day.widdle.widdle.search.config.ClientProperties
 import day.widdle.widdle.search.service.SearchApi
 import day.widdle.widdle.search.service.dto.NaverResponse
 import day.widdle.widdle.support.encode
+import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
+import reactor.core.publisher.Mono
 
 @Service
 class NaverSearchApi(
@@ -18,12 +20,12 @@ class NaverSearchApi(
         .defaultHeader("X-Naver-Client-Secret", clientProperties.kr.naver.secret)
         .build()
 
-    override fun search(word: String): Boolean {
-        val response = sendRequest(word) ?: return false
+    override suspend fun search(word: String): Boolean {
+        val response = sendRequest(word).awaitSingleOrNull() ?: return false
         return response.rss.channel.total > 0
     }
 
-    private fun sendRequest(word: String): NaverResponse? = webClient.get()
+    private fun sendRequest(word: String): Mono<NaverResponse?> = webClient.get()
         .uri { uriBuilder ->
             uriBuilder
                 .queryParam("query", encode(word))
@@ -31,5 +33,4 @@ class NaverSearchApi(
         }
         .retrieve()
         .bodyToMono(NaverResponse::class.java)
-        .block()
 }

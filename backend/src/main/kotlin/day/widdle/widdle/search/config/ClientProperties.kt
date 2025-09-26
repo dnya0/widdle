@@ -18,7 +18,8 @@ data class En(
 )
 
 data class Dictionary(
-    var requestUrl: String = ""
+    var requestUrl: String = "",
+    var key: String = ""
 )
 
 data class Naver(

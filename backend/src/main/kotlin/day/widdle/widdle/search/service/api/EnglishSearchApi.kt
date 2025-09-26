@@ -4,9 +4,11 @@ import day.widdle.widdle.logger.logger
 import day.widdle.widdle.search.config.ClientProperties
 import day.widdle.widdle.search.service.SearchApi
 import day.widdle.widdle.search.service.dto.WordResponse
+import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
+import reactor.core.publisher.Mono
 
 @Service
 class EnglishSearchApi(
@@ -18,9 +20,9 @@ class EnglishSearchApi(
         .baseUrl(clientProperties.en.requestUrl)
         .build()
 
-    override fun search(word: String): Boolean {
+    override suspend fun search(word: String): Boolean {
         try {
-            val response = sendRequestEn(word) ?: return false
+            val response = sendRequestEn(word).awaitSingleOrNull() ?: return false
             return response[0].word == word
         } catch (e: Exception) {
             log.error("exception: $e")
@@ -28,7 +30,7 @@ class EnglishSearchApi(
         }
     }
 
-    private fun sendRequestEn(word: String): List<WordResponse>? = webClient.get()
+    private fun sendRequestEn(word: String): Mono<List<WordResponse>?> = webClient.get()
         .uri { uriBuilder ->
             uriBuilder
                 .pathSegment(word)
@@ -36,6 +38,5 @@ class EnglishSearchApi(
         }
         .retrieve()
         .bodyToMono(object : ParameterizedTypeReference<List<WordResponse>>() {})
-        .block()
 
 }

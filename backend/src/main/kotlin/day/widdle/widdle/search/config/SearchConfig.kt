@@ -1,5 +1,6 @@
 package day.widdle.widdle.search.config
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import day.widdle.widdle.search.service.SearchApi
 import day.widdle.widdle.search.service.api.EnglishSearchApi
 import day.widdle.widdle.search.service.api.KoreanSearchApi
@@ -19,7 +20,7 @@ class SearchConfig {
     ): Map<DictionaryType, SearchApi> = mapOf(
         DictionaryType.NAVER to naverSearchApi,
         DictionaryType.ENGLISH to englishSearchApi,
-        DictionaryType.ENGLISH to koreanSearchApi
+        DictionaryType.KOREAN to koreanSearchApi
     )
 
     @Bean

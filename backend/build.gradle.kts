@@ -42,6 +42,8 @@ dependencies {
     if (isAppleSilicon) {
         compileOnly("io.netty:netty-resolver-dns-native-macos:4.1.72.Final:osx-aarch_64")
     }
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.10.2")
 
     //kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
