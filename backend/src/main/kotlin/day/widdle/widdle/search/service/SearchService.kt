@@ -15,7 +15,7 @@ class SearchService(
 ) {
     private val log = logger()
 
-    fun hasWordInDictionary(word: String, wordJamo: List<String>): Boolean {
+    suspend fun hasWordInDictionary(word: String, wordJamo: List<String>): Boolean {
         val api = searchApis[word.getDictionaryType()]
         val flag = api?.search(word) ?: false
 

@@ -8,6 +8,7 @@ enum class DictionaryType {
     NAVER, ENGLISH, KOREAN;
 }
 
+// TODO: Decide between NAVER and KOREAN dictionary APIs
 fun String.getDictionaryType(): DictionaryType {
     return if (this.isKorean()) KOREAN else ENGLISH
 }

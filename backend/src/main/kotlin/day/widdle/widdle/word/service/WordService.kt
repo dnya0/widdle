@@ -37,7 +37,7 @@ class WordService(
     fun use(id: String) = wordTransactionalService.use(id)
 
     @Cacheable(value = ["hasWord"], key = "#wordJamo.toString()")
-    fun hasWord(word: String, wordJamo: List<String>): Boolean {
+    suspend fun hasWord(word: String, wordJamo: List<String>): Boolean {
         if (wordRepository.existsByWordText(word)) return true
         return searchService.hasWordInDictionary(word, wordJamo)
     }

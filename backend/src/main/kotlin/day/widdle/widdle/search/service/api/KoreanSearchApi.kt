@@ -5,7 +5,6 @@ import day.widdle.widdle.logger.logger
 import day.widdle.widdle.search.config.ClientProperties
 import day.widdle.widdle.search.service.SearchApi
 import day.widdle.widdle.search.service.dto.KoreanResponse
-import day.widdle.widdle.support.encode
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
@@ -22,10 +21,12 @@ class KoreanSearchApi(
         .baseUrl(clientProperties.kr.dictionary.requestUrl)
         .build()
 
-    override suspend fun search(word: String): Boolean {
+    override suspend fun search(word: String): Boolean = runCatching {
         val response = sendRequest(word).awaitSingleOrNull()
         return response?.item?.any { it.word == word } ?: false
-    }
+    }.onFailure {
+        log.error("Could not search word", it)
+    }.getOrDefault(false)
 
     private fun sendRequest(word: String): Mono<KoreanResponse> = webClient.get()
         .uri { uriBuilder ->

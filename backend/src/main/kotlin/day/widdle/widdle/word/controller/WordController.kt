@@ -25,7 +25,7 @@ class WordController(
         wordService.getDailyWord(isKorean(language)).toResponse()
 
     @GetMapping
-    fun hasWord(@RequestParam word: String, @RequestParam q: List<String>): ResponseEntity<Boolean> =
+    suspend fun hasWord(@RequestParam word: String, @RequestParam q: List<String>): ResponseEntity<Boolean> =
         wordService.hasWord(word, q).toResponse()
 
     @PostMapping

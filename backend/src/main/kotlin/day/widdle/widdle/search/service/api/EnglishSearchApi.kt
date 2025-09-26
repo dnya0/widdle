@@ -20,15 +20,12 @@ class EnglishSearchApi(
         .baseUrl(clientProperties.en.requestUrl)
         .build()
 
-    override suspend fun search(word: String): Boolean {
-        try {
-            val response = sendRequestEn(word).awaitSingleOrNull() ?: return false
-            return response[0].word == word
-        } catch (e: Exception) {
-            log.error("exception: $e")
-            return false
-        }
-    }
+    override suspend fun search(word: String): Boolean = runCatching {
+        val response = sendRequestEn(word).awaitSingleOrNull() ?: return false
+        response[0].word == word
+    }.onFailure {
+        log.error("Could not search word", it)
+    }.getOrDefault(false)
 
     private fun sendRequestEn(word: String): Mono<List<WordResponse>?> = webClient.get()
         .uri { uriBuilder ->
