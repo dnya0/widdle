@@ -36,17 +36,17 @@ class WordService(
 
     fun use(id: String) = wordTransactionalService.use(id)
 
-    @Cacheable(value = ["hasWord"], key = "#wordJamo.toString()")
+    @Cacheable(value = ["hasWord"], key = "#word.toUpperCase() + ':' + #wordJamo.toString()")
     suspend fun hasWord(word: String, wordJamo: List<String>): Boolean {
-        if (wordRepository.existsByWordText(word)) return true
+        if (wordRepository.existsByWordText(word.uppercase())) return true
         return searchService.hasWordInDictionary(word, wordJamo)
     }
 
     fun save(request: WordSaveRequest): String {
+        val word = request.word.uppercase()
         if (wordRepository.existsByWordText(request.word))
             throw WiddleException(if (request.isKorean) "이미 존재하는 단어입니다." else "Already exists.")
 
-        val word = request.word.uppercase()
         val wordJamo = request.jamo ?: splitToJamoOrChar(word, request.isKorean)
         return wordTransactionalService.saveAndPublish(word, wordJamo, request.isKorean)
     }

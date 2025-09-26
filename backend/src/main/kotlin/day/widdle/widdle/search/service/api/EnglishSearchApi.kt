@@ -21,8 +21,8 @@ class EnglishSearchApi(
         .build()
 
     override suspend fun search(word: String): Boolean = runCatching {
-        val response = sendRequestEn(word).awaitSingleOrNull() ?: return false
-        response[0].word == word
+        val response = sendRequestEn(word).awaitSingleOrNull()
+        response?.any { it.word.equals(word, ignoreCase = true) } ?: false
     }.onFailure {
         log.error("Could not search word", it)
     }.getOrDefault(false)
