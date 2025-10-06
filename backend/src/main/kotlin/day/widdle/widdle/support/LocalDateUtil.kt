@@ -4,4 +4,4 @@ import java.time.LocalDate
 import java.time.ZoneId
 
 private val zone = ZoneId.of("Asia/Seoul")
-fun getToday() = LocalDate.now(zone)
+fun getToday(): LocalDate = LocalDate.now(zone)
