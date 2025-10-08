@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono
 @Service
 class EnglishSearchApi(
     private val clientProperties: ClientProperties,
-    @param:Qualifier("jsonWebClient") private val builder: WebClient.Builder,
+    @param:Qualifier("searchApiWebClient") private val builder: WebClient.Builder,
 ) : SearchApi {
     private val log = logger()
 

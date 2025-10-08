@@ -12,7 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient
 class WebClientConfig {
 
     @Bean
-    fun jsonWebClient(): WebClient.Builder = WebClient.builder()
+    fun aiWebClient(): WebClient.Builder = WebClient.builder()
         .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 
     @Bean
@@ -21,4 +21,8 @@ class WebClientConfig {
             configurer.customCodecs().register(Jaxb2XmlDecoder())
             configurer.customCodecs().register(Jaxb2XmlEncoder())
         }
+
+    @Bean
+    fun searchApiWebClient(): WebClient.Builder = WebClient.builder()
+        .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
 }

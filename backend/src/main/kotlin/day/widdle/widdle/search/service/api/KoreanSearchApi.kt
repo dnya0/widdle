@@ -34,7 +34,7 @@ class KoreanSearchApi(
         .uri { uriBuilder ->
             uriBuilder
                 .queryParam("key", clientProperties.kr.dictionary.key)
-                .queryParam("q", encode(word))
+                .queryParam("q", word)
                 .queryParam("part", "word")
                 .build()
         }

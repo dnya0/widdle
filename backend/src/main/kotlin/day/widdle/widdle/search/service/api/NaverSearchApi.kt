@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono
 @Service
 class NaverSearchApi(
     private val clientProperties: ClientProperties,
-    @param:Qualifier("jsonWebClient") private val builder: WebClient.Builder
+    @param:Qualifier("searchApiWebClient") private val builder: WebClient.Builder
 ) : SearchApi {
 
     private val log = logger()
