@@ -5,6 +5,7 @@ import day.widdle.widdle.search.config.ClientProperties
 import day.widdle.widdle.search.service.SearchApi
 import day.widdle.widdle.search.service.dto.WordResponse
 import kotlinx.coroutines.reactor.awaitSingleOrNull
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
@@ -13,10 +14,11 @@ import reactor.core.publisher.Mono
 @Service
 class EnglishSearchApi(
     private val clientProperties: ClientProperties,
+    @param:Qualifier("jsonWebClient") private val builder: WebClient.Builder,
 ) : SearchApi {
     private val log = logger()
 
-    private val webClient = WebClient.builder()
+    private val webClient = builder
         .baseUrl(clientProperties.en.requestUrl)
         .build()
 

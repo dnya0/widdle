@@ -6,6 +6,7 @@ import day.widdle.widdle.search.config.ClientProperties
 import day.widdle.widdle.search.service.SearchApi
 import day.widdle.widdle.search.service.dto.KoreanResponse
 import kotlinx.coroutines.reactor.awaitSingleOrNull
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
@@ -14,10 +15,11 @@ import reactor.core.publisher.Mono
 @Service
 class KoreanSearchApi(
     private val clientProperties: ClientProperties,
+    @param:Qualifier("xmlWebClient") private val builder: WebClient.Builder,
 ) : SearchApi {
     private val log = logger()
 
-    private val webClient = WebClient.builder()
+    private val webClient = builder
         .baseUrl(clientProperties.kr.dictionary.requestUrl)
         .build()
 

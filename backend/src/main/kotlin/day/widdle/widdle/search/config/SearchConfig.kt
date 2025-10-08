@@ -1,6 +1,5 @@
 package day.widdle.widdle.search.config
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import day.widdle.widdle.search.service.SearchApi
 import day.widdle.widdle.search.service.api.EnglishSearchApi
 import day.widdle.widdle.search.service.api.KoreanSearchApi
@@ -22,14 +21,4 @@ class SearchConfig {
         DictionaryType.ENGLISH to englishSearchApi,
         DictionaryType.KOREAN to koreanSearchApi
     )
-
-    @Bean
-    fun koreanSearchApi(clientProperties: ClientProperties): KoreanSearchApi = KoreanSearchApi(clientProperties)
-
-    @Bean
-    fun naverSearchApi(clientProperties: ClientProperties): NaverSearchApi = NaverSearchApi(clientProperties)
-
-    @Bean
-    fun englishSearchApi(clientProperties: ClientProperties): EnglishSearchApi = EnglishSearchApi(clientProperties)
-
 }

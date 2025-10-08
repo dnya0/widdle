@@ -5,6 +5,7 @@ import day.widdle.widdle.search.config.ClientProperties
 import day.widdle.widdle.search.service.SearchApi
 import day.widdle.widdle.search.service.dto.NaverResponse
 import kotlinx.coroutines.reactor.awaitSingleOrNull
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
@@ -12,11 +13,12 @@ import reactor.core.publisher.Mono
 @Service
 class NaverSearchApi(
     private val clientProperties: ClientProperties,
+    @param:Qualifier("jsonWebClient") private val builder: WebClient.Builder
 ) : SearchApi {
 
     private val log = logger()
 
-    private val webClient = WebClient.builder()
+    private val webClient = builder
         .baseUrl(clientProperties.kr.naver.requestUrl)
         .defaultHeader("X-Naver-Client-Id", clientProperties.kr.naver.id)
         .defaultHeader("X-Naver-Client-Secret", clientProperties.kr.naver.secret)

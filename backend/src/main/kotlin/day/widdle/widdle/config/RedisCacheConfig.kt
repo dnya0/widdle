@@ -21,11 +21,10 @@ import java.time.Duration
 class RedisCacheConfig {
 
     @Bean
-    fun objectMapper(): ObjectMapper =
-        ObjectMapper()
-            .registerModule(kotlinModule())
-            .registerModule(JavaTimeModule())
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+    fun objectMapper(): ObjectMapper = ObjectMapper()
+        .registerModule(kotlinModule())
+        .registerModule(JavaTimeModule())
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
     @Bean
     fun cacheManager(
