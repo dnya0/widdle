@@ -25,7 +25,7 @@ class KoreanSearchApi(
 
     override suspend fun search(word: String): Boolean = runCatching {
         val response = sendRequest(word).awaitSingleOrNull()
-        return response?.item?.any { it.word == word } ?: false
+        response?.item?.any { it.word == word } ?: false
     }.onFailure {
         log.error("Could not search word", it)
     }.getOrDefault(false)

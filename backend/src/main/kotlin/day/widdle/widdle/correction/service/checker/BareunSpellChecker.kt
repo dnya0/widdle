@@ -14,7 +14,7 @@ class BareunSpellChecker(
 ) : KoreanSpellChecker {
 
     private val webClient = builder
-        .baseUrl("https://${correctionProperties.bareun.url}:{${correctionProperties.bareun.port}}")
+        .baseUrl(correctionProperties.bareun.requestUrl)
         .build()
 
     override fun correct(word: String): CorrectionResult {

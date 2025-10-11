@@ -16,6 +16,9 @@ data class OpenAi(
 data class Bareun(
     val url: String,
     val port: Int,
+    val pathVariable: String,
     val key: String,
-)
+) {
+    val requestUrl: String = "$url:$port$pathVariable"
+}
 
