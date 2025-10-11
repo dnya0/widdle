@@ -12,7 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient
 class WebClientConfig {
 
     @Bean
-    fun aiWebClient(): WebClient.Builder = WebClient.builder()
+    fun postMethodWebClient(): WebClient.Builder = WebClient.builder()
         .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 
     @Bean
@@ -23,6 +23,6 @@ class WebClientConfig {
         }
 
     @Bean
-    fun searchApiWebClient(): WebClient.Builder = WebClient.builder()
+    fun getMethodWebClient(): WebClient.Builder = WebClient.builder()
         .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
 }
