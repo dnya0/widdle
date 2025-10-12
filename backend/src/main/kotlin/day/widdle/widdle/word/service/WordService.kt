@@ -1,10 +1,14 @@
 package day.widdle.widdle.word.service
 
+import day.widdle.widdle.correction.service.KoreanSpellChecker
+import day.widdle.widdle.event.NewWordEvent
+import day.widdle.widdle.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.exception.WiddleException
 import day.widdle.widdle.logger.logger
 import day.widdle.widdle.search.service.SearchService
 import day.widdle.widdle.support.JamoSplitter.splitToJamoOrChar
 import day.widdle.widdle.support.getToday
+import day.widdle.widdle.support.toJamoList
 import day.widdle.widdle.word.controller.dto.WordResponse
 import day.widdle.widdle.word.controller.dto.WordSaveRequest
 import day.widdle.widdle.word.controller.dto.toResponseDto
@@ -18,7 +22,9 @@ import kotlin.math.abs
 class WordService(
     private val wordRepository: WordRepository,
     private val wordTransactionalService: WordTransactionalService,
-    private val searchService: SearchService
+    private val searchService: SearchService,
+    private val checker: KoreanSpellChecker,
+    private val publisher: WiddleEventPublisher
 ) {
 
     private val log = logger()
@@ -38,8 +44,13 @@ class WordService(
 
     @Cacheable(value = ["hasWord"], key = "#word.toUpperCase() + ':' + #wordJamo.toString()")
     suspend fun hasWord(word: String, wordJamo: List<String>): Boolean {
-        if (wordRepository.existsByWordText(word.uppercase())) return true
-        return searchService.hasWordInDictionary(word, wordJamo)
+        val correct = checker.correct(word)
+        if (correct.isCorrect) {
+            if (wordRepository.existsByWordText(word.uppercase())) return true
+        }
+        val correctWord = correct.correctWord
+        publisher.publishEvent(NewWordEvent.to(correctWord))
+        return false
     }
 
     fun save(request: WordSaveRequest): String {
@@ -47,7 +58,7 @@ class WordService(
         if (wordRepository.existsByWordText(request.word))
             throw WiddleException(if (request.isKorean) "이미 존재하는 단어입니다." else "Already exists.")
 
-        val wordJamo = request.jamo ?: splitToJamoOrChar(word, request.isKorean)
+        val wordJamo = request.jamo ?: word.toJamoList()
         return wordTransactionalService.saveAndPublish(word, wordJamo, request.isKorean)
     }
 

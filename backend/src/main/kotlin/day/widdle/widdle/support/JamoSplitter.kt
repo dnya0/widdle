@@ -2,6 +2,35 @@ package day.widdle.widdle.support
 
 object JamoSplitter {
 
+    fun splitToJamoOrChar(text: String, isKorean: Boolean): List<String> {
+        val toCharArray = text.toCharArray()
+        if (isKorean) {
+            return toCharArray.flatMap { splitHangulChar(it) }
+        }
+        return toCharArray.map { it.toString() }.toMutableList()
+    }
+
+    private fun splitConsonant(ch: Char) = doubleConsonants[ch] ?: listOf(ch)
+    private fun splitVowel(ch: Char) = doubleVowels[ch] ?: listOf(ch)
+
+    private fun splitHangulChar(ch: Char): List<String> {
+        if (!isHangul(ch)) return listOf(ch.toString())
+
+        val code = ch.code - 0xAC00
+        val cho = code / (21 * 28)
+        val jung = (code % (21 * 28)) / 28
+        val jong = code % 28
+
+        val result = mutableListOf<Char>()
+        result.addAll(splitConsonant(CHO[cho]))
+        result.addAll(splitVowel(JUNG[jung]))
+        JONG[jong]?.let { result.addAll(splitConsonant(it)) }
+
+        return result.map { it.toString() }
+    }
+
+    private fun isHangul(ch: Char) = ch.code in 0xAC00..0xD7A3
+
     private val CHO = arrayOf(
         'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'
     )
@@ -72,33 +101,4 @@ object JamoSplitter {
         'ㅟ' to listOf('ㅜ', 'ㅣ'),
         'ㅢ' to listOf('ㅡ', 'ㅣ')
     )
-
-    private fun splitConsonant(ch: Char) = doubleConsonants[ch] ?: listOf(ch)
-    private fun splitVowel(ch: Char) = doubleVowels[ch] ?: listOf(ch)
-
-    private fun splitHangulChar(ch: Char): List<String> {
-        if (!isHangul(ch)) return listOf(ch.toString())
-
-        val code = ch.code - 0xAC00
-        val cho = code / (21 * 28)
-        val jung = (code % (21 * 28)) / 28
-        val jong = code % 28
-
-        val result = mutableListOf<Char>()
-        result.addAll(splitConsonant(CHO[cho]))
-        result.addAll(splitVowel(JUNG[jung]))
-        JONG[jong]?.let { result.addAll(splitConsonant(it)) }
-
-        return result.map { it.toString() }
-    }
-
-    fun splitToJamoOrChar(text: String, isKorean: Boolean): List<String> {
-        if (isKorean) {
-            return text.toCharArray().flatMap { splitHangulChar(it) }
-        }
-
-        return text.toCharArray().map { it.toString() }.toMutableList()
-    }
-
-    private fun isHangul(ch: Char) = ch.code in 0xAC00..0xD7A3
 }

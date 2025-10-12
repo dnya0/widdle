@@ -7,7 +7,6 @@ import day.widdle.widdle.search.service.SearchApi
 import day.widdle.widdle.search.service.dto.KoreanResponse
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
@@ -35,14 +34,16 @@ class KoreanSearchApi(
             uriBuilder
                 .queryParam("key", clientProperties.kr.dictionary.key)
                 .queryParam("q", word)
-                .queryParam("part", "word")
+                .queryParam("part", PART_WORD)
                 .build()
         }
-        .accept(MediaType.APPLICATION_XML)
         .retrieve()
         .bodyToMono(KoreanResponse::class.java)
         .onErrorMap { throwable ->
             WiddleException("Failed to retrieve or parse Korean API response: ${throwable.message}", throwable)
         }
 
+    companion object {
+        private const val PART_WORD = "word"
+    }
 }

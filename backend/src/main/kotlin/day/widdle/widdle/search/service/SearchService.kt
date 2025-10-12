@@ -1,16 +1,15 @@
 package day.widdle.widdle.search.service
 
+import day.widdle.widdle.event.NewWordEvent
+import day.widdle.widdle.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.logger.logger
-import day.widdle.widdle.search.event.NewWordEvent
 import day.widdle.widdle.search.value.DictionaryType
 import day.widdle.widdle.search.value.getDictionaryType
-import day.widdle.widdle.support.isKorean
-import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 
 @Service
 class SearchService(
-    private val publisher: ApplicationEventPublisher,
+    private val publisher: WiddleEventPublisher,
     private val searchApis: Map<DictionaryType, SearchApi>
 ) {
     private val log = logger()
@@ -19,9 +18,8 @@ class SearchService(
         val api = searchApis[word.getDictionaryType()]
         val flag = api?.search(word) ?: false
 
-        if (flag) {
-            publisher.publishEvent(NewWordEvent(word, wordJamo, word.isKorean()))
-        }
+        publisher.publishEvent(flag, NewWordEvent.to(word, wordJamo))
+
         return flag
     }
 

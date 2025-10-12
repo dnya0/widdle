@@ -1,6 +1,6 @@
-package day.widdle.widdle.word.event.listener
+package day.widdle.widdle.event.listener
 
-import day.widdle.widdle.word.event.WordSavedEvent
+import day.widdle.widdle.event.WordSavedEvent
 import org.springframework.cache.CacheManager
 import org.springframework.stereotype.Component
 import org.springframework.transaction.event.TransactionPhase

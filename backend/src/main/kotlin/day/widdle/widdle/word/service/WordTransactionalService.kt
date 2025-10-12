@@ -1,12 +1,12 @@
 package day.widdle.widdle.word.service
 
+import day.widdle.widdle.event.WordSavedEvent
+import day.widdle.widdle.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.exception.WiddleException
 import day.widdle.widdle.logger.logger
 import day.widdle.widdle.word.domain.Word
 import day.widdle.widdle.word.domain.WordRepository
 import day.widdle.widdle.word.domain.validator.WordValidator
-import day.widdle.widdle.word.event.WordSavedEvent
-import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 class WordTransactionalService(
     private val wordRepository: WordRepository,
     private val validator: WordValidator,
-    private val publisher: ApplicationEventPublisher
+    private val publisher: WiddleEventPublisher
 ) {
     private val log = logger()
 
