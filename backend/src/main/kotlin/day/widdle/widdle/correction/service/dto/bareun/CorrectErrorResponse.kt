@@ -1,4 +1,4 @@
-package day.widdle.widdle.correction.service.dto
+package day.widdle.widdle.correction.service.dto.bareun
 
 data class CorrectErrorResponse(
     val origin: String,

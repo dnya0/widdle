@@ -6,7 +6,6 @@ import day.widdle.widdle.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.exception.WiddleException
 import day.widdle.widdle.logger.logger
 import day.widdle.widdle.search.service.SearchService
-import day.widdle.widdle.support.JamoSplitter.splitToJamoOrChar
 import day.widdle.widdle.support.getToday
 import day.widdle.widdle.support.toJamoList
 import day.widdle.widdle.word.controller.dto.WordResponse

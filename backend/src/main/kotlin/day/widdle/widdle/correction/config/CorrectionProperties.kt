@@ -10,6 +10,8 @@ data class CorrectionProperties(
 
 data class OpenAi(
     val url: String,
+    val organization: String,
+    val project: String,
     val key: String,
 )
 

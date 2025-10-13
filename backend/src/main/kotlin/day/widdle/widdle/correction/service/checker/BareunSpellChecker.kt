@@ -2,9 +2,9 @@ package day.widdle.widdle.correction.service.checker
 
 import day.widdle.widdle.correction.config.CorrectionProperties
 import day.widdle.widdle.correction.service.KoreanSpellChecker
-import day.widdle.widdle.correction.service.dto.CorrectErrorRequest
-import day.widdle.widdle.correction.service.dto.CorrectErrorResponse
-import day.widdle.widdle.correction.service.dto.CorrectionResult
+import day.widdle.widdle.correction.service.dto.bareun.CorrectErrorRequest
+import day.widdle.widdle.correction.service.dto.bareun.CorrectErrorResponse
+import day.widdle.widdle.correction.service.dto.bareun.CorrectionResult
 import day.widdle.widdle.exception.WiddleException
 import day.widdle.widdle.logger.logger
 import kotlinx.coroutines.reactor.awaitSingleOrNull
