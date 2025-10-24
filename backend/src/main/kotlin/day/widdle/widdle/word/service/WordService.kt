@@ -1,6 +1,9 @@
 package day.widdle.widdle.word.service
 
 import day.widdle.widdle.correction.service.KoreanSpellChecker
+import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.API_FAILURE
+import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECT
+import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECTED
 import day.widdle.widdle.event.NewWordEvent
 import day.widdle.widdle.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.exception.WiddleException
@@ -44,12 +47,19 @@ class WordService(
     @Cacheable(value = ["hasWord"], key = "#word.toUpperCase() + ':' + #wordJamo.toString()")
     suspend fun hasWord(word: String, wordJamo: List<String>): Boolean {
         val correct = checker.correct(word)
-        if (correct.isCorrect) {
-            if (wordRepository.existsByWordText(word.uppercase())) return true
+        val correctWord = correct.correctWord?.uppercase()
+
+        return when (correct.correctionStatus) {
+            CORRECT -> {
+                publishNewWordIfAbsent(correctWord)
+                true
+            }
+            CORRECTED -> {
+                publishNewWordIfAbsent(correctWord)
+                false
+            }
+            API_FAILURE -> false
         }
-        val correctWord = correct.correctWord
-        publisher.publishEvent(NewWordEvent.to(correctWord))
-        return false
     }
 
     fun save(request: WordSaveRequest): String {
@@ -67,6 +77,14 @@ class WordService(
         positive % size
     }.getOrElse {
         throw WiddleException("단어가 존재하지 않습니다.", it)
+    }
+
+    private fun publishNewWordIfAbsent(word: String?) {
+        word?.let {
+            if (!wordRepository.existsByWordText(word)) {
+                publisher.publishEvent(NewWordEvent.to(word))
+            }
+        }
     }
 
 }

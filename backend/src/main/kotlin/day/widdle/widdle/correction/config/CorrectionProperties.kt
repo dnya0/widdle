@@ -12,6 +12,7 @@ data class OpenAi(
     val url: String,
     val organization: String,
     val project: String,
+    val promptId: String,
     val key: String,
 )
 

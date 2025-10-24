@@ -1,6 +1,6 @@
 package day.widdle.widdle.correction.service
 
-import day.widdle.widdle.correction.service.dto.bareun.CorrectionResult
+import day.widdle.widdle.correction.service.dto.CorrectionResult
 
 interface KoreanSpellChecker {
 

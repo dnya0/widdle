@@ -6,12 +6,14 @@ data class OpenAiResponse(
     val id: String,
     @param:JsonProperty("object")
     val objectType: String,
-    val createdAt: Int,
+    val createdAt: Long,
     val status: String,
     val error: ErrorResponse?,
     @param:JsonProperty("incomplete_details")
     val incompleteDetails: IncompleteDetails?,
-    val instructions: List<String>?
+    val instructions: String?,
+    val model: String,
+    val output: List<OpenAiOutput>
 )
 
 data class ErrorResponse(
@@ -20,3 +22,17 @@ data class ErrorResponse(
 )
 
 data class IncompleteDetails(val reason: String)
+
+data class OpenAiOutput(
+    val type: String,
+    val id: String,
+    val value: String,
+    val annotations: List<String>,
+    val content: Content
+)
+
+data class Content(
+    val type: String,
+    val text: String,
+    val annotations: List<String>,
+)
