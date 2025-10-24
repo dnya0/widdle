@@ -6,6 +6,7 @@ data class OpenAiResponse(
     val id: String,
     @param:JsonProperty("object")
     val objectType: String,
+    @param:JsonProperty("create_at")
     val createdAt: Long,
     val status: String,
     val error: ErrorResponse?,

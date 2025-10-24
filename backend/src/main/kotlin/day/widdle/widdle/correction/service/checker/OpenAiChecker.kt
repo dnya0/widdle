@@ -26,8 +26,7 @@ class OpenAiChecker(
 
     override suspend fun correct(word: String): CorrectionResult = runCatching {
         val req = OpenAiRequest.of(correctionProperties.openAi.promptId, word)
-
-        val response = sendRequest(req)?.output[0]?.content?.text
+        val response = sendRequest(req)?.output?.firstOrNull()?.content?.text
         CorrectionResult.of(word, response)
     }.getOrElse { CorrectionResult.error() }
 
