@@ -2,7 +2,7 @@ package day.widdle.widdle.search.service
 
 import day.widdle.widdle.event.NewWordEvent
 import day.widdle.widdle.event.publisher.WiddleEventPublisher
-import day.widdle.widdle.log.logger
+import day.widdle.widdle.support.logger
 import day.widdle.widdle.search.value.DictionaryType
 import day.widdle.widdle.search.value.getDictionaryType
 import org.springframework.stereotype.Service

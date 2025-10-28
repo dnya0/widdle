@@ -1,4 +1,4 @@
-package day.widdle.widdle.log
+package day.widdle.widdle.support
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

@@ -1,7 +1,7 @@
 package day.widdle.widdle.event.listener
 
 import day.widdle.widdle.event.NewWordEvent
-import day.widdle.widdle.log.logger
+import day.widdle.widdle.support.logger
 import day.widdle.widdle.word.service.WordTransactionalService
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Async

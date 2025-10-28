@@ -6,7 +6,7 @@ import day.widdle.widdle.correction.service.dto.CorrectionResult
 import day.widdle.widdle.correction.service.dto.bareun.CorrectErrorRequest
 import day.widdle.widdle.correction.service.dto.bareun.CorrectErrorResponse
 import day.widdle.widdle.exception.WiddleException
-import day.widdle.widdle.log.logger
+import day.widdle.widdle.support.logger
 import io.netty.handler.ssl.SslContextBuilder
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory
 import kotlinx.coroutines.reactor.awaitSingleOrNull
