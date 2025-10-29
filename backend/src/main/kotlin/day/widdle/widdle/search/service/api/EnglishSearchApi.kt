@@ -1,6 +1,6 @@
 package day.widdle.widdle.search.service.api
 
-import day.widdle.widdle.support.logger
+import day.widdle.widdle.global.support.logger
 import day.widdle.widdle.search.config.ClientProperties
 import day.widdle.widdle.search.service.SearchApi
 import day.widdle.widdle.search.service.dto.WordResponse

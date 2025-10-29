@@ -1,9 +1,9 @@
 package day.widdle.widdle.word.service
 
-import day.widdle.widdle.event.WordSavedEvent
-import day.widdle.widdle.event.publisher.WiddleEventPublisher
-import day.widdle.widdle.exception.WiddleException
-import day.widdle.widdle.support.logger
+import day.widdle.widdle.global.event.WordSavedEvent
+import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
+import day.widdle.widdle.global.exception.WiddleException
+import day.widdle.widdle.global.support.logger
 import day.widdle.widdle.word.domain.Word
 import day.widdle.widdle.word.domain.WordRepository
 import day.widdle.widdle.word.domain.validator.WordValidator
