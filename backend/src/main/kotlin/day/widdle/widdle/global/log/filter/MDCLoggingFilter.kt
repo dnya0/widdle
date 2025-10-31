@@ -28,7 +28,7 @@ class MDCLoggingFilter : Filter {
 
         try {
             MDC.put(requestId, createUUID())
-//
+
             val httpRequest = request as HttpServletRequest
             val httpResponse = response as HttpServletResponse
 
