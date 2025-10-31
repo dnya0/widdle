@@ -1,6 +1,6 @@
 package day.widdle.widdle.word.domain.validator
 
-import day.widdle.widdle.exception.WiddleException
+import day.widdle.widdle.global.exception.WiddleException
 import org.springframework.stereotype.Component
 
 @Component

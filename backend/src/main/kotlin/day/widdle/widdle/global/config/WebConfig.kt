@@ -1,4 +1,4 @@
-package day.widdle.widdle.config
+package day.widdle.widdle.global.config
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean

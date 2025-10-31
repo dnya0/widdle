@@ -54,6 +54,9 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
+    //aop
+    implementation("org.springframework.boot:spring-boot-starter-aop")
+
     //database
     runtimeOnly("org.postgresql:postgresql")
 

@@ -1,4 +1,4 @@
-package day.widdle.widdle.exception
+package day.widdle.widdle.global.exception
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

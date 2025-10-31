@@ -1,6 +1,6 @@
 package day.widdle.widdle.word.controller
 
-import day.widdle.widdle.support.toResponse
+import day.widdle.widdle.global.support.toResponse
 import day.widdle.widdle.word.controller.dto.WordResponse
 import day.widdle.widdle.word.controller.dto.WordSaveRequest
 import day.widdle.widdle.word.service.WordService

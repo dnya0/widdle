@@ -1,7 +1,7 @@
 package day.widdle.widdle
 
-import day.widdle.widdle.support.JamoCombiner
-import day.widdle.widdle.support.JamoCombiner.preprocessJamo
+import day.widdle.widdle.global.support.JamoCombiner
+import day.widdle.widdle.global.support.JamoCombiner.preprocessJamo
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll

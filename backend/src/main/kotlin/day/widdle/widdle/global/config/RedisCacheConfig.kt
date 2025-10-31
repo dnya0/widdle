@@ -1,4 +1,4 @@
-package day.widdle.widdle.config
+package day.widdle.widdle.global.config
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper

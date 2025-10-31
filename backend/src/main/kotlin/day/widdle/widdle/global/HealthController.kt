@@ -1,4 +1,4 @@
-package day.widdle.widdle
+package day.widdle.widdle.global
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
