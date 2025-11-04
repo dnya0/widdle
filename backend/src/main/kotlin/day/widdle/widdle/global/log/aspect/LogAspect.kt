@@ -25,26 +25,27 @@ class LogAspect {
     fun logExternalApiCall(joinPoint: ProceedingJoinPoint): Any? {
         val startTime = System.currentTimeMillis()
         val signature = joinPoint.signature.toShortString()
-        val args = joinPoint.args.joinToString(", ")
+        val args = joinPoint.args.joinToString(", ") { sanitizeForLogging(it) }
 
-        log.info("[OpenAPI Call] --> $signature | Request Args: [$args]")
+        log.info("[OpenAPI Call] --> $signature | Request Args: [${args}]")
 
         try {
             val result = joinPoint.proceed()
             val duration = System.currentTimeMillis() - startTime
 
-            log.info(
-                "[OpenAPI Call] <-- $signature | Duration: ${duration}ms | Response: [${
-                    result.toString().take(100)
-                }...]"
-            )
+            log.info("[OpenAPI Call] <-- $signature | Duration: ${duration}ms | Response: [${sanitizeForLogging(result)}...]")
             return result
-
         } catch (e: Exception) {
             val duration = System.currentTimeMillis() - startTime
             log.error("[OpenAPI Call] !-- $signature | Error: ${e.javaClass.simpleName}: ${e.message} | Duration: ${duration}ms")
             throw e
         }
+    }
+
+    private fun sanitizeForLogging(value: Any?): String = when {
+        value == null -> "null"
+        value is CharSequence && value.length > 100 -> "[TRUNCATED:${value.length} chars]"
+        else -> value.toString().take(100)
     }
 
 }
