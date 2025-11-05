@@ -1,5 +1,6 @@
 package day.widdle.widdle.search.service.api
 
+import day.widdle.widdle.global.annotation.LogExternal
 import day.widdle.widdle.global.exception.WiddleException
 import day.widdle.widdle.global.support.logger
 import day.widdle.widdle.search.config.ClientProperties
@@ -12,6 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 
 @Service
+@LogExternal
 class KoreanSearchApi(
     private val clientProperties: ClientProperties,
     @param:Qualifier("xmlWebClient") private val builder: WebClient.Builder,

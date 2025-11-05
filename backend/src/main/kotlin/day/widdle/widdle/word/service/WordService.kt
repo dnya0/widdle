@@ -15,6 +15,7 @@ import day.widdle.widdle.word.controller.dto.WordResponse
 import day.widdle.widdle.word.controller.dto.WordSaveRequest
 import day.widdle.widdle.word.controller.dto.toResponseDto
 import day.widdle.widdle.word.domain.WordRepository
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -25,7 +26,7 @@ class WordService(
     private val wordRepository: WordRepository,
     private val wordTransactionalService: WordTransactionalService,
     private val searchService: SearchService,
-    private val checker: KoreanSpellChecker,
+    @param:Qualifier("bareunSpellChecker") private val checker: KoreanSpellChecker,
     private val publisher: WiddleEventPublisher
 ) {
 

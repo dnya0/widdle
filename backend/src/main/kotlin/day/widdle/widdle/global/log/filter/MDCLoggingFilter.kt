@@ -8,11 +8,10 @@ import jakarta.servlet.ServletResponse
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.MDC
-import org.springframework.core.Ordered
-import org.springframework.core.annotation.Order
+import org.springframework.stereotype.Component
 import java.util.UUID
 
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Component
 class MDCLoggingFilter : Filter {
     private val requestId = "requestId"
     private val log = logger()
@@ -25,7 +24,7 @@ class MDCLoggingFilter : Filter {
         val startTime = System.currentTimeMillis()
 
         try {
-            MDC.put(requestId, createUUID())
+            MDC.put(requestId, "[request-${createUUID()}]")
 
             val httpRequest = request as? HttpServletRequest ?: return
             val httpResponse = response as? HttpServletResponse ?: return
@@ -40,6 +39,6 @@ class MDCLoggingFilter : Filter {
         }
     }
 
-    private fun createUUID() = UUID.randomUUID().toString()
+    private fun createUUID() = UUID.randomUUID().toString().replace("-", "")
 
 }

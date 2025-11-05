@@ -21,7 +21,7 @@ class LogAspect {
     fun methodLoggingTarget() {
     }
 
-    @Around("classLoggingTarget(), methodLoggingTarget()")
+    @Around("classLoggingTarget() || methodLoggingTarget()")
     fun logExternalApiCall(joinPoint: ProceedingJoinPoint): Any? {
         val startTime = System.currentTimeMillis()
         val signature = joinPoint.signature.toShortString()
@@ -44,8 +44,23 @@ class LogAspect {
 
     private fun sanitizeForLogging(value: Any?): String = when {
         value == null -> "null"
-        value is CharSequence && value.length > 100 -> "[TRUNCATED:${value.length} chars]"
-        else -> value.toString().take(100)
+        value is String && value.contains("?") -> maskSensitiveQueryParams(value)
+        else -> value.toString()
+    }
+
+    private fun maskSensitiveQueryParams(queryString: String): String {
+        val sensitiveKeys = setOf("api-key", "secret-token", "client-id", "key")
+        var maskedString = queryString
+
+        sensitiveKeys.forEach { key ->
+            val regex = Regex("(?i)($key=[^&]*)([&|#|\\s]|\$)")
+
+            maskedString = regex.replace(maskedString) { matchResult ->
+                val boundary = matchResult.groupValues.getOrNull(2) ?: ""
+                "$key=******$boundary"
+            }
+        }
+        return maskedString
     }
 
 }

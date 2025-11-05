@@ -5,6 +5,7 @@ import day.widdle.widdle.correction.service.KoreanSpellChecker
 import day.widdle.widdle.correction.service.dto.CorrectionResult
 import day.widdle.widdle.correction.service.dto.openai.OpenAiRequest
 import day.widdle.widdle.correction.service.dto.openai.OpenAiResponse
+import day.widdle.widdle.global.annotation.LogExternal
 import day.widdle.widdle.global.exception.WiddleException
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.beans.factory.annotation.Qualifier
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 
 @Service
+@LogExternal
 class OpenAiChecker(
     private val correctionProperties: CorrectionProperties,
     @param:Qualifier("postMethodWebClient") private val builder: WebClient.Builder,
