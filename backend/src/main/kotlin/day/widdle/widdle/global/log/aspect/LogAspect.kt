@@ -42,10 +42,14 @@ class LogAspect {
         }
     }
 
-    private fun sanitizeForLogging(value: Any?): String = when {
-        value == null -> "null"
-        value is String && value.contains("?") -> maskSensitiveQueryParams(value)
-        else -> value.toString()
+    private fun sanitizeForLogging(value: Any?): String = when (value) {
+        null -> "null"
+        is CharSequence -> {
+            val str = if (value.contains("?")) maskSensitiveQueryParams(value.toString()) else value.toString()
+            if (str.length > 500) str.take(500) + "..." else str
+        }
+
+        else -> value.toString().take(500)
     }
 
     private fun maskSensitiveQueryParams(queryString: String): String {
