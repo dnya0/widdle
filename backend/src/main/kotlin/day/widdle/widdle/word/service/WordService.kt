@@ -4,17 +4,18 @@ import day.widdle.widdle.correction.service.KoreanSpellChecker
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.API_FAILURE
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECT
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECTED
-import day.widdle.widdle.event.NewWordEvent
-import day.widdle.widdle.event.publisher.WiddleEventPublisher
-import day.widdle.widdle.exception.WiddleException
-import day.widdle.widdle.logger.logger
+import day.widdle.widdle.global.event.NewWordEvent
+import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
+import day.widdle.widdle.global.exception.WiddleException
+import day.widdle.widdle.global.support.logger
 import day.widdle.widdle.search.service.SearchService
-import day.widdle.widdle.support.getToday
-import day.widdle.widdle.support.toJamoList
+import day.widdle.widdle.global.support.getToday
+import day.widdle.widdle.global.support.toJamoList
 import day.widdle.widdle.word.controller.dto.WordResponse
 import day.widdle.widdle.word.controller.dto.WordSaveRequest
 import day.widdle.widdle.word.controller.dto.toResponseDto
 import day.widdle.widdle.word.domain.WordRepository
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -25,7 +26,7 @@ class WordService(
     private val wordRepository: WordRepository,
     private val wordTransactionalService: WordTransactionalService,
     private val searchService: SearchService,
-    private val checker: KoreanSpellChecker,
+    @param:Qualifier("bareunSpellChecker") private val checker: KoreanSpellChecker,
     private val publisher: WiddleEventPublisher
 ) {
 

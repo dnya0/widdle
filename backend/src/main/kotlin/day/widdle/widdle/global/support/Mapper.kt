@@ -1,4 +1,4 @@
-package day.widdle.widdle.support
+package day.widdle.widdle.global.support
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

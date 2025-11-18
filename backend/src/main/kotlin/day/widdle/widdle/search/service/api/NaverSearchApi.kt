@@ -1,6 +1,7 @@
 package day.widdle.widdle.search.service.api
 
-import day.widdle.widdle.logger.logger
+import day.widdle.widdle.global.annotation.LogExternal
+import day.widdle.widdle.global.support.logger
 import day.widdle.widdle.search.config.ClientProperties
 import day.widdle.widdle.search.service.SearchApi
 import day.widdle.widdle.search.service.dto.NaverResponse
@@ -11,6 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 
 @Service
+@LogExternal
 class NaverSearchApi(
     private val clientProperties: ClientProperties,
     @param:Qualifier("getMethodWebClient") private val builder: WebClient.Builder

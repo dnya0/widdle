@@ -1,4 +1,4 @@
-package day.widdle.widdle.support
+package day.widdle.widdle.global.support
 
 object JamoSplitter {
 

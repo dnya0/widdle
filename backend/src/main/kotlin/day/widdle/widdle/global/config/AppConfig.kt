@@ -1,4 +1,4 @@
-package day.widdle.widdle.config
+package day.widdle.widdle.global.config
 
 import day.widdle.widdle.correction.config.CorrectionProperties
 import day.widdle.widdle.search.config.ClientProperties

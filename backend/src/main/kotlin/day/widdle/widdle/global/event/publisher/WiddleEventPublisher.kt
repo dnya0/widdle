@@ -1,6 +1,6 @@
-package day.widdle.widdle.event.publisher
+package day.widdle.widdle.global.event.publisher
 
-import day.widdle.widdle.event.WiddleEvent
+import day.widdle.widdle.global.event.WiddleEvent
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Component
 

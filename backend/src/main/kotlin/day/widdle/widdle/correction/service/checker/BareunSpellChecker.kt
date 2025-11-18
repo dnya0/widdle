@@ -5,8 +5,9 @@ import day.widdle.widdle.correction.service.KoreanSpellChecker
 import day.widdle.widdle.correction.service.dto.CorrectionResult
 import day.widdle.widdle.correction.service.dto.bareun.CorrectErrorRequest
 import day.widdle.widdle.correction.service.dto.bareun.CorrectErrorResponse
-import day.widdle.widdle.exception.WiddleException
-import day.widdle.widdle.logger.logger
+import day.widdle.widdle.global.annotation.LogExternal
+import day.widdle.widdle.global.exception.WiddleException
+import day.widdle.widdle.global.support.logger
 import io.netty.handler.ssl.SslContextBuilder
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory
 import kotlinx.coroutines.reactor.awaitSingleOrNull
@@ -15,10 +16,13 @@ import org.springframework.core.env.Environment
 import org.springframework.core.env.Profiles
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.stereotype.Service
+import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.WebClient
+import reactor.core.publisher.Mono
 import reactor.netty.http.client.HttpClient
 
 @Service
+@LogExternal
 class BareunSpellChecker(
     private val correctionProperties: CorrectionProperties,
     @param:Qualifier("postMethodWebClient") private val builder: WebClient.Builder,
@@ -40,9 +44,13 @@ class BareunSpellChecker(
     private suspend fun sendRequest(word: String): CorrectErrorResponse? = webClient.post()
         .bodyValue(CorrectErrorRequest.create(word))
         .retrieve()
+        .onStatus({ status -> status.isError }) { handleErrorResponse(it) }
         .bodyToMono(CorrectErrorResponse::class.java)
-        .onErrorMap { throwable ->
-            WiddleException("Failed to retrieve or parse Bareun API response: ${throwable.message}", throwable)
+        .doOnNext { println("🔍 Bareun API Raw Response:\n$it") }
+        .onErrorMap {
+            WiddleException(
+                "Failed to retrieve or parse Bareun API response: ${it.message}", it
+            )
         }
         .awaitSingleOrNull()
 
@@ -62,4 +70,15 @@ class BareunSpellChecker(
             builder
         }
     }
+
+    private fun handleErrorResponse(clientResponse: ClientResponse): Mono<Throwable> =
+        clientResponse.bodyToMono(String::class.java)
+            .flatMap { errorBody ->
+                val httpStatus = clientResponse.statusCode().value()
+                Mono.error(
+                    WiddleException(
+                        "Bareun API returned HTTP $httpStatus error. Response Body: $errorBody"
+                    )
+                )
+            }
 }

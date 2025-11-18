@@ -1,6 +1,6 @@
-package day.widdle.widdle.support
+package day.widdle.widdle.global.support
 
-import day.widdle.widdle.exception.WiddleException
+import day.widdle.widdle.global.exception.WiddleException
 
 object JamoCombiner {
 

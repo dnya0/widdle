@@ -1,4 +1,4 @@
-package day.widdle.widdle.config
+package day.widdle.widdle.global.config
 
 import jakarta.servlet.Filter
 import jakarta.servlet.FilterChain
