@@ -13,10 +13,12 @@ class LogAspect {
 
     private val log = logger()
 
+    @Suppress("EmptyFunctionBlock")
     @Pointcut("@within(day.widdle.widdle.global.annotation.LogExternal)")
     fun classLoggingTarget() {
     }
 
+    @Suppress("EmptyFunctionBlock")
     @Pointcut("@annotation(day.widdle.widdle.global.annotation.LogExternal)")
     fun methodLoggingTarget() {
     }
