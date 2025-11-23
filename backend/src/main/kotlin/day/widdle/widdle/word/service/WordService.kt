@@ -7,10 +7,10 @@ import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECTED
 import day.widdle.widdle.global.event.NewWordEvent
 import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.global.exception.WiddleException
-import day.widdle.widdle.global.support.logger
-import day.widdle.widdle.search.service.SearchService
 import day.widdle.widdle.global.support.getToday
+import day.widdle.widdle.global.support.logger
 import day.widdle.widdle.global.support.toJamoList
+import day.widdle.widdle.search.service.SearchService
 import day.widdle.widdle.word.controller.dto.WordResponse
 import day.widdle.widdle.word.controller.dto.WordSaveRequest
 import day.widdle.widdle.word.controller.dto.toResponseDto
@@ -61,10 +61,12 @@ class WordService(
                 publishNewWordIfAbsent(correctWord)
                 true
             }
+
             CORRECTED -> {
                 publishNewWordIfAbsent(correctWord)
                 false
             }
+
             API_FAILURE -> false
         }
     }

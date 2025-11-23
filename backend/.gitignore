@@ -45,3 +45,4 @@ out/
 
 ### docker app ###
 /app.tar
+/bareun_ai_intermediate.pem
