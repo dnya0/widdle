@@ -34,8 +34,13 @@ class WordService(
 
     @Cacheable(value = ["dailyWord"], key = "#p1.toString() + ':' + #p0", sync = true)
     fun getDailyWord(isKr: Boolean, date: LocalDate = getToday()): WordResponse {
-        wordRepository.findByUsedDateByAndKoreanIs(date, isKr)?.let { return it.toResponseDto() }
+        log.info("데일리 단어가 있는지 확인합니다. isKr=$isKr, date=$date")
+        wordRepository.findByUsedDateByAndKoreanIs(date, isKr)?.let {
+            log.info("이미 선택된 단어가 있습니다. wordId=${it}")
+            return it.toResponseDto()
+        }
 
+        log.info("새로운 단어를 선택합니다. isKr=$isKr, date=$date")
         val list = wordRepository.findAllByNotUsedWord(isKr)
         val idx = indexFor(date, list.size)
 
@@ -47,6 +52,7 @@ class WordService(
 
     @Cacheable(value = ["hasWord"], key = "#word.toUpperCase() + ':' + #wordJamo.toString()")
     suspend fun hasWord(word: String, wordJamo: List<String>): Boolean {
+        log.info("단어 조회 요청 들어옴 word=$word, jamo=$wordJamo")
         val correct = checker.correct(word)
         val correctWord = correct.correctWord?.uppercase()
 
