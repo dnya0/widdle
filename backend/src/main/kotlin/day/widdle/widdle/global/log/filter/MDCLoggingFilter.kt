@@ -15,19 +15,25 @@ import java.util.UUID
 class MDCLoggingFilter : Filter {
     private val requestId = "requestId"
     private val log = logger()
+    private val excludeURI = "/health"
 
     override fun doFilter(
         request: ServletRequest?,
         response: ServletResponse?,
         chain: FilterChain?
     ) {
+        val httpRequest = request as? HttpServletRequest ?: return
+        val httpResponse = response as? HttpServletResponse ?: return
+
+        if (httpRequest.requestURI == excludeURI) {
+            chain?.doFilter(request, response)
+            return
+        }
+
         val startTime = System.currentTimeMillis()
 
         try {
             MDC.put(requestId, "[request-${createUUID()}]")
-
-            val httpRequest = request as? HttpServletRequest ?: return
-            val httpResponse = response as? HttpServletResponse ?: return
 
             log.info("--> ${httpRequest.method} ${httpRequest.requestURI}")
             chain?.doFilter(request, response)
