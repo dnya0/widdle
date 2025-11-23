@@ -47,7 +47,7 @@ export default function ResultModal({
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-800/50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[400px] text-center relative">
         <div className="relative flex items-center justify-center mb-4">
-          <h2 className="text-lg font-bold absolute left-1/2 -translate-x-1/2">
+          <h2 className="text-lg font-bold absolute left-1/2 -translate-x-1/2" style={{ color: "black"}}>
             {lang === "kr" ? "통계" : "Statistics"}
           </h2>
           <X
@@ -65,52 +65,52 @@ export default function ResultModal({
           }}
         >
           <div>
-            <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem" }}>
+            <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem", color: "black"}}>
               {stats ? stats.totalStreak : 0}
             </div>
-            <div style={{ fontSize: "0.8rem" }}>
+            <div style={{ fontSize: "0.8rem", color: "black" }}>
               {lang === "kr" ? "전체도전" : "TotalStreak"}
             </div>
           </div>
           <div>
-            <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem" }}>
+            <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem", color: "black"}}>
               {stats ? stats.successRate : 0}%
             </div>
-            <div style={{ fontSize: "0.8rem" }}>
+            <div style={{ fontSize: "0.8rem", color: "black" }}>
               {lang === "kr" ? "정답률" : "SuccessRate"}
             </div>
           </div>
           <div>
-            <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem" }}>
+            <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem", color: "black" }}>
               {stats ? stats.currentStreak : 0}
             </div>
-            <div style={{ fontSize: "0.8rem" }}>
+            <div style={{ fontSize: "0.8rem", color: "black" }}>
               {lang === "kr" ? "최근 연속 정답" : "CurrentStreak"}
             </div>
           </div>
           <div>
-            <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem" }}>
+            <div style={{ fontFamily: "Pretendard-Bold", fontSize: "1.6rem", color: "black" }}>
               {stats ? stats.bestStreak : 0}
             </div>
-            <div style={{ fontSize: "0.8rem" }}>
+            <div style={{ fontSize: "0.8rem", color: "black" }}>
               {lang === "kr" ? "최다 연속 정답" : "BestStreak"}
             </div>
           </div>
         </div>
 
-        {!isAllZero && (
+        {/* {!isAllZero && ( */}
           <>
-            <h2 className="text-lg font-bold mb-4" style={{ marginTop: 20 }}>
+            <h2 className="text-lg font-bold mb-4" style={{ marginTop: 20, color: "black" }}>
               {lang === "kr" ? "정답 분포" : "Distribution"}
             </h2>
             <WinDistributionChart winDistribution={distribution} />
           </>
-        )}
+        {/* )} */}
         {isGameOver && (
           <>
             <p
               className="mb-4"
-              style={{ fontFamily: "Pretendard-Medium", fontSize: "1.1rem" }}
+              style={{ fontFamily: "Pretendard-Medium", fontSize: "1.1rem", color: "black" }}
             >
               {lang === "kr"
                 ? `정답은 '${answer}' 입니다.`
@@ -125,7 +125,7 @@ export default function ResultModal({
               style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}
             >
               <div>
-                <div style={{ fontFamily: "Pretendard-Medium" }}>
+                <div style={{ fontFamily: "Pretendard-Medium", color: "black" }}>
                   {lang === "kr"
                     ? "다음 게임까지"
                     : `The answer was '${answer}'.`}

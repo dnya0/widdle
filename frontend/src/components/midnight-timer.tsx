@@ -5,7 +5,7 @@ export const MidnightTimer = () => {
   const secondsLeft = useMidnightCountdown();
 
   return (
-    <div style={{ fontFamily: "monospace", fontSize: "1.2rem" }}>
+    <div style={{ fontFamily: "monospace", fontSize: "1.2rem", color: "black" }}>
       {formatSecondsToHHMMSS(secondsLeft)}
     </div>
   );

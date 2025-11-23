@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+import { assemble } from "es-hangul";
 import qs from "qs";
 
 export type WordSaveRequest = {
@@ -22,7 +23,8 @@ export const api = axios.create({
 
 export async function hasWord(words: string[]): Promise<boolean> {
   try {
-    const res = await api.get("", { params: { q: words } });
+    const word = assemble(words)
+    const res = await api.get("", { params: { word: word, q: words } });
     return res.data;
   } catch (error) {
     console.error("Error checking if word exists:", error);

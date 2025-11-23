@@ -8,16 +8,21 @@ import {
   LabelList,
 } from "recharts";
 
+const MIN_BAR_LENGTH = 0.1;
+
 export default function WinDistributionChart({
   winDistribution,
 }: {
   winDistribution: number[];
 }) {
+  console.log(winDistribution);
   const data = winDistribution.map((v, i) => ({
     name: String(i + 1),
     value: v,
-    display: v + 2,
+    display: v > 0 ? v : MIN_BAR_LENGTH,
   }));
+
+  const maxScore = Math.max(0, ...winDistribution);
 
   return (
     <ResponsiveContainer width="100%" height={200}>
@@ -27,7 +32,7 @@ export default function WinDistributionChart({
         style={{ pointerEvents: "none" }}
         margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
       >
-        <XAxis type="number" hide />
+        <XAxis type="number" hide domain={maxScore === 0 ? [0, 1] : [0, 'auto']}/>
         <YAxis
           type="category"
           dataKey="name"
