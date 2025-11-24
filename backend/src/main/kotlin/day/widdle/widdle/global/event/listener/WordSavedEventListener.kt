@@ -11,6 +11,6 @@ class WordSavedEventListener(private val cacheManager: CacheManager) {
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     fun afterCommit(e: WordSavedEvent) {
-        cacheManager.getCache("hasWord")?.evict(e.jamo.toString())
+        cacheManager.getCache("hasWord")?.evict("${e.word.uppercase()}:${e.jamo}")
     }
 }

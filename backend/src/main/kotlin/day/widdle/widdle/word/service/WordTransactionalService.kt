@@ -27,7 +27,7 @@ class WordTransactionalService(
 
     fun saveAndPublish(wordText: String, jamo: List<String>, isKorean: Boolean): String {
         save(wordText, jamo, isKorean)
-        publisher.publishEvent(WordSavedEvent(jamo))
+        publisher.publishEvent(WordSavedEvent(wordText, jamo))
         return "successfully saved $wordText"
     }
 
