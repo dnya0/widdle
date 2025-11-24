@@ -92,7 +92,7 @@ export function combineVowels(currentVowel: string, nextVowel: string): string {
     const combinationMap: { [key: string]: string } = {
         'ㅗㅏ': 'ㅘ', 'ㅗㅐ': 'ㅙ', 'ㅗㅣ': 'ㅚ',
         'ㅜㅓ': 'ㅝ', 'ㅜㅔ': 'ㅞ', 'ㅜㅣ': 'ㅟ',
-        'ㅡㅣ': 'ㅢ',
+        'ㅡㅣ': 'ㅢ', 'ㅏㅣ': 'ㅐ', 'ㅓㅣ': 'ㅔ'
         // 여기에 모든 복모음 조합을 추가합니다.
     };
     return combinationMap[currentVowel + nextVowel] || currentVowel; 

@@ -3,10 +3,12 @@ package day.widdle.widdle
 import day.widdle.widdle.global.support.JamoCombiner
 import day.widdle.widdle.global.support.JamoCombiner.preprocessJamo
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import org.springframework.boot.test.context.SpringBootTest
 
+@Disabled("서버에서 조합하지 않도록 변경됨")
 @SpringBootTest
 class JamoTest {
 
