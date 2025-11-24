@@ -1,9 +1,4 @@
-import {
-  assemble,
-  canBeJungseong,
-  combineCharacter,
-  combineVowels,
-} from "es-hangul";
+import { isVowel } from "hangul-js";
 
 export type Cell = { text: string; colorIndex?: number };
 
@@ -90,4 +85,45 @@ export function formatSecondsToHHMMSS(seconds: number): string {
   const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
   const s = (seconds % 60).toString().padStart(2, "0");
   return `${h}:${m}:${s}`;
+}
+
+export function combineVowels(currentVowel: string, nextVowel: string): string {
+    // 실제 구현에서는 'ㅗ' + 'ㅏ' -> 'ㅘ', 'ㅜ' + 'ㅓ' -> 'ㅝ' 등의 로직이 들어갑니다.
+    const combinationMap: { [key: string]: string } = {
+        'ㅗㅏ': 'ㅘ', 'ㅗㅐ': 'ㅙ', 'ㅗㅣ': 'ㅚ',
+        'ㅜㅓ': 'ㅝ', 'ㅜㅔ': 'ㅞ', 'ㅜㅣ': 'ㅟ',
+        'ㅡㅣ': 'ㅢ',
+        // 여기에 모든 복모음 조합을 추가합니다.
+    };
+    return combinationMap[currentVowel + nextVowel] || currentVowel; 
+}
+
+// 자모 배열을 순회하며 모음 연속을 처리하는 함수
+export function assembleAndCombineVowels(words: string[]): string[] {
+    const combinedWords: string[] = [];
+    
+    for (let i = 0; i < words.length; i++) {
+        const current = words[i];
+        const next = words[i + 1];
+
+        // es-hangul의 isVowel을 사용하여 모음인지 확인
+        if (isVowel(current) && isVowel(next)) {
+            // 모음이 2번 연속으로 나오는 경우
+            const combined = combineVowels(current, next);
+            
+            // 유효하게 복모음으로 결합된 경우
+            if (combined.length === 1 && combined !== current) { 
+                combinedWords.push(combined);
+                i++; // 다음 모음은 이미 사용했으므로 건너뛰기
+            } else {
+                // 결합되지 않는 모음 조합은 그대로 추가 (예: ㅏ + ㅓ)
+                combinedWords.push(current);
+            }
+        } else {
+            // 자음이거나 마지막 자모는 그대로 추가
+            combinedWords.push(current);
+        }
+    }
+    
+    return combinedWords;
 }

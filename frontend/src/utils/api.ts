@@ -1,6 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { assemble } from "es-hangul";
 import qs from "qs";
+import { assembleAndCombineVowels } from "./word-utils";
 
 export type WordSaveRequest = {
   word: string;
@@ -23,7 +24,8 @@ export const api = axios.create({
 
 export async function hasWord(words: string[]): Promise<boolean> {
   try {
-    const word = assemble(words)
+    const combinedWordsArray = assembleAndCombineVowels(words);
+    const word = assemble(combinedWordsArray)
     const res = await api.get("", { params: { word: word, q: words } });
     return res.data;
   } catch (error) {
