@@ -1,4 +1,4 @@
-import { isVowel } from "hangul-js";
+import { isConsonant, isVowel } from "hangul-js";
 
 export type Cell = { text: string; colorIndex?: number };
 
@@ -126,4 +126,25 @@ export function assembleAndCombineVowels(words: string[]): string[] {
     }
     
     return combinedWords;
+}
+
+export function checkRepetitiveJamo(words: string[]): boolean {
+    const firstJamo = words[0];
+    return words.every(jamo => jamo === firstJamo);
+}
+
+export function checkCAndVBalance(words: string[]): boolean {
+    let hasConsonant = false;
+    let hasVowel = false;
+    
+    for (const jamo of words) {
+        if (isConsonant(jamo)) {
+            hasConsonant = true;
+        }
+        if (isVowel(jamo)) {
+            hasVowel = true;
+        }
+    }
+    // 자음과 모음이 모두 존재해야 true
+    return hasConsonant && hasVowel;
 }
