@@ -10,6 +10,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.http.codec.xml.Jaxb2XmlDecoder
 import org.springframework.http.codec.xml.Jaxb2XmlEncoder
+import org.springframework.web.reactive.function.client.ExchangeStrategies
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.netty.http.client.HttpClient
 import java.time.Duration
@@ -36,10 +37,11 @@ class WebClientConfig {
     @Bean
     fun xmlWebClient(): WebClient.Builder = WebClient.builder()
         .clientConnector(clientConnector())
-        .codecs { configurer ->
-            configurer.customCodecs().register(Jaxb2XmlDecoder())
-            configurer.customCodecs().register(Jaxb2XmlEncoder())
-        }
+        .exchangeStrategies(ExchangeStrategies.builder().codecs { configurer ->
+            configurer.defaultCodecs().maxInMemorySize(1024 * 1024)
+            configurer.defaultCodecs().jaxb2Decoder(Jaxb2XmlDecoder())
+            configurer.defaultCodecs().jaxb2Encoder(Jaxb2XmlEncoder())
+        }.build())
 
     @Bean
     fun getMethodWebClient(): WebClient.Builder = WebClient.builder()

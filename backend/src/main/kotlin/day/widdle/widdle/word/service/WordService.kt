@@ -54,10 +54,11 @@ class WordService(
     suspend fun hasWord(word: String, wordJamo: List<String>): Boolean {
         log.info("단어 조회 요청 들어옴 word=$word, jamo=$wordJamo")
         val correct = checker.correct(word)
-        val correctWord = correct.correctWord?.uppercase()
+        val correctWord = correct.correctWord?.uppercase() ?: return false
 
         return when (correct.correctionStatus) {
             CORRECT -> {
+                searchService.hasWordInDictionary(correctWord, wordJamo)
                 publishNewWordIfAbsent(correctWord)
                 true
             }

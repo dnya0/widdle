@@ -26,7 +26,7 @@ class KoreanSearchApi(
 
     override suspend fun search(word: String): Boolean = runCatching {
         val response = sendRequest(word).awaitSingleOrNull()
-        response?.item?.any { it.word == word } ?: false
+        response?.body?.items?.item?.any { it.title == word } ?: false
     }.onFailure {
         log.error("Could not search word", it)
     }.getOrDefault(false)
@@ -34,7 +34,7 @@ class KoreanSearchApi(
     private fun sendRequest(word: String): Mono<KoreanResponse> = webClient.get()
         .uri { uriBuilder ->
             uriBuilder
-                .queryParam("key", clientProperties.kr.dictionary.key)
+                .queryParam("serviceKey", clientProperties.kr.dictionary.key)
                 .queryParam("q", word)
                 .queryParam("part", PART_WORD)
                 .build()
