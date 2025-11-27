@@ -8,6 +8,7 @@ plugins {
     id("org.springframework.boot") version "3.5.4"
     id("io.spring.dependency-management") version "1.1.7"
     kotlin("plugin.jpa") version "2.1.0"
+    kotlin("plugin.serialization") version "2.1.0"
 }
 
 group = "day.widdle"
@@ -44,11 +45,17 @@ dependencies {
     }
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.10.2")
+    implementation("io.projectreactor:reactor-tools")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.10.1")
 
     //kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+
+    //kotlin 직렬화/역직렬화
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 
     //lombok
     compileOnly("org.projectlombok:lombok")

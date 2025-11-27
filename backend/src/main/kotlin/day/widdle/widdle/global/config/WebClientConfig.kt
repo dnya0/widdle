@@ -1,5 +1,6 @@
 package day.widdle.widdle.global.config
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.netty.channel.ChannelOption
 import io.netty.handler.timeout.ReadTimeoutHandler
 import io.netty.handler.timeout.WriteTimeoutHandler
@@ -8,15 +9,20 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
+import org.springframework.http.codec.json.Jackson2JsonDecoder
+import org.springframework.http.codec.json.Jackson2JsonEncoder
 import org.springframework.http.codec.xml.Jaxb2XmlDecoder
 import org.springframework.http.codec.xml.Jaxb2XmlEncoder
+import org.springframework.util.MimeType
 import org.springframework.web.reactive.function.client.ExchangeStrategies
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.netty.http.client.HttpClient
 import java.time.Duration
 
 @Configuration
-class WebClientConfig {
+class WebClientConfig(
+    private val objectMapper: ObjectMapper
+) {
 
     private fun clientConnector() = ReactorClientHttpConnector(
         HttpClient.create()
@@ -30,21 +36,48 @@ class WebClientConfig {
     )
 
     @Bean
-    fun postMethodWebClient(): WebClient.Builder = WebClient.builder()
-        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-        .clientConnector(clientConnector())
+    fun baseWebClientBuilder(): WebClient.Builder =
+        WebClient.builder()
+            .clientConnector(clientConnector())
+            .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
 
     @Bean
-    fun xmlWebClient(): WebClient.Builder = WebClient.builder()
-        .clientConnector(clientConnector())
-        .exchangeStrategies(ExchangeStrategies.builder().codecs { configurer ->
-            configurer.defaultCodecs().maxInMemorySize(1024 * 1024)
-            configurer.defaultCodecs().jaxb2Decoder(Jaxb2XmlDecoder())
-            configurer.defaultCodecs().jaxb2Encoder(Jaxb2XmlEncoder())
-        }.build())
+    fun postMethodWebClient(baseWebClientBuilder: WebClient.Builder): WebClient.Builder =
+        baseWebClientBuilder.clone()
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 
     @Bean
-    fun getMethodWebClient(): WebClient.Builder = WebClient.builder()
-        .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-        .clientConnector(clientConnector())
+    fun xmlWebClient(baseWebClientBuilder: WebClient.Builder): WebClient.Builder =
+        baseWebClientBuilder.clone()
+            .exchangeStrategies(
+                ExchangeStrategies.builder().codecs { configurer ->
+                    configurer.defaultCodecs().maxInMemorySize(1024 * 1024)
+                    configurer.defaultCodecs().jaxb2Decoder(Jaxb2XmlDecoder())
+                    configurer.defaultCodecs().jaxb2Encoder(Jaxb2XmlEncoder())
+                }.build()
+            )
+
+    @Bean
+    fun getMethodWebClient(baseWebClientBuilder: WebClient.Builder): WebClient.Builder =
+        baseWebClientBuilder.clone()
+            .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+
+    @Bean
+    fun getMethodWebClientWithTextJson(baseWebClientBuilder: WebClient.Builder): WebClient.Builder {
+        val mimeType = MimeType("text", "json")
+
+        return baseWebClientBuilder.clone()
+            .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+            .exchangeStrategies(
+                ExchangeStrategies.builder().codecs { config ->
+                    config.defaultCodecs().maxInMemorySize(16 * 1024 * 1024)
+                    config.defaultCodecs().jackson2JsonDecoder(
+                        Jackson2JsonDecoder(objectMapper, mimeType)
+                    )
+                    config.defaultCodecs().jackson2JsonEncoder(
+                        Jackson2JsonEncoder(objectMapper, mimeType)
+                    )
+                }.build()
+            )
+    }
 }

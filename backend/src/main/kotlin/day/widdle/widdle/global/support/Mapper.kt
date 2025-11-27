@@ -1,7 +1,7 @@
 package day.widdle.widdle.global.support
 
+import day.widdle.widdle.global.base.ResponseData
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 
-fun <T> T.toResponse(status: HttpStatus = HttpStatus.OK): ResponseEntity<T> =
-    ResponseEntity.status(status).body(this)
+fun <T> T.toResponse(status: HttpStatus = HttpStatus.OK): ResponseData<T> =
+    ResponseData(status, this)

@@ -36,9 +36,9 @@ class BareunSpellChecker(
         .let { isProfileDevThanSetSSLIgnore(it) }
         .build()
 
-    override suspend fun correct(word: String): CorrectionResult {
+    override suspend fun correct(word: String, wordJamo: List<String>): CorrectionResult {
         val response = sendRequest(word)?.revised
-        return CorrectionResult.of(word, response)
+        return CorrectionResult.of(word, response, wordJamo)
     }
 
     private suspend fun sendRequest(word: String): CorrectErrorResponse? = webClient.post()
@@ -46,7 +46,7 @@ class BareunSpellChecker(
         .retrieve()
         .onStatus({ status -> status.isError }) { handleErrorResponse(it) }
         .bodyToMono(CorrectErrorResponse::class.java)
-        .doOnNext { println("🔍 Bareun API Raw Response:\n$it") }
+        .doOnNext { log.info("🔍 Bareun API Raw Response:\n$it") }
         .onErrorMap {
             WiddleException(
                 "Failed to retrieve or parse Bareun API response: ${it.message}", it

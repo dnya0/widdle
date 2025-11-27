@@ -2,7 +2,10 @@ package day.widdle.widdle.search.service.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 
-data class KoreanResponse(
+/**
+ * 국립국어원 한국어기초사전 api
+ */
+data class KbasResponse(
     val header: HeaderDto,
     val body: BodyDto,
 )
@@ -15,7 +18,7 @@ data class BodyDto(
 )
 
 data class ItemsDto(
-    val item: List<ItemDto>
+    val item: List<KbasItemDto>
 )
 
 data class HeaderDto(
@@ -26,7 +29,7 @@ data class HeaderDto(
     val codeEnum: ErrorCode = ErrorCode.of(resultCode),
 )
 
-data class ItemDto(
+data class KbasItemDto(
     val title: String,
     val alternativeTitle: String,
     val issuedDate: String,

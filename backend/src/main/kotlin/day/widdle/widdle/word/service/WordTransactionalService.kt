@@ -34,6 +34,11 @@ class WordTransactionalService(
     fun save(wordText: String, jamo: List<String>, isKorean: Boolean) {
         validator.validateJamoSize(isKorean, jamo)
 
+        if (wordRepository.existsByWordText(wordText)) {
+            log.warn("Attempted to save duplicate word, ignoring: {}", wordText)
+            return
+        }
+
         val word = Word(
             wordText = wordText,
             wordJamo = jamo,
