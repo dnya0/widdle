@@ -2,7 +2,7 @@ package day.widdle.widdle.search.service
 
 import day.widdle.widdle.global.event.NewWordEvent
 import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
-import day.widdle.widdle.global.support.logger
+import day.widdle.widdle.global.support.loggerDelegate
 import day.widdle.widdle.search.value.DictionaryType
 import day.widdle.widdle.search.value.getDictionaryType
 import org.springframework.stereotype.Service
@@ -12,7 +12,7 @@ class SearchService(
     private val publisher: WiddleEventPublisher,
     private val searchApis: Map<DictionaryType, SearchApi>
 ) {
-    private val log = logger()
+    private val log by loggerDelegate()
 
     suspend fun hasWordInDictionary(word: String, wordJamo: List<String>): Boolean {
         val api = searchApis[word.getDictionaryType()]

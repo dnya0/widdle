@@ -7,7 +7,7 @@ import day.widdle.widdle.correction.service.dto.bareun.CorrectErrorRequest
 import day.widdle.widdle.correction.service.dto.bareun.CorrectErrorResponse
 import day.widdle.widdle.global.annotation.LogExternal
 import day.widdle.widdle.global.exception.WiddleException
-import day.widdle.widdle.global.support.logger
+import day.widdle.widdle.global.support.loggerDelegate
 import io.netty.handler.ssl.SslContextBuilder
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory
 import kotlinx.coroutines.reactor.awaitSingleOrNull
@@ -28,7 +28,8 @@ class BareunSpellChecker(
     @param:Qualifier("postMethodWebClient") private val builder: WebClient.Builder,
     private val env: Environment
 ) : KoreanSpellChecker {
-    private val log = logger()
+
+    private val log by loggerDelegate()
 
     private val webClient = builder
         .defaultHeader("api-key", correctionProperties.bareun.key)

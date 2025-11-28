@@ -1,7 +1,7 @@
 package day.widdle.widdle.search.service.api
 
 import day.widdle.widdle.global.annotation.LogExternal
-import day.widdle.widdle.global.support.logger
+import day.widdle.widdle.global.support.loggerDelegate
 import day.widdle.widdle.search.config.ClientProperties
 import day.widdle.widdle.search.service.SearchApi
 import day.widdle.widdle.search.service.dto.NaverResponse
@@ -18,7 +18,7 @@ class NaverSearchApi(
     @param:Qualifier("getMethodWebClient") private val builder: WebClient.Builder
 ) : SearchApi {
 
-    private val log = logger()
+    private val log by loggerDelegate()
 
     private val webClient = builder
         .baseUrl(clientProperties.kr.naver.requestUrl)

@@ -1,6 +1,6 @@
 package day.widdle.widdle.global.log.aspect
 
-import day.widdle.widdle.global.support.logger
+import day.widdle.widdle.global.support.loggerDelegate
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 @Component
 class LogAspect {
 
-    private val log = logger()
+    private val log by loggerDelegate()
 
     @Suppress("EmptyFunctionBlock")
     @Pointcut("@within(day.widdle.widdle.global.annotation.LogExternal)")

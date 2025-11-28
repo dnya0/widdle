@@ -2,11 +2,19 @@ package day.widdle.widdle.global.support
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import kotlin.reflect.KProperty
 
-inline fun <reified T> T.logger(): Logger {
-    // 만약 T가 companion object인 경우, enclosingClass를 사용하여 클래스 이름을 가져옴
-    if (T::class.isCompanion) {
-        return LoggerFactory.getLogger(T::class.java.enclosingClass) // companion object 클래스
+inline fun <T : Any> T.loggerDelegate(): LoggerDelegate<T> {
+    val actualClass = if (this::class.isCompanion) {
+        this::class.java.enclosingClass
+    } else {
+        this::class.java
     }
-    return LoggerFactory.getLogger(T::class.java) // 일반 클래스
+    return LoggerDelegate(actualClass) as LoggerDelegate<T>
+}
+
+class LoggerDelegate<in T : Any>(private val clazz: Class<T>) {
+    private val logger by lazy { LoggerFactory.getLogger(clazz) }
+
+    operator fun getValue(thisRef: T, property: KProperty<*>): Logger = logger
 }

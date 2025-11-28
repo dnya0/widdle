@@ -1,6 +1,6 @@
 package day.widdle.widdle.global.log.filter
 
-import day.widdle.widdle.global.support.logger
+import day.widdle.widdle.global.support.loggerDelegate
 import jakarta.servlet.Filter
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest
@@ -13,8 +13,10 @@ import java.util.UUID
 
 @Component
 class MDCLoggingFilter : Filter {
+
+    private val log by loggerDelegate()
+
     private val requestId = "requestId"
-    private val log = logger()
     private val excludeURI = "/health"
 
     override fun doFilter(

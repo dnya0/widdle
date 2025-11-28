@@ -3,12 +3,12 @@
 // docker save widdle-app:prod > app.tar
 
 plugins {
-    kotlin("jvm") version "2.1.0"
-    kotlin("plugin.spring") version "2.1.0"
+    kotlin("jvm") version "2.2.10"
+    kotlin("plugin.spring") version "2.2.10"
     id("org.springframework.boot") version "3.5.4"
     id("io.spring.dependency-management") version "1.1.7"
-    kotlin("plugin.jpa") version "2.1.0"
-    kotlin("plugin.serialization") version "2.1.0"
+    kotlin("plugin.jpa") version "2.2.10"
+    kotlin("plugin.serialization") version "2.2.10"
 }
 
 group = "day.widdle"
@@ -45,8 +45,7 @@ dependencies {
     }
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.10.2")
-    implementation("io.projectreactor:reactor-tools")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.10.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.10.2")
 
     //kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -58,8 +57,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 
     //lombok
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
+//    compileOnly("org.projectlombok:lombok")
+//    annotationProcessor("org.projectlombok:lombok")
 
     //aop
     implementation("org.springframework.boot:spring-boot-starter-aop")

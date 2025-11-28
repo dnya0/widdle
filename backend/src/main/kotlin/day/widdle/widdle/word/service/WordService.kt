@@ -4,10 +4,9 @@ import day.widdle.widdle.correction.service.KoreanSpellChecker
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.API_FAILURE
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECT
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECTED
-import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.global.exception.WiddleException
 import day.widdle.widdle.global.support.getToday
-import day.widdle.widdle.global.support.logger
+import day.widdle.widdle.global.support.loggerDelegate
 import day.widdle.widdle.global.support.toJamoList
 import day.widdle.widdle.search.service.SearchService
 import day.widdle.widdle.word.controller.dto.WordResponse
@@ -25,11 +24,10 @@ class WordService(
     private val wordRepository: WordRepository,
     private val wordTransactionalService: WordTransactionalService,
     private val searchService: SearchService,
-    @param:Qualifier("bareunSpellChecker") private val checker: KoreanSpellChecker,
-    private val publisher: WiddleEventPublisher
+    @param:Qualifier("bareunSpellChecker") private val checker: KoreanSpellChecker
 ) {
 
-    private val log = logger()
+    private val log by loggerDelegate()
 
     @Cacheable(value = ["dailyWord"], key = "#p1.toString() + ':' + #p0", sync = true)
     fun getDailyWord(isKr: Boolean, date: LocalDate = getToday()): WordResponse {
