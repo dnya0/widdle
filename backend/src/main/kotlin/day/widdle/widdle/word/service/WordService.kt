@@ -4,7 +4,6 @@ import day.widdle.widdle.correction.service.KoreanSpellChecker
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.API_FAILURE
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECT
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECTED
-import day.widdle.widdle.global.event.NewWordEvent
 import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.global.exception.WiddleException
 import day.widdle.widdle.global.support.getToday
@@ -61,19 +60,11 @@ class WordService(
                 if (wordRepository.existsByWordText(correctWord)) {
                     return true
                 }
-                val hasWordInDictionary = searchService.hasWordInDictionary(correctWord, wordJamo)
-                if (hasWordInDictionary) {
-                    publishNewWordIfAbsent(correctWord)
-                    return true
-                }
-                false
+                return searchService.hasWordInDictionary(correctWord, wordJamo)
             }
 
             CORRECTED -> {
-                val hasWordInDictionary = searchService.hasWordInDictionary(correctWord, wordJamo)
-                if (hasWordInDictionary) {
-                    publishNewWordIfAbsent(correctWord)
-                }
+                searchService.hasWordInDictionary(correctWord, wordJamo)
                 false
             }
 
@@ -96,14 +87,6 @@ class WordService(
         positive % size
     }.getOrElse {
         throw WiddleException("단어가 존재하지 않습니다.", it)
-    }
-
-    private fun publishNewWordIfAbsent(word: String?) {
-        word?.let {
-            if (!wordRepository.existsByWordText(word)) {
-                publisher.publishEvent(NewWordEvent.to(word))
-            }
-        }
     }
 
 }

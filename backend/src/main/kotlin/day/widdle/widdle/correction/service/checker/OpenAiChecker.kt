@@ -26,10 +26,10 @@ class OpenAiChecker(
         .defaultHeaders { it.setBearerAuth(correctionProperties.openAi.key) }
         .build()
 
-    override suspend fun correct(word: String): CorrectionResult = runCatching {
+    override suspend fun correct(word: String, wordJamo: List<String>): CorrectionResult = runCatching {
         val req = OpenAiRequest.of(correctionProperties.openAi.promptId, word)
         val response = sendRequest(req)?.output?.firstOrNull()?.content?.text
-        CorrectionResult.of(word, response)
+        CorrectionResult.of(word, response, wordJamo)
     }.getOrElse { CorrectionResult.error() }
 
     private suspend fun sendRequest(req: OpenAiRequest): OpenAiResponse? = webClient.post()
