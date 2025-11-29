@@ -64,6 +64,8 @@ class WordService(
             }
 
             CORRECTED -> {
+                // 수정된 단어가 사전에 있으면 DB에 저장하기 위해 호출 (이벤트 발행)
+                // 원래 단어가 틀렸으므로 false 반환
                 searchService.hasWordInDictionary(correctWord, wordJamo)
                 false
             }
