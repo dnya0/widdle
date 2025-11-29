@@ -56,10 +56,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 
-    //lombok
-//    compileOnly("org.projectlombok:lombok")
-//    annotationProcessor("org.projectlombok:lombok")
-
     //aop
     implementation("org.springframework.boot:spring-boot-starter-aop")
 

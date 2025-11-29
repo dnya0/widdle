@@ -45,7 +45,7 @@ data class KbasItemDto(
 enum class ErrorCode(val code: String, val message: String) {
     OK("0000", "정상 처리"),
     NOT_FOUND("F2013", "서비스 주소 호출 실패"),
-    SEVER_ERROR("9999", "서비스 점검중 (내부 서비스 호출 장애)"),
+    SERVER_ERROR("9999", "서비스 점검중 (내부 서비스 호출 장애)"),
     UNKNOWN("알 수 없는 코드", "알 수 없는 코드");
 
     companion object {

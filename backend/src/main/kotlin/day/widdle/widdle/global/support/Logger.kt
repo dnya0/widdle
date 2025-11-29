@@ -4,13 +4,15 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KProperty
 
+@Suppress("UNCHECKED_CAST")
 inline fun <T : Any> T.loggerDelegate(): LoggerDelegate<T> {
-    val actualClass = if (this::class.isCompanion) {
-        this::class.java.enclosingClass
+    val actualClass = (if (this::class.isCompanion) {
+        this::class.java.enclosingClass ?: this::class.java
     } else {
         this::class.java
-    }
-    return LoggerDelegate(actualClass) as LoggerDelegate<T>
+    }) as Class<T>
+
+    return LoggerDelegate(actualClass)
 }
 
 class LoggerDelegate<in T : Any>(private val clazz: Class<T>) {

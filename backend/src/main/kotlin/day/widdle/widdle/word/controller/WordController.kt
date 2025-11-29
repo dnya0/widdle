@@ -5,8 +5,6 @@ import day.widdle.widdle.global.support.toResponse
 import day.widdle.widdle.word.controller.dto.WordResponse
 import day.widdle.widdle.word.controller.dto.WordSaveRequest
 import day.widdle.widdle.word.service.WordService
-import kotlinx.coroutines.slf4j.MDCContext
-import kotlinx.coroutines.withContext
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -29,10 +27,7 @@ class WordController(
 
     @GetMapping
     suspend fun hasWord(@RequestParam word: String, @RequestParam q: List<String>): ResponseData<Boolean> =
-        withContext(MDCContext()) {
-            wordService.hasWord(word, q).toResponse()
-        }
-
+        wordService.hasWord(word, q).toResponse()
 
     @PostMapping
     fun saveWord(@RequestBody request: WordSaveRequest): ResponseData<String> =

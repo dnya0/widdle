@@ -13,6 +13,8 @@ import day.widdle.widdle.word.controller.dto.WordResponse
 import day.widdle.widdle.word.controller.dto.WordSaveRequest
 import day.widdle.widdle.word.controller.dto.toResponseDto
 import day.widdle.widdle.word.domain.WordRepository
+import kotlinx.coroutines.slf4j.MDCContext
+import kotlinx.coroutines.withContext
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
@@ -48,17 +50,17 @@ class WordService(
     fun use(id: String) = wordTransactionalService.use(id)
 
     @Cacheable(value = ["hasWord"], key = "#word.toUpperCase() + ':' + #wordJamo.toString()")
-    suspend fun hasWord(word: String, wordJamo: List<String>): Boolean {
+    suspend fun hasWord(word: String, wordJamo: List<String>): Boolean = withContext(MDCContext()) {
         log.info("단어 조회 요청 들어옴 word=$word, jamo=$wordJamo")
         val correct = checker.correct(word, wordJamo)
-        val correctWord = correct.correctWord?.uppercase() ?: return false
+        val correctWord = correct.correctWord?.uppercase() ?: return@withContext false
 
-        return when (correct.correctionStatus) {
+        return@withContext when (correct.correctionStatus) {
             CORRECT -> {
                 if (wordRepository.existsByWordText(correctWord)) {
-                    return true
+                    return@withContext true
                 }
-                return searchService.hasWordInDictionary(correctWord, wordJamo)
+                searchService.hasWordInDictionary(correctWord, wordJamo)
             }
 
             CORRECTED -> {
