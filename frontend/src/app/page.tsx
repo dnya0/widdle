@@ -61,7 +61,7 @@ export default function Home() {
             Starting in English
           </button>
         </div>
-        <div
+        {/* <div
           className="w-full flex justify-center mt-[30px] self-center"
           style={{
             display: "flex",
@@ -82,7 +82,7 @@ export default function Home() {
           >
             단어 추가하기
           </a>
-        </div>
+        </div> */}
       </main>
     </div>
   );
