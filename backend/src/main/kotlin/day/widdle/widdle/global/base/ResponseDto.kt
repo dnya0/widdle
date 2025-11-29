@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatus.OK
 
 data class ResponseData<T>(
-    val code: Int,
-    val status: String,
+    val status: Int,
+    val code: String,
     val message: String?,
     val data: T? = null
 ) {

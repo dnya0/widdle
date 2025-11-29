@@ -1,7 +1,18 @@
 import axios, { AxiosError } from "axios";
 import { assemble } from "es-hangul";
 import qs from "qs";
-import { assembleAndCombineVowels, checkCAndVBalance, checkRepetitiveJamo } from "./word-utils";
+import {
+  assembleAndCombineVowels,
+  checkCAndVBalance,
+  checkRepetitiveJamo,
+} from "./word-utils";
+
+interface ApiResponse<T> {
+  code: string;
+  status: number;
+  message: string | null;
+  data: T;
+}
 
 export type WordSaveRequest = {
   word: string;
@@ -25,16 +36,22 @@ export const api = axios.create({
 export async function hasWord(words: string[]): Promise<boolean> {
   try {
     if (checkRepetitiveJamo(words)) {
-        return false;
+      return false;
     }
     if (!checkCAndVBalance(words)) {
-        console.warn("Input must contain both consonants and vowels.");
-        return false;
+      console.warn("Input must contain both consonants and vowels.");
+      return false;
     }
     const combinedWordsArray = assembleAndCombineVowels(words);
-    const word = assemble(combinedWordsArray)
+    const word = assemble(combinedWordsArray);
     const res = await api.get("", { params: { word: word, q: words } });
-    return res.data;
+    const response = res.data;
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      return false;
+    }
   } catch (error) {
     console.error("Error checking if word exists:", error);
     return false; // 또는 적절한 default 값을 반환
@@ -52,8 +69,10 @@ export async function addWord(requestBody: WordSaveRequest) {
 
 export async function getAnswer(locale: "kr" | "en"): Promise<GameData | null> {
   try {
-    const res = await api.get<GameData>(`/${locale}`);
-    const data = res.data;
+    const res = await api.get<ApiResponse<GameData>>(`/${locale}`);
+    
+    const responseBody = res.data;
+    const data = responseBody.data;
 
     if (!data || !Array.isArray(data.jamo) || typeof data.word !== "string") {
       return null;
