@@ -30,12 +30,13 @@ class KoreanSearchApi(
     override suspend fun search(word: String): Boolean = withContext(MDCContext()) {
         runCatching {
             val response = sendRequest(word).awaitSingleOrNull()
+
             val channel = response?.channel
-            if (channel?.total != 0) {
-                channel?.item?.any { it.word == word.replace("-", "") } ?: false
-                return@runCatching true
+            if (channel == null || channel.total == 0) {
+                return@runCatching false
             }
-            return@runCatching false
+
+            channel.item.any { it.word == word.replace("-", "") }
         }.onFailure {
             log.error("Could not search word", it)
         }.getOrDefault(false)
