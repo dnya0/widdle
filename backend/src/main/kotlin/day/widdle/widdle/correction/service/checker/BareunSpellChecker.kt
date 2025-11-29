@@ -7,7 +7,7 @@ import day.widdle.widdle.correction.service.dto.bareun.CorrectErrorRequest
 import day.widdle.widdle.correction.service.dto.bareun.CorrectErrorResponse
 import day.widdle.widdle.global.annotation.LogExternal
 import day.widdle.widdle.global.exception.WiddleException
-import day.widdle.widdle.global.support.logger
+import day.widdle.widdle.global.support.loggerDelegate
 import io.netty.handler.ssl.SslContextBuilder
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory
 import kotlinx.coroutines.reactor.awaitSingleOrNull
@@ -28,7 +28,8 @@ class BareunSpellChecker(
     @param:Qualifier("postMethodWebClient") private val builder: WebClient.Builder,
     private val env: Environment
 ) : KoreanSpellChecker {
-    private val log = logger()
+
+    private val log by loggerDelegate()
 
     private val webClient = builder
         .defaultHeader("api-key", correctionProperties.bareun.key)
@@ -36,9 +37,9 @@ class BareunSpellChecker(
         .let { isProfileDevThanSetSSLIgnore(it) }
         .build()
 
-    override suspend fun correct(word: String): CorrectionResult {
+    override suspend fun correct(word: String, wordJamo: List<String>): CorrectionResult {
         val response = sendRequest(word)?.revised
-        return CorrectionResult.of(word, response)
+        return CorrectionResult.of(word, response, wordJamo)
     }
 
     private suspend fun sendRequest(word: String): CorrectErrorResponse? = webClient.post()
@@ -46,7 +47,7 @@ class BareunSpellChecker(
         .retrieve()
         .onStatus({ status -> status.isError }) { handleErrorResponse(it) }
         .bodyToMono(CorrectErrorResponse::class.java)
-        .doOnNext { println("🔍 Bareun API Raw Response:\n$it") }
+        .doOnNext { log.info("🔍 Bareun API Raw Response:\n$it") }
         .onErrorMap {
             WiddleException(
                 "Failed to retrieve or parse Bareun API response: ${it.message}", it

@@ -4,17 +4,17 @@ import day.widdle.widdle.correction.service.KoreanSpellChecker
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.API_FAILURE
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECT
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECTED
-import day.widdle.widdle.global.event.NewWordEvent
-import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.global.exception.WiddleException
 import day.widdle.widdle.global.support.getToday
-import day.widdle.widdle.global.support.logger
+import day.widdle.widdle.global.support.loggerDelegate
 import day.widdle.widdle.global.support.toJamoList
 import day.widdle.widdle.search.service.SearchService
 import day.widdle.widdle.word.controller.dto.WordResponse
 import day.widdle.widdle.word.controller.dto.WordSaveRequest
 import day.widdle.widdle.word.controller.dto.toResponseDto
 import day.widdle.widdle.word.domain.WordRepository
+import kotlinx.coroutines.slf4j.MDCContext
+import kotlinx.coroutines.withContext
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
@@ -26,11 +26,10 @@ class WordService(
     private val wordRepository: WordRepository,
     private val wordTransactionalService: WordTransactionalService,
     private val searchService: SearchService,
-    @param:Qualifier("bareunSpellChecker") private val checker: KoreanSpellChecker,
-    private val publisher: WiddleEventPublisher
+    @param:Qualifier("bareunSpellChecker") private val checker: KoreanSpellChecker
 ) {
 
-    private val log = logger()
+    private val log by loggerDelegate()
 
     @Cacheable(value = ["dailyWord"], key = "#p1.toString() + ':' + #p0", sync = true)
     fun getDailyWord(isKr: Boolean, date: LocalDate = getToday()): WordResponse {
@@ -51,19 +50,23 @@ class WordService(
     fun use(id: String) = wordTransactionalService.use(id)
 
     @Cacheable(value = ["hasWord"], key = "#word.toUpperCase() + ':' + #wordJamo.toString()")
-    suspend fun hasWord(word: String, wordJamo: List<String>): Boolean {
+    suspend fun hasWord(word: String, wordJamo: List<String>): Boolean = withContext(MDCContext()) {
         log.info("단어 조회 요청 들어옴 word=$word, jamo=$wordJamo")
-        val correct = checker.correct(word)
-        val correctWord = correct.correctWord?.uppercase()
+        val correct = checker.correct(word, wordJamo)
+        val correctWord = correct.correctWord?.uppercase() ?: return@withContext false
 
-        return when (correct.correctionStatus) {
+        return@withContext when (correct.correctionStatus) {
             CORRECT -> {
-                publishNewWordIfAbsent(correctWord)
-                true
+                if (wordRepository.existsByWordText(correctWord)) {
+                    return@withContext true
+                }
+                searchService.hasWordInDictionary(correctWord, wordJamo)
             }
 
             CORRECTED -> {
-                publishNewWordIfAbsent(correctWord)
+                // 수정된 단어가 사전에 있으면 DB에 저장하기 위해 호출 (이벤트 발행)
+                // 원래 단어가 틀렸으므로 false 반환
+                searchService.hasWordInDictionary(correctWord, wordJamo)
                 false
             }
 
@@ -86,14 +89,6 @@ class WordService(
         positive % size
     }.getOrElse {
         throw WiddleException("단어가 존재하지 않습니다.", it)
-    }
-
-    private fun publishNewWordIfAbsent(word: String?) {
-        word?.let {
-            if (!wordRepository.existsByWordText(word)) {
-                publisher.publishEvent(NewWordEvent.to(word))
-            }
-        }
     }
 
 }

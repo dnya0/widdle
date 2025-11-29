@@ -3,7 +3,7 @@ package day.widdle.widdle.word.service
 import day.widdle.widdle.global.event.WordSavedEvent
 import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.global.exception.WiddleException
-import day.widdle.widdle.global.support.logger
+import day.widdle.widdle.global.support.loggerDelegate
 import day.widdle.widdle.word.domain.Word
 import day.widdle.widdle.word.domain.WordRepository
 import day.widdle.widdle.word.domain.validator.WordValidator
@@ -18,7 +18,7 @@ class WordTransactionalService(
     private val validator: WordValidator,
     private val publisher: WiddleEventPublisher
 ) {
-    private val log = logger()
+    private val log by loggerDelegate()
 
     fun use(word: Word) = word.use()
 
@@ -33,6 +33,11 @@ class WordTransactionalService(
 
     fun save(wordText: String, jamo: List<String>, isKorean: Boolean) {
         validator.validateJamoSize(isKorean, jamo)
+
+        if (wordRepository.existsByWordText(wordText)) {
+            log.warn("Attempted to save duplicate word, ignoring: {}", wordText)
+            return
+        }
 
         val word = Word(
             wordText = wordText,

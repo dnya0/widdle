@@ -1,7 +1,7 @@
 package day.widdle.widdle.search.service.api
 
 import day.widdle.widdle.global.annotation.LogExternal
-import day.widdle.widdle.global.support.logger
+import day.widdle.widdle.global.support.loggerDelegate
 import day.widdle.widdle.search.config.ClientProperties
 import day.widdle.widdle.search.service.SearchApi
 import day.widdle.widdle.search.service.dto.WordResponse
@@ -18,7 +18,8 @@ class EnglishSearchApi(
     private val clientProperties: ClientProperties,
     @param:Qualifier("getMethodWebClient") private val builder: WebClient.Builder,
 ) : SearchApi {
-    private val log = logger()
+
+    private val log by loggerDelegate()
 
     private val webClient = builder
         .baseUrl(clientProperties.en.requestUrl)
@@ -32,11 +33,7 @@ class EnglishSearchApi(
     }.getOrDefault(false)
 
     private fun sendRequestEn(word: String): Mono<List<WordResponse>?> = webClient.get()
-        .uri { uriBuilder ->
-            uriBuilder
-                .pathSegment(word)
-                .build()
-        }
+        .uri { uriBuilder -> uriBuilder.pathSegment(word).build() }
         .retrieve()
         .bodyToMono(object : ParameterizedTypeReference<List<WordResponse>>() {})
 

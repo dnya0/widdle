@@ -4,6 +4,6 @@ import day.widdle.widdle.correction.service.dto.CorrectionResult
 
 interface KoreanSpellChecker {
 
-    suspend fun correct(word: String): CorrectionResult
+    suspend fun correct(word: String, wordJamo: List<String>): CorrectionResult
 
 }

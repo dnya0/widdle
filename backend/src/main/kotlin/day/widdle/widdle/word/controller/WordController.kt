@@ -1,10 +1,11 @@
 package day.widdle.widdle.word.controller
 
+import day.widdle.widdle.global.base.ResponseData
 import day.widdle.widdle.global.support.toResponse
 import day.widdle.widdle.word.controller.dto.WordResponse
 import day.widdle.widdle.word.controller.dto.WordSaveRequest
 import day.widdle.widdle.word.service.WordService
-import org.springframework.http.ResponseEntity
+import org.springframework.http.HttpStatus.CREATED
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -21,16 +22,16 @@ class WordController(
 ) {
 
     @GetMapping("/{language}")
-    fun getWord(@PathVariable language: String): ResponseEntity<WordResponse> =
+    fun getWord(@PathVariable language: String): ResponseData<WordResponse> =
         wordService.getDailyWord(isKorean(language)).toResponse()
 
     @GetMapping
-    suspend fun hasWord(@RequestParam word: String, @RequestParam q: List<String>): ResponseEntity<Boolean> =
+    suspend fun hasWord(@RequestParam word: String, @RequestParam q: List<String>): ResponseData<Boolean> =
         wordService.hasWord(word, q).toResponse()
 
     @PostMapping
-    fun saveWord(@RequestBody request: WordSaveRequest): ResponseEntity<String> =
-        wordService.save(request).toResponse()
+    fun saveWord(@RequestBody request: WordSaveRequest): ResponseData<String> =
+        wordService.save(request).toResponse(CREATED)
 
     @PatchMapping("/{id}")
     fun updateWordToUse(@PathVariable id: String) = wordService.use(id)
