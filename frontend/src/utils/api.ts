@@ -2,6 +2,7 @@ import axios, { AxiosError } from "axios";
 import { assemble } from "es-hangul";
 import qs from "qs";
 import {
+  assembleAndCombineConsonants,
   assembleAndCombineVowels,
   checkCAndVBalance,
   checkRepetitiveJamo,
@@ -42,7 +43,9 @@ export async function hasWord(words: string[]): Promise<boolean> {
       console.warn("Input must contain both consonants and vowels.");
       return false;
     }
-    const combinedWordsArray = assembleAndCombineVowels(words);
+
+    const combineArray = assembleAndCombineConsonants(words)
+    const combinedWordsArray = assembleAndCombineVowels(combineArray);
     const word = assemble(combinedWordsArray);
     const res = await api.get("", { params: { word: word, q: words } });
     const response = res.data;

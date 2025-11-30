@@ -129,6 +129,69 @@ export function assembleAndCombineVowels(words: string[]): string[] {
     return combinedWords;
 }
 
+export function combineConsonants(currentConsonant: string, nextConsonant: string): string {
+    // 쌍자음 조합 맵
+    const combinationMap: { [key: string]: string } = {
+        'ㄱㄱ': 'ㄲ',
+        'ㄷㄷ': 'ㄸ',
+        'ㅂㅂ': 'ㅃ',
+        'ㅅㅅ': 'ㅆ',
+        'ㅈㅈ': 'ㅉ',
+    };
+
+    const key = currentConsonant + nextConsonant;
+    
+    return combinationMap[key] || currentConsonant; 
+}
+
+export function assembleAndCombineConsonants(words: string[]): string[] {
+    const current = words[0];
+    const next = words[1];
+
+    if (isConsonant(current) && isConsonant(next)) {
+        const combined = combineConsonants(current, next);
+        
+        if (combined.length === 1 && combined !== current) { 
+            return [combined, ...words.slice(2)];
+        } 
+    }
+    
+    return words;
+}
+
+// export function assembleAndCombineConsonants(words: string[]): string[] {
+//     const combinedWords: string[] = [];
+
+//     if (words[0] = words[1] ) {
+
+//     }
+    
+//     for (let i = 0; i < words.length; i++) {
+//         const current = words[i];
+//         const next = words[i + 1];
+
+//         // isConsonant 함수를 사용하여 자음인지 확인
+//         if (isConsonant(current) && isConsonant(next)) {
+//             // 자음이 2번 연속으로 나오는 경우
+//             const combined = combineConsonants(current, next);
+            
+//             // 유효하게 쌍자음으로 결합된 경우 (결합 후 길이가 1이고, 결합 전과 다를 때)
+//             if (combined.length === 1 && combined !== current) { 
+//                 combinedWords.push(combined);
+//                 i++; // 다음 자음은 이미 사용했으므로 건너뛰기
+//             } else {
+//                 // 결합되지 않는 자음 조합은 그대로 추가 (예: ㄱ + ㄴ)
+//                 combinedWords.push(current);
+//             }
+//         } else {
+//             // 모음이거나 마지막 자모는 그대로 추가
+//             combinedWords.push(current);
+//         }
+//     }
+    
+//     return combinedWords;
+// }
+
 export function checkRepetitiveJamo(words: string[]): boolean {
     const firstJamo = words[0];
     return words.every(jamo => jamo === firstJamo);
