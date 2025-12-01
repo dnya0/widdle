@@ -14,7 +14,8 @@ data class Kr(
 )
 
 data class En(
-    var requestUrl: String = ""
+    var requestUrl: String = "",
+    var key: String = ""
 )
 
 data class Dictionary(
