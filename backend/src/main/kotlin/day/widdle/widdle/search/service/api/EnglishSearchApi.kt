@@ -41,7 +41,12 @@ class EnglishSearchApi(
     }
 
     private fun sendRequestEn(word: String): Mono<List<DictionaryEntry>?> = webClient.get()
-        .uri { uriBuilder -> uriBuilder.pathSegment(word).build() }
+        .uri { uriBuilder ->
+            uriBuilder
+                .pathSegment(word)
+                .queryParam("key", clientProperties.en.key)
+                .build()
+        }
         .retrieve()
         .bodyToMono(object : ParameterizedTypeReference<List<DictionaryEntry>>() {})
         .onErrorMap { throwable ->

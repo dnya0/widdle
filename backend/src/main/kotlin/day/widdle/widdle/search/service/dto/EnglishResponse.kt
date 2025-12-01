@@ -30,4 +30,5 @@ data class Pronunciation(
 
 data class DefinitionEntry(
     val vd: String? = null,
+    val sseq: Any? = null
 )
