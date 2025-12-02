@@ -24,20 +24,24 @@ SOFTWARE.
 
 ---
 
-## 2. Third-Party Data and API Notice (제3자 데이터 및 API 고지)
+Third-Party Data and API Notice (제3자 데이터 및 API 고지)
 
 The Software utilizes and processes data and services from the following third-party sources, which are governed by their respective licenses and terms of service:
 
-### A. Word Existence Data (단어 존재 여부 데이터)
+A. Word Existence Data (단어 존재 여부 데이터)
+* Source: National Institute of Korean Language (국립국어원) - Standard Korean Dictionary Open API
+* License: Creative Commons Attribution-ShareAlike 2.0 Korea (CC BY-SA 2.0 KR)
+* Obligation: Any derived work utilizing this data must maintain the same CC BY-SA 2.0 KR license.
+* Attribution: All publicly displayed usages derived from this data are attributed to the National Institute of Korean Language, as required by the license.
 
-* **Source:** National Institute of Korean Language (국립국어원) - Standard Korean Dictionary Open API
-* **License:** Creative Commons Attribution-ShareAlike 2.0 Korea (CC BY-SA 2.0 KR)
-* **Obligation:** Any derived work utilizing this data must maintain the same CC BY-SA 2.0 KR license.
-* **Attribution:** All publicly displayed usages derived from this data are attributed to the National Institute of Korean Language, as required by the license.
+B. Morphological Analysis and Correction API (형태소 분석 및 교정 API)
+* Source: Baikal AI Inc. (주식회사 바이칼에이아이) - Bareun Morphological Analyzer and Corrector
+* Terms of Use: Governed by the separate Terms of Service between the Software owner and Baikal AI Inc.
+* User Content Notice (Terms Article 9): By using this Software, the user agrees that the input text (Content) may be transmitted to and processed by Baikal AI Inc. for the purpose of service provision and feature improvement.
+* Restriction: The Software's usage of this API is strictly limited to the agreed-upon license scope (e.g., usage limits, non-creation of secondary works).
 
-### B. Morphological Analysis and Correction API (형태소 분석 및 교정 API)
-
-* **Source:** Baikal AI Inc. (주식회사 바이칼에이아이) - Bareun Morphological Analyzer and Corrector
-* **Terms of Use:** Governed by the separate Terms of Service between the Software owner and Baikal AI Inc.
-* **User Content Notice (Terms Article 9):** By using this Software, the user agrees that the input text (Content) may be transmitted to and processed by Baikal AI Inc. for the purpose of service provision and feature improvement.
-* **Restriction:** The Software's usage of this API is strictly limited to the agreed-upon license scope (e.g., usage limits, non-creation of secondary works).
+C. English Dictionary Data (영문 사전 데이터)
+* Source: Merriam-Webster Dictionary API
+* Terms of Service: https://dictionaryapi.com/info/terms-of-service
+* Restriction & Obligation: All usage of the Merriam-Webster API is subject to their Terms of Service, which generally requires **non-commercial use** and adherence to specific **daily query limits**.
+* Disclaimer: This Source Code License (MIT) does not supersede or modify the usage terms for the Merriam-Webster API. Users are responsible for ensuring their usage complies with all Merriam-Webster terms.

@@ -6,8 +6,10 @@ import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECT
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECTED
 import day.widdle.widdle.global.exception.WiddleException
 import day.widdle.widdle.global.support.getToday
+import day.widdle.widdle.global.support.isKorean
 import day.widdle.widdle.global.support.loggerDelegate
 import day.widdle.widdle.global.support.toJamoList
+import day.widdle.widdle.global.support.toUpperCaseIfEnglish
 import day.widdle.widdle.search.service.SearchService
 import day.widdle.widdle.word.controller.dto.WordResponse
 import day.widdle.widdle.word.controller.dto.WordSaveRequest
@@ -49,25 +51,38 @@ class WordService(
 
     fun use(id: String) = wordTransactionalService.use(id)
 
-    @Cacheable(value = ["hasWord"], key = "#word.toUpperCase() + ':' + #wordJamo.toString()")
-    suspend fun hasWord(word: String, wordJamo: List<String>): Boolean = withContext(MDCContext()) {
-        log.info("단어 조회 요청 들어옴 word=$word, jamo=$wordJamo")
-        val correct = checker.correct(word, wordJamo)
-        val correctWord = correct.correctWord?.uppercase() ?: return@withContext false
+    @Cacheable(value = ["hasWord"], key = "#normalizedWord + ':' + #wordJamo.toString()")
+    suspend fun hasWord(normalizedWord: String, wordJamo: List<String>): Boolean = withContext(MDCContext()) {
+        log.info("단어 조회 요청 들어옴 word=$normalizedWord, jamo=$wordJamo")
 
-        return@withContext when (correct.correctionStatus) {
+        return@withContext if (!normalizedWord.isKorean()) {
+            hasEnglishWord(normalizedWord, wordJamo)
+        } else {
+            hasKoreanWord(normalizedWord, wordJamo)
+        }
+    }
+
+    suspend fun hasEnglishWord(word: String, wordJamo: List<String>): Boolean {
+        if (word.existInDatabase()) {
+            return true
+        }
+        return searchService.hasWordInDictionary(word, wordJamo)
+    }
+
+    suspend fun hasKoreanWord(word: String, wordJamo: List<String>): Boolean {
+        val correct = checker.correct(word, wordJamo)
+        val correctWord = correct.correctWord?.toUpperCaseIfEnglish() ?: return false
+
+        return when (correct.correctionStatus) {
             CORRECT -> {
-                if (wordRepository.existsByWordText(correctWord)) {
-                    return@withContext true
-                }
-                searchService.hasWordInDictionary(correctWord, wordJamo)
+                if (correctWord.existInDatabase()) true
+                else searchService.hasWordInDictionary(correctWord, wordJamo)
             }
 
             CORRECTED -> {
                 // 수정된 단어가 사전에 있으면 DB에 저장하기 위해 호출 (이벤트 발행)
-                // 원래 단어가 틀렸으므로 false 반환
                 searchService.hasWordInDictionary(correctWord, wordJamo)
-                false
+                false // 원래 단어가 틀렸으므로 false 반환
             }
 
             API_FAILURE -> false
@@ -75,8 +90,8 @@ class WordService(
     }
 
     fun save(request: WordSaveRequest): String {
-        val word = request.word.uppercase()
-        if (wordRepository.existsByWordText(request.word))
+        val word = request.word.toUpperCaseIfEnglish()
+        if (word.existInDatabase())
             throw WiddleException(if (request.isKorean) "이미 존재하는 단어입니다." else "Already exists.")
 
         val wordJamo = request.jamo ?: word.toJamoList()
@@ -90,5 +105,7 @@ class WordService(
     }.getOrElse {
         throw WiddleException("단어가 존재하지 않습니다.", it)
     }
+
+    private fun String.existInDatabase(): Boolean = wordRepository.existsByWordText(this)
 
 }

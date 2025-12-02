@@ -26,7 +26,7 @@ export const useHandleEnter = (
       return;
     }
 
-    const exists = await hasWord(guess);
+    const exists = await hasWord(guess, lang);
     if (!exists) {
       const message =
         lang === "kr" ? "단어가 존재하지 않습니다." : "Word does not exist.";

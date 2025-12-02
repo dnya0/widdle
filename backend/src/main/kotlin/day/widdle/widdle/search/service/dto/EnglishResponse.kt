@@ -1,31 +1,41 @@
 package day.widdle.widdle.search.service.dto
 
-data class WordResponseList(
-    val words: List<WordResponse>
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class DictionaryEntry(
+    val meta: Meta,
+    val hom: Int? = null, // 동음이의어 번호 (Homograph Number)
+    val hwi: HeadwordInfo,
+    val fl: String, // 품사 (Function Label, noun, verb, etc.)
+    val def: List<DefinitionEntry>, // 정의 배열
+    val et: List<List<String>>? = null, // 어원 (Etymology)
+    val date: String? = null, // 최초 사용 연도
+    val shortdef: List<String> // 간략 정의
 )
 
-data class WordResponse(
-    val word: String,
-    val phonetic: String? = null,
-    val phonetics: List<Phonetic>,
-    val origin: String? = null,
-    val meaning: Meaning? = null
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class Meta(
+    val id: String, // test:1, test:2, test ban 등 고유 ID
+    val uuid: String,
+    val src: String, // 출처 (collegiate)
+    val stems: List<String>, // 어간/변형된 단어
+    val offensive: Boolean
 )
 
-data class Phonetic(
-    val text: String? = null,
-    val audio: String? = null
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class HeadwordInfo(
+    val hw: String, // 표제어 (Headword)
+    val prs: List<Pronunciation>? = null // 발음 정보
 )
 
-data class Meaning(
-    val exclamation: List<Definition> = emptyList(),
-    val noun: List<Definition> = emptyList(),
-    val verb: List<Definition> = emptyList()
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class Pronunciation(
+    val mw: String, // 발음 기호 (e.g., ˈtest)
 )
 
-data class Definition(
-    val definition: String,
-    val example: String? = null,
-    val synonyms: List<String> = emptyList(),
-    val antonyms: List<String> = emptyList()
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class DefinitionEntry(
+    val vd: String? = null,
+    val sseq: Any? = null
 )

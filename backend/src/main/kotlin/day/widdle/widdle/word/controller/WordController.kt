@@ -2,6 +2,7 @@ package day.widdle.widdle.word.controller
 
 import day.widdle.widdle.global.base.ResponseData
 import day.widdle.widdle.global.support.toResponse
+import day.widdle.widdle.global.support.toUpperCaseIfEnglish
 import day.widdle.widdle.word.controller.dto.WordResponse
 import day.widdle.widdle.word.controller.dto.WordSaveRequest
 import day.widdle.widdle.word.service.WordService
@@ -27,7 +28,7 @@ class WordController(
 
     @GetMapping
     suspend fun hasWord(@RequestParam word: String, @RequestParam q: List<String>): ResponseData<Boolean> =
-        wordService.hasWord(word, q).toResponse()
+        wordService.hasWord(word.toUpperCaseIfEnglish(), q).toResponse()
 
     @PostMapping
     fun saveWord(@RequestBody request: WordSaveRequest): ResponseData<String> =
