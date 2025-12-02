@@ -67,6 +67,7 @@ export default function GameClient({
     lang,
     jamo,
     rows,
+    cols,
     setBoard,
     setCur,
     setKeyColors,

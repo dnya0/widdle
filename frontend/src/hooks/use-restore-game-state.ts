@@ -12,6 +12,7 @@ export const useRestoreGameState = (
   lang: "kr" | "en",
   jamo: string[],
   ROWS: number,
+  COLS: number,
   setBoard: React.Dispatch<React.SetStateAction<Cell[][]>>,
   setCur: React.Dispatch<React.SetStateAction<{ row: number; col: number }>>,
   setKeyColors: React.Dispatch<React.SetStateAction<Record<string, number>>>,
@@ -29,7 +30,7 @@ export const useRestoreGameState = (
 
     if (!record || record.guess.length === 0) return;
 
-    const restoredBoard = initBoard();
+    const restoredBoard = initBoard(ROWS, COLS);
     const restoredKeyColors: Record<string, number> = {};
 
     record.guess.forEach(([rowIdx, guess]) => {
@@ -68,6 +69,7 @@ export const useRestoreGameState = (
     lang,
     jamo,
     ROWS,
+    COLS,
     setBoard,
     setCur,
     setKeyColors,
