@@ -9,7 +9,6 @@ data class DictionaryEntry(
     val hwi: HeadwordInfo,
     val fl: String, // 품사 (Function Label, noun, verb, etc.)
     val def: List<DefinitionEntry>, // 정의 배열
-    val et: List<List<String>>? = null, // 어원 (Etymology)
     val date: String? = null, // 최초 사용 연도
     val shortdef: List<String> // 간략 정의
 )
