@@ -34,19 +34,27 @@ export const api = axios.create({
   paramsSerializer: (params) => qs.stringify(params, { arrayFormat: "repeat" }),
 });
 
-export async function hasWord(words: string[]): Promise<boolean> {
+export async function hasWord(
+  words: string[],
+  locale: "kr" | "en"
+): Promise<boolean> {
   try {
-    if (checkRepetitiveJamo(words)) {
-      return false;
-    }
-    if (!checkCAndVBalance(words)) {
-      console.warn("Input must contain both consonants and vowels.");
-      return false;
-    }
 
-    const combineArray = assembleAndCombineConsonants(words)
-    const combinedWordsArray = assembleAndCombineVowels(combineArray);
-    const word = assemble(combinedWordsArray);
+    let word: string;
+    if (locale === "kr") {
+      if (checkRepetitiveJamo(words)) {
+        return false;
+      }
+      if (!checkCAndVBalance(words)) {
+        console.warn("Input must contain both consonants and vowels.");
+        return false;
+      }
+      const combineArray = assembleAndCombineConsonants(words);
+      const combinedWordsArray = assembleAndCombineVowels(combineArray);
+      word = assemble(combinedWordsArray);
+    } else {
+      word = words.join("");
+    }
     const res = await api.get("", { params: { word: word, q: words } });
     const response = res.data;
 
@@ -73,7 +81,7 @@ export async function addWord(requestBody: WordSaveRequest) {
 export async function getAnswer(locale: "kr" | "en"): Promise<GameData | null> {
   try {
     const res = await api.get<ApiResponse<GameData>>(`/${locale}`);
-    
+
     const responseBody = res.data;
     const data = responseBody.data;
 

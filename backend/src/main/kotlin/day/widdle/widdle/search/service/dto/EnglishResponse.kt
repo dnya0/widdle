@@ -1,5 +1,8 @@
 package day.widdle.widdle.search.service.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class DictionaryEntry(
     val meta: Meta,
     val hom: Int? = null, // 동음이의어 번호 (Homograph Number)
@@ -11,6 +14,7 @@ data class DictionaryEntry(
     val shortdef: List<String> // 간략 정의
 )
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class Meta(
     val id: String, // test:1, test:2, test ban 등 고유 ID
     val uuid: String,
@@ -19,15 +23,18 @@ data class Meta(
     val offensive: Boolean
 )
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class HeadwordInfo(
     val hw: String, // 표제어 (Headword)
     val prs: List<Pronunciation>? = null // 발음 정보
 )
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class Pronunciation(
     val mw: String, // 발음 기호 (e.g., ˈtest)
 )
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class DefinitionEntry(
     val vd: String? = null,
     val sseq: Any? = null

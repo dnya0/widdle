@@ -56,17 +56,17 @@ class WordService(
         log.info("단어 조회 요청 들어옴 word=$normalizedWord, jamo=$wordJamo")
 
         return@withContext if (!normalizedWord.isKorean()) {
-            hasEnglishWord(normalizedWord)
+            hasEnglishWord(normalizedWord, wordJamo)
         } else {
             hasKoreanWord(normalizedWord, wordJamo)
         }
     }
 
-    suspend fun hasEnglishWord(word: String): Boolean {
+    suspend fun hasEnglishWord(word: String, wordJamo: List<String>): Boolean {
         if (word.existInDatabase()) {
             return true
         }
-        return searchService.hasWordInDictionary(word, emptyList())
+        return searchService.hasWordInDictionary(word, wordJamo)
     }
 
     suspend fun hasKoreanWord(word: String, wordJamo: List<String>): Boolean {

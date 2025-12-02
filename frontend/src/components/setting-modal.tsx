@@ -81,6 +81,38 @@ export default function SettingModal({ open, lang, onClose }: ModalProps) {
             : "⚠️ The text entered by the user (Content) may be transmitted to and processed by Baikal AI Inc. for the purpose of service provision, feature improvement, and statistical analysis. (Terms of Service, Article 9)"}
         </p>
       </div>
+
+      <div className="text-sm text-left p-2 border border-gray-200 rounded-md">
+
+        {/* === 3. 영단어 데이터 출처 (Merriam-Webster) === */}
+        <h3 className="font-semibold mb-2">
+          {lang === "kr" ? "영단어 데이터 출처" : "English Word Data Source"}
+        </h3>
+        <p className="mb-1">
+          {lang === "kr"
+            ? "영단어 검색 결과 및 정의 데이터는 Merriam-Webster API를 통해 제공됩니다."
+            : "English word search results and definition data are provided via the Merriam-Webster API."}
+        </p>
+         <p className="mb-4 text-xs text-gray-500">
+          {lang === "kr"
+            ? "저작권 고지: Data supplied by Merriam-Webster"
+            : "Copyright Notice: Data supplied by Merriam-Webster"}
+        </p>
+        <p className="text-xs text-red-500 mt-2">
+          <a
+            href="https://www.merriam-webster.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline ml-1"
+          >
+            (
+            {lang === "kr"
+              ? "Merriam-Webster 웹사이트"
+              : "Merriam-Webster Website"}
+            )
+          </a>
+        </p>
+      </div>
     </>
   );
 

@@ -1,5 +1,9 @@
 package day.widdle.widdle.search.service.api
 
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinFeature
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import day.widdle.widdle.global.annotation.LogExternal
 import day.widdle.widdle.global.exception.WiddleException
 import day.widdle.widdle.global.support.loggerDelegate
@@ -21,6 +25,16 @@ class EnglishSearchApi(
     private val clientProperties: ClientProperties,
     @param:Qualifier("getMethodWebClient") private val builder: WebClient.Builder,
 ) : SearchApi {
+    private val objectMapper = ObjectMapper().registerModule(
+        KotlinModule.Builder()
+            .withReflectionCacheSize(512)
+            .configure(KotlinFeature.NullToEmptyCollection, false)
+            .configure(KotlinFeature.NullToEmptyMap, false)
+            .configure(KotlinFeature.NullIsSameAsDefault, false)
+            .configure(KotlinFeature.SingletonSupport, false)
+            .configure(KotlinFeature.StrictNullChecks, false)
+            .build()
+    )
 
     private val log by loggerDelegate()
 
@@ -40,8 +54,10 @@ class EnglishSearchApi(
                 return@runCatching false
             }
 
-            (response as List<DictionaryEntry>)
-                .any { it.meta.id.substringBefore(":").equals(word, ignoreCase = true) }
+            objectMapper.convertValue(
+                response,
+                object : TypeReference<List<DictionaryEntry>>() {}
+            ).any { it.meta.id.substringBefore(":").equals(word, ignoreCase = true) }
         }.onFailure {
             log.error("Could not search word", it)
         }.getOrDefault(false)
