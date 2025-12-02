@@ -88,7 +88,7 @@ export default function GameClient({
     setShowModal
   );
 
-  const onKeyPress = useKeyPress(isGameOver, cur, setBoard, setCur, cols);
+  const onKeyPress = useKeyPress(isGameOver, cur, setBoard, setCur, cols, lang);
   const onBackspace = useBackspace(isGameOver, cur, setBoard, setCur);
 
   return (

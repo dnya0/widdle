@@ -7,7 +7,8 @@ export const useKeyPress = (
   cur: { row: number; col: number },
   setBoard: React.Dispatch<React.SetStateAction<Cell[][]>>,
   setCur: React.Dispatch<React.SetStateAction<{ row: number; col: number }>>,
-  COLS: number
+  COLS: number,
+  locale: "en" | "kr"
 ) => {
   const onKeyPress = useCallback(
     (ch: string) => {
@@ -21,7 +22,7 @@ export const useKeyPress = (
         const word = copy[cur.row].map((c) => c.text);
 
         if (cur.col === COLS - 1) {
-          hasWord(word).then((exists) => {
+          hasWord(word, locale).then((exists) => {
             if (!exists) {
               setBoard((prev) => {
                 const copy = prev.map((r) => r.map((c) => ({ ...c })));
