@@ -34,13 +34,20 @@ class EnglishSearchApi(
             if (response.isNullOrEmpty()) {
                 return@runCatching false
             }
-            response.any { it.meta.id.substringBefore(":").equals(word, ignoreCase = true) }
+
+            val firstElement = response.first()
+            if (firstElement is String) {
+                return@runCatching false
+            }
+
+            (response as List<DictionaryEntry>)
+                .any { it.meta.id.substringBefore(":").equals(word, ignoreCase = true) }
         }.onFailure {
             log.error("Could not search word", it)
         }.getOrDefault(false)
     }
 
-    private fun sendRequestEn(word: String): Mono<List<DictionaryEntry>?> = webClient.get()
+    private fun sendRequestEn(word: String): Mono<List<Any>?> = webClient.get()
         .uri { uriBuilder ->
             uriBuilder
                 .pathSegment(word)
@@ -48,7 +55,7 @@ class EnglishSearchApi(
                 .build()
         }
         .retrieve()
-        .bodyToMono(object : ParameterizedTypeReference<List<DictionaryEntry>>() {})
+        .bodyToMono(object : ParameterizedTypeReference<List<Any>>() {})
         .onErrorMap { throwable ->
             WiddleException("Failed to retrieve or parse Merriam API response: ${throwable.message}", throwable)
         }
