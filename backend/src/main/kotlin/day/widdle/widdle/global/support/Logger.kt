@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 import kotlin.reflect.KProperty
 
 @Suppress("UNCHECKED_CAST")
-inline fun <T : Any> T.loggerDelegate(): LoggerDelegate<T> {
+fun <T : Any> T.loggerDelegate(): LoggerDelegate<T> {
     val actualClass = (if (this::class.isCompanion) {
         this::class.java.enclosingClass ?: this::class.java
     } else {

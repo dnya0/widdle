@@ -56,11 +56,11 @@ export const useHandleEnter = (
     if (colors.every((c) => c === 3) || cur.row === ROWS - 1) {
       setIsGameOver(true);
       showSuccess(lang === "kr" ? `축하드립니다! 🎉🎉🎉` : `Congrats! 🎉🎉🎉`);
-      makeStateAndSave("kr", colors, cur, ROWS);
+      makeStateAndSave(lang, colors, cur, ROWS);
       setShowModal(true);
     }
 
-    saveGuess("kr", guess);
+    saveGuess(lang, guess);
 
     setCur({ row: Math.min(cur.row + 1, ROWS - 1), col: 0 });
   }, [
