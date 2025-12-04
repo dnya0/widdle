@@ -17,11 +17,7 @@ function getTodayIndex(startDateStr = "2025-08-29"): number {
   return Math.floor(diffInMs / (1000 * 60 * 60 * 24)) + 1;
 }
 
-export default function EmojiExporter({
-  lang,
-}: {
-  lang: "kr" | "en";
-}) {
+export default function EmojiExporter({ lang }: { lang: "kr" | "en" }) {
   const [exportText, setExportText] = useState<string | null>(null);
 
   const toEmoji = (colors: number[]) =>
@@ -57,11 +53,13 @@ export default function EmojiExporter({
           evaluateGuess(guess, answer.jamo).every((c) => c === 3)
         ) + 1;
 
+      const flagEmoji = lang == "kr" ? "🇰🇷" : "🇬🇧";
+
       const header = isSuccess
-        ? `widdle.day ${todayIndex} ${successRow}/6 🔥${
+        ? `widdle.day ${flagEmoji} ${todayIndex} ${successRow}/6 🔥${
             stats?.currentStreak ?? 0
           }`
-        : `widdle.day ${todayIndex} X/6 widdle.day 💧`;
+        : `widdle.day ${flagEmoji} ${todayIndex} X/6 💧`;
 
       setExportText([header, "", ...result].join("\n"));
     };
