@@ -36,7 +36,7 @@ class KoreanSearchApi(
                 return@runCatching false
             }
 
-            channel.item.any { it.word == word.replace("-", "") }
+            channel.item.any { it.word.replace("-", "") == word }
         }.onFailure {
             log.error("Could not search word", it)
         }.getOrDefault(false)
