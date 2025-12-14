@@ -41,8 +41,6 @@ export default function ResultModal({
     ? [0, 0, 0, 0, 0, 0]
     : [0, 0, 0, 0, 0];
 
-  const isAllZero = distribution.every((v) => v === 0);
-
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-800/50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[400px] text-center relative">
