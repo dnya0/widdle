@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS dashboard
+CREATE TABLE IF NOT EXISTS board
 (
     id             VARCHAR(100)             NOT NULL UNIQUE PRIMARY KEY,
     nickname       VARCHAR(50)              NOT NULL UNIQUE,
