@@ -14,6 +14,17 @@ interface WordRepository : JpaRepository<Word, String> {
     @Query(value = "select w from Word w where w.usedDateBy = :date and w.isKorean = :isKorean")
     fun findByUsedDateByAndKoreanIs(date: LocalDate, isKorean: Boolean): Word?
 
+    @Query(
+        """
+    select w
+    from Word w
+    where w.usedDateByTs >= :start
+      and w.usedDateByTs < :end
+      and w.isKorean = :isKorean
+    """
+    )
+    fun findByUsedDateByTsBetweenAndKoreanIs(start: Long, end: Long, isKorean: Boolean): Word?
+
     fun existsByWordText(wordText: String): Boolean
 
 }

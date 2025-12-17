@@ -1,5 +1,7 @@
 package day.widdle.widdle.word.domain
 
+import day.widdle.widdle.global.support.getToday
+import day.widdle.widdle.global.support.now
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
@@ -33,12 +35,16 @@ class Word(
     var usedDateBy: LocalDate? = null,
 
     @Column
+    var usedDateByTs: Long? = null,
+
+    @Column
     val isKorean: Boolean = true
 ) {
 
     fun use() {
         this.isUsed = true
-        this.usedDateBy = LocalDate.now()
+        this.usedDateBy = getToday()
+        this.usedDateByTs = now()
     }
 
 }

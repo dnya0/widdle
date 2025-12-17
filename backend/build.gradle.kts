@@ -70,6 +70,10 @@ kotlin {
     compilerOptions {
         freeCompilerArgs.addAll("-Xjsr305=strict")
     }
+
+    sourceSets.all {
+        languageSettings.optIn("kotlin.time.ExperimentalTime")
+    }
 }
 
 allOpen {
