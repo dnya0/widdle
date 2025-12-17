@@ -12,5 +12,5 @@ CREATE TABLE IF NOT EXISTS word
 
 /* Unix Timestamp를 저장하기 위한 update 문 */
 UPDATE word
-SET used_date_by_ts = EXTRACT(EPOCH FROM (used_date_by AT TIME ZONE 'Asia/Seoul'))::BIGINT
+SET used_date_by_ts = (EXTRACT(EPOCH FROM (used_date_by AT TIME ZONE 'Asia/Seoul')) * 1000)::BIGINT
 WHERE used_date_by_ts IS NULL;
