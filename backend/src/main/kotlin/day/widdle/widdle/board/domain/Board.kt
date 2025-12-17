@@ -3,14 +3,17 @@ package day.widdle.widdle.board.domain
 import day.widdle.widdle.global.support.now
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EntityListeners
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
-import kotlin.time.ExperimentalTime
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
 @Entity
 @Table(name = "board")
-@ExperimentalTime
+@EntityListeners(AuditingEntityListener::class)
 class Board(
 
     @Id
@@ -38,11 +41,13 @@ class Board(
     @Column(name = "is_korean")
     val isKorean: Boolean = true,
 
+    @CreatedDate
     @Column(name = "created_at")
-    val createdAt: Long,
+    val createdAt: Long = 0L,
 
+    @LastModifiedDate
     @Column(name = "modified_at")
-    var modifiedAt: Long
+    var modifiedAt: Long = 0L
 ) {
 
     fun updateNickname(nickname: String) {
