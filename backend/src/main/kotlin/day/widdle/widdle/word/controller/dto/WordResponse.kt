@@ -11,9 +11,9 @@ data class WordResponse(
 )
 
 fun Word.toResponseDto(): WordResponse = WordResponse(
-    id = id,
-    word = wordText,
-    jamo = wordJamo,
-    isKorean = isKorean,
-    length = length
+    id = this.id.value,
+    word = this.wordInfo.wordText,
+    jamo = this.wordInfo.wordJamo,
+    isKorean = this.wordInfo.isKorean,
+    length = this.wordInfo.length
 )

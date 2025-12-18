@@ -6,7 +6,7 @@ import day.widdle.widdle.global.exception.WiddleException
 import day.widdle.widdle.global.support.loggerDelegate
 import day.widdle.widdle.word.domain.Word
 import day.widdle.widdle.word.domain.WordRepository
-import day.widdle.widdle.word.domain.validator.WordValidator
+import day.widdle.widdle.word.domain.vo.WordInfo
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class WordTransactionalService(
     private val wordRepository: WordRepository,
-    private val validator: WordValidator,
     private val publisher: WiddleEventPublisher
 ) {
     private val log by loggerDelegate()
@@ -32,18 +31,18 @@ class WordTransactionalService(
     }
 
     fun save(wordText: String, jamo: List<String>, isKorean: Boolean) {
-        validator.validateJamoSize(isKorean, jamo)
-
-        if (wordRepository.existsByWordText(wordText)) {
+        if (wordRepository.existsByWordInfoWordText(wordText)) {
             log.warn("Attempted to save duplicate word, ignoring: {}", wordText)
             return
         }
 
         val word = Word(
-            wordText = wordText,
-            wordJamo = jamo,
-            length = jamo.size,
-            isKorean = isKorean,
+            wordInfo = WordInfo(
+                wordText = wordText,
+                wordJamo = jamo,
+                length = jamo.size,
+                isKorean = isKorean,
+            )
         )
 
         wordRepository.save(word)

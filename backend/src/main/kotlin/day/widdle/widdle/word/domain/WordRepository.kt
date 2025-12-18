@@ -8,10 +8,10 @@ import java.time.LocalDate
 @Repository
 interface WordRepository : JpaRepository<Word, String> {
 
-    @Query(value = "select w from Word w where w.isUsed = false and w.isKorean = :isKorean")
+    @Query(value = "select w from Word w where w.isUsed = false and w.wordInfo.isKorean = :isKorean")
     fun findAllByNotUsedWord(isKorean: Boolean): List<Word>
 
-    @Query(value = "select w from Word w where w.usedDateBy = :date and w.isKorean = :isKorean")
+    @Query(value = "select w from Word w where w.usedDateBy = :date and w.wordInfo.isKorean = :isKorean")
     fun findByUsedDateByAndKoreanIs(date: LocalDate, isKorean: Boolean): Word?
 
     @Query(
@@ -20,11 +20,11 @@ interface WordRepository : JpaRepository<Word, String> {
     from Word w
     where w.usedDateByTs >= :start
       and w.usedDateByTs < :end
-      and w.isKorean = :isKorean
+      and w.wordInfo.isKorean = :isKorean
     """
     )
     fun findByUsedDateByTsBetweenAndKoreanIs(start: Long, end: Long, isKorean: Boolean): Word?
 
-    fun existsByWordText(wordText: String): Boolean
+    fun existsByWordInfoWordText(wordText: String): Boolean
 
 }

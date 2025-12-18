@@ -106,6 +106,6 @@ class WordService(
         throw WiddleException("단어가 존재하지 않습니다.", it)
     }
 
-    private fun String.existInDatabase(): Boolean = wordRepository.existsByWordText(this)
+    private fun String.existInDatabase(): Boolean = wordRepository.existsByWordInfoWordText(this)
 
 }
