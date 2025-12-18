@@ -1,12 +1,13 @@
 package day.widdle.widdle.word.domain
 
+import day.widdle.widdle.word.domain.vo.WordId
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
 
 @Repository
-interface WordRepository : JpaRepository<Word, String> {
+interface WordRepository : JpaRepository<Word, WordId> {
 
     @Query(value = "select w from Word w where w.isUsed = false and w.wordInfo.isKorean = :isKorean")
     fun findAllByNotUsedWord(isKorean: Boolean): List<Word>

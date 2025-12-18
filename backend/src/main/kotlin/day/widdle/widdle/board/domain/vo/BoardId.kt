@@ -6,7 +6,7 @@ import jakarta.persistence.Embeddable
 @Embeddable
 data class BoardId(
 
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "id", nullable = false)
     val value: String
 
 ) {

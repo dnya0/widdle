@@ -20,11 +20,9 @@ class WiddleExceptionHandler {
     fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseData<Boolean> = ex.toErrorResponse()
 
     @ExceptionHandler(Exception::class)
-    fun handleException(
-        ex: Exception, message: String? = ex.message
-    ): ResponseData<Boolean> {
+    fun handleException(ex: Exception): ResponseData<Boolean> {
         log.error("🧨 Unexpected exception occurred", ex)
-        return ex.toErrorResponse(INTERNAL_SERVER_ERROR, message)
+        return ex.toErrorResponse(INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다.")
     }
 
     private fun Exception.toErrorResponse(
