@@ -13,7 +13,7 @@ fun getToday(): LocalDate = LocalDate.now(zone)
  * - 기준: UTC
  * - 용도: DB 저장용 기준 시간
  */
-fun now(): Long = Clock.System.now().toEpochMilliseconds()
+fun nowEpochMillis(): Long = Clock.System.now().toEpochMilliseconds()
 
 /**
  * 해당 날짜의 시작 시각(00:00:00)을
@@ -22,7 +22,7 @@ fun now(): Long = Clock.System.now().toEpochMilliseconds()
  * - 기준 타임존: zone (예: Asia/Seoul)
  * - 반환 값: UTC 기준 Epoch Milliseconds
  */
-fun LocalDate.todayStartOfDay(): Long = this.atStartOfDay(zone).toInstant().toEpochMilli()
+fun LocalDate.startEpochMillis(): Long = this.atStartOfDay(zone).toInstant().toEpochMilli()
 
 /**
  * 해당 날짜의 다음 날 시작 시각(익일 00:00:00)을
@@ -32,4 +32,15 @@ fun LocalDate.todayStartOfDay(): Long = this.atStartOfDay(zone).toInstant().toEp
  * - 기준 타임존: zone (예: Asia/Seoul)
  * - 반환 값: UTC 기준 Epoch Milliseconds
  */
-fun LocalDate.todayEndOfDay(): Long = this.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli()
+fun LocalDate.endEpochMillis(): Long = this.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli()
+
+/**
+ * 해당 날짜의 시작 시각과 다음 날 시작 시각을 Pair로 반환한다.
+ *
+ * - 용도: 특정 날짜 범위 내의 데이터를 조회하기 위한 [start, end) 구간 생성
+ * - 기준 타임존: zone (예: Asia/Seoul)
+ * - 반환 값: TimeRange(오늘 00:00:00 UTC ms, 내일 00:00:00 UTC ms)
+ */
+fun LocalDate.toTimeRange(): TimeRange = TimeRange(this.startEpochMillis(), this.endEpochMillis())
+
+data class TimeRange(val start: Long, val end: Long)

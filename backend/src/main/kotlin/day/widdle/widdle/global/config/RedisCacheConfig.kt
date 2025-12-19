@@ -46,12 +46,14 @@ class RedisCacheConfig {
 
         val defaultConfig = configWith(valueSer, Duration.ofDays(1))
         val dailyWordConfig = configWith(wordSer, Duration.ofDays(1))
-        val hasWordConfig = configWith(boolSer, Duration.ofMinutes(10))
+        val hasWordConfig = configWith(boolSer, Duration.ofDays(10))
+        val rankingConfig = configWith(valueSer, Duration.ofDays(1))
 
         return RedisCacheManager.builder(connectionFactory)
             .cacheDefaults(defaultConfig)
             .withCacheConfiguration("dailyWord", dailyWordConfig)
             .withCacheConfiguration("hasWord", hasWordConfig)
+            .withCacheConfiguration("ranking", rankingConfig)
             .build()
     }
 }

@@ -6,6 +6,7 @@ import day.widdle.widdle.global.exception.WiddleException
 import day.widdle.widdle.global.support.loggerDelegate
 import day.widdle.widdle.word.domain.Word
 import day.widdle.widdle.word.domain.WordRepository
+import day.widdle.widdle.word.domain.vo.WordId
 import day.widdle.widdle.word.domain.vo.WordInfo
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -21,7 +22,7 @@ class WordTransactionalService(
 
     fun use(word: Word) = word.use()
 
-    fun use(id: String) = wordRepository.findByIdOrNull(id)?.use()
+    fun use(id: WordId) = wordRepository.findByIdOrNull(id)?.use()
         ?: throw WiddleException("단어가 존재하지 않습니다.")
 
     fun saveAndPublish(wordText: String, jamo: List<String>, isKorean: Boolean): String {
