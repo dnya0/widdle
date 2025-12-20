@@ -13,7 +13,7 @@ interface BoardRepository : JpaRepository<Board, BoardId> {
     @Query(
         """
         select b from Board b 
-        where b.modifiedAt >= :start and b.modifiedAt <= :end and b.isKorean = :isKorean
+        where b.modifiedAt >= :start and b.modifiedAt < :end and b.isKorean = :isKorean
         order by b.statistics.todayPlaytime asc
         limit 10
     """
@@ -28,6 +28,7 @@ interface BoardRepository : JpaRepository<Board, BoardId> {
              FROM Board b2 
              WHERE b2.modifiedAt >= :start 
                AND b2.modifiedAt < :end 
+               AND b.isKorean = :isKorean
                AND b2.statistics.todayPlaytime > b.statistics.todayPlaytime) as ranking
         FROM Board b
         WHERE b.id = :boardId

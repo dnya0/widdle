@@ -1,6 +1,6 @@
 package day.widdle.widdle.word.service
 
-import day.widdle.widdle.global.event.WordSavedEvent
+import day.widdle.widdle.word.event.WordSavedEvent
 import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.global.exception.WiddleException
 import day.widdle.widdle.global.support.loggerDelegate

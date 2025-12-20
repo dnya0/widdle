@@ -53,7 +53,7 @@ class RedisCacheConfig {
             .cacheDefaults(defaultConfig)
             .withCacheConfiguration("dailyWord", dailyWordConfig)
             .withCacheConfiguration("hasWord", hasWordConfig)
-            .withCacheConfiguration("ranking", rankingConfig)
+            .withCacheConfiguration("topRankings", rankingConfig)
             .build()
     }
 }

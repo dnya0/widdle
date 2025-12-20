@@ -3,6 +3,7 @@ package day.widdle.widdle.board.service.dto
 import day.widdle.widdle.board.domain.Board
 
 data class StatisticsDto(
+    val id: String,
     val rank: Int,
     val nickname: String,
     val playtime: Long
@@ -10,6 +11,7 @@ data class StatisticsDto(
 
     companion object {
         fun of(board: Board, index: Int): StatisticsDto = StatisticsDto(
+            id = board.id.value,
             rank = index,
             nickname = board.nickname.value,
             playtime = board.statistics.todayPlaytime

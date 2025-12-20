@@ -1,5 +1,6 @@
-package day.widdle.widdle.global.event
+package day.widdle.widdle.word.event
 
+import day.widdle.widdle.global.event.WiddleEvent
 import day.widdle.widdle.global.support.containsHangul
 import day.widdle.widdle.global.support.toJamoList
 
