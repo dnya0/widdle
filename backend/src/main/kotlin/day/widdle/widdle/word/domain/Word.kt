@@ -1,7 +1,6 @@
 package day.widdle.widdle.word.domain
 
-import day.widdle.widdle.global.support.getToday
-import day.widdle.widdle.global.support.nowEpochMillis
+import day.widdle.widdle.global.support.getCurrentDateTime
 import day.widdle.widdle.word.domain.vo.WordId
 import day.widdle.widdle.word.domain.vo.WordInfo
 import jakarta.persistence.Column
@@ -33,9 +32,10 @@ class Word(
 ) {
 
     fun use() {
+        val now = getCurrentDateTime()
         this.isUsed = true
-        this.usedDateBy = getToday()
-        this.usedDateByTs = nowEpochMillis()
+        this.usedDateBy = now.date
+        this.usedDateByTs = now.timestamp
     }
 
 }
