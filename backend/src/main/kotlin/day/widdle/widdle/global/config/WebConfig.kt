@@ -1,6 +1,6 @@
 package day.widdle.widdle.global.config
 
-import org.springframework.beans.factory.annotation.Value
+import day.widdle.widdle.global.config.properties.CorsProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 class WebConfig(
-    @param:Value("\${cors.allowed-origins}") private val allowedOrigins: Array<String>
+    private val corsProperties: CorsProperties
 ) : WebMvcConfigurer {
 
     @Bean
@@ -21,7 +21,7 @@ class WebConfig(
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/api/**")
-            .allowedOrigins(*allowedOrigins)
+            .allowedOrigins(*corsProperties.originsArray)
             .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
             .allowCredentials(true)
             .maxAge(3600)
