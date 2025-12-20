@@ -15,7 +15,7 @@ class WebConfig(
     @Bean
     fun urlValidationFilter(): FilterRegistrationBean<UrlValidationFilter?> =
         FilterRegistrationBean(UrlValidationFilter()).apply {
-            addUrlPatterns("/api/*")
+            addUrlPatterns("/api/**")
             order = 1
         }
 

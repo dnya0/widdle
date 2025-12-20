@@ -22,14 +22,13 @@ class BoardService(
     private val widdleEventPublisher: WiddleEventPublisher
 ) {
 
-    @Cacheable(value = ["rankings"], key = "#id + '_' + #isKorean + '_' + T(java.time.LocalDate).now()")
-    fun getRankingStatistics(id: String, isKorean: Boolean): StatisticsListDto {
-        val now = getToday()
+    @Cacheable(value = ["rankings"], key = "#id + ':' + #date + ':' + #isKorean")
+    fun getRankingStatistics(id: String, isKorean: Boolean, date: LocalDate = getToday()): StatisticsListDto {
         val boardId = BoardId(id)
 
         return StatisticsListDto(
-            rankings = boardRankingReader.findDailyTopRankings(now, isKorean),
-            me = boardRepository.findMyDailyStatus(boardId, now, isKorean)
+            rankings = boardRankingReader.findDailyTopRankings(date, isKorean),
+            me = boardRepository.findMyDailyStatus(boardId, date, isKorean)
         )
     }
 
@@ -54,6 +53,7 @@ class BoardService(
         currentTop10: List<StatisticsDto>
     ): Boolean {
         if (currentTop10.any { it.id == dto.id.value }) return true
+        if (currentTop10.size < 10) return true
 
         val tenthPlaytime = currentTop10.getOrNull(9)?.playtime
         return tenthPlaytime != null && dto.statistics.todayPlaytime < tenthPlaytime

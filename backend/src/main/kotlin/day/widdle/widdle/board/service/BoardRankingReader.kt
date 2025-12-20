@@ -12,7 +12,7 @@ class BoardRankingReader(
     private val boardRepository: BoardRepository,
 ) {
 
-    @Cacheable(value = ["topRankings"], key = "#date + '_' + #isKorean")
+    @Cacheable(value = ["topRankings"], key = "#date + ':' + #isKorean")
     fun findDailyTopRankings(date: LocalDate, isKorean: Boolean): List<StatisticsDto> {
         val (start, end) = date.toTimeRange()
         return boardRepository
