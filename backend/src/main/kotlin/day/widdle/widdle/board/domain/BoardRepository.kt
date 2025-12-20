@@ -18,7 +18,11 @@ interface BoardRepository : JpaRepository<Board, BoardId> {
         limit 10
     """
     )
-    fun findallbymodifiedatbetweenorderbystatisticsTodayPlaytimeAsc(start: Long, end: Long, isKorean: Boolean): List<Board>
+    fun findAllByModifiedAtBetweenOrderByStatisticsTodayPlaytimeAsc(
+        start: Long,
+        end: Long,
+        isKorean: Boolean
+    ): List<Board>
 
     @Query(
         """

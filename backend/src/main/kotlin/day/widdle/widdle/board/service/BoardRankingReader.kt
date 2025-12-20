@@ -16,7 +16,7 @@ class BoardRankingReader(
     fun findDailyTopRankings(date: LocalDate, isKorean: Boolean): List<StatisticsDto> {
         val (start, end) = date.toTimeRange()
         return boardRepository
-            .findallbymodifiedatbetweenorderbystatisticsTodayPlaytimeAsc(start, end, isKorean)
+            .findAllByModifiedAtBetweenOrderByStatisticsTodayPlaytimeAsc(start, end, isKorean)
             .mapIndexed { index, board -> StatisticsDto.of(board, index + 1) }
     }
 

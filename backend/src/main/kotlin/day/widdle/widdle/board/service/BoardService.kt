@@ -10,7 +10,6 @@ import day.widdle.widdle.board.service.dto.StatisticsSaveDto
 import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.global.support.getToday
 import day.widdle.widdle.global.support.toTimeRange
-import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -22,7 +21,6 @@ class BoardService(
     private val widdleEventPublisher: WiddleEventPublisher
 ) {
 
-    @Cacheable(value = ["rankings"], key = "#id + ':' + #date + ':' + #isKorean")
     fun getRankingStatistics(id: String, isKorean: Boolean, date: LocalDate = getToday()): StatisticsListDto {
         val boardId = BoardId(id)
 
