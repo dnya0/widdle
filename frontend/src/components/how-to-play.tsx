@@ -72,7 +72,10 @@ export default function HelpModal({ open, lang, onClose }: ModalProps) {
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-800/50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[400px] text-center relative">
         <div className="relative flex items-center justify-center mb-4">
-          <h2 className="text-lg font-bold absolute left-1/2 -translate-x-1/2">
+          <h2
+            className="text-lg font-bold absolute left-1/2 -translate-x-1/2"
+            style={{ color: "black" }}
+          >
             {lang == "kr" ? "❗️ 도움말 ❗️" : "❗️ How To Play ❗️"}
           </h2>
           <X
@@ -82,7 +85,11 @@ export default function HelpModal({ open, lang, onClose }: ModalProps) {
         </div>
         <p
           className="mb-2 text-left text-sm"
-          style={{ fontFamily: "Pretendard-Medium", textAlign: "center" }}
+          style={{
+            fontFamily: "Pretendard-Medium",
+            textAlign: "center",
+            color: "black",
+          }}
         >
           {lang == "kr"
             ? '여섯 개의 자모로 풀어쓴 한글 단어 "위들"을 여섯 번의 도전안에 맞혀봅시다.'
@@ -99,6 +106,7 @@ export default function HelpModal({ open, lang, onClose }: ModalProps) {
             fontFamily: "Pretendard-Medium",
             marginTop: 10,
             textAlign: "center",
+            color: "black",
           }}
         >
           {lang == "kr"
@@ -116,6 +124,7 @@ export default function HelpModal({ open, lang, onClose }: ModalProps) {
             fontFamily: "Pretendard-Medium",
             marginTop: 10,
             textAlign: "center",
+            color: "black",
           }}
         >
           {lang == "kr"
@@ -133,6 +142,7 @@ export default function HelpModal({ open, lang, onClose }: ModalProps) {
             fontFamily: "Pretendard-Medium",
             marginTop: 10,
             textAlign: "center",
+            color: "black",
           }}
         >
           {lang == "kr"
