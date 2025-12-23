@@ -1,6 +1,5 @@
 package day.widdle.widdle.word.service
 
-import day.widdle.widdle.word.event.WordSavedEvent
 import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.global.exception.WiddleException
 import day.widdle.widdle.global.support.loggerDelegate
@@ -8,6 +7,7 @@ import day.widdle.widdle.word.domain.Word
 import day.widdle.widdle.word.domain.WordRepository
 import day.widdle.widdle.word.domain.vo.WordId
 import day.widdle.widdle.word.domain.vo.WordInfo
+import day.widdle.widdle.word.event.WordSavedEvent
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

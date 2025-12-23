@@ -2,7 +2,7 @@ package day.widdle.widdle.word.service.dto
 
 import day.widdle.widdle.word.controller.dto.WordResponse
 
-class DailyWordDto(
+data class DailyWordDto(
     val id: String,
     val word: String,
     val jamo: List<String>,

@@ -17,9 +17,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener
 @Table(name = "board")
 @EntityListeners(AuditingEntityListener::class)
 class Board(
-
     @EmbeddedId
-    val id: BoardId,
+    val id: BoardId = BoardId(),
 
     @Embedded
     var nickname: Nickname,

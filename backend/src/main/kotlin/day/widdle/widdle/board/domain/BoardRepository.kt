@@ -2,6 +2,7 @@ package day.widdle.widdle.board.domain
 
 import day.widdle.widdle.board.domain.projection.BoardWithRanking
 import day.widdle.widdle.board.domain.vo.BoardId
+import day.widdle.widdle.board.domain.vo.Nickname
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -48,4 +49,5 @@ interface BoardRepository : JpaRepository<Board, BoardId> {
         @Param("isKorean") isKorean: Boolean
     ): BoardWithRanking?
 
+    fun existsByNickname(nickname: Nickname): Boolean
 }
