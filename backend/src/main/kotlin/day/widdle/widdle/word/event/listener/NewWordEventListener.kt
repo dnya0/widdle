@@ -1,6 +1,6 @@
-package day.widdle.widdle.global.event.listener
+package day.widdle.widdle.word.event.listener
 
-import day.widdle.widdle.global.event.NewWordEvent
+import day.widdle.widdle.word.event.NewWordEvent
 import day.widdle.widdle.global.support.loggerDelegate
 import day.widdle.widdle.word.service.WordTransactionalService
 import org.springframework.context.event.EventListener

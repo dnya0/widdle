@@ -1,44 +1,41 @@
 package day.widdle.widdle.word.domain
 
+import day.widdle.widdle.global.support.getCurrentDateTime
+import day.widdle.widdle.word.domain.vo.WordId
+import day.widdle.widdle.word.domain.vo.WordInfo
 import jakarta.persistence.Column
+import jakarta.persistence.Embedded
+import jakarta.persistence.EmbeddedId
 import jakarta.persistence.Entity
-import jakarta.persistence.Id
 import jakarta.persistence.Table
-import org.hibernate.annotations.JdbcTypeCode
-import org.hibernate.type.SqlTypes
 import java.time.LocalDate
-import java.util.UUID
 
 @Entity
 @Table(name = "word")
 class Word(
-    @Id
-    @Column(length = 100, unique = true, nullable = false)
-    val id: String = UUID.randomUUID().toString().replace("-", ""),
 
-    @Column(length = 50, unique = true, nullable = false)
-    val wordText: String,
+    @EmbeddedId
+    val id: WordId = WordId(),
 
-    @JdbcTypeCode(SqlTypes.ARRAY)
-    @Column(name = "word_jamo", columnDefinition = "text[]", nullable = false)
-    var wordJamo: List<String> = mutableListOf(),
+    @Embedded
+    val wordInfo: WordInfo,
 
-    @Column(nullable = false)
-    val length: Int = 6,
-
-    @Column(nullable = false)
+    @Column(name = "is_used", nullable = false)
     var isUsed: Boolean = false,
 
-    @Column
+    @Column(name = "used_date_by")
     var usedDateBy: LocalDate? = null,
 
-    @Column
-    val isKorean: Boolean = true
+    @Column(name = "used_date_by_ts")
+    var usedDateByTs: Long? = null
+
 ) {
 
     fun use() {
+        val now = getCurrentDateTime()
         this.isUsed = true
-        this.usedDateBy = LocalDate.now()
+        this.usedDateBy = now.date
+        this.usedDateByTs = now.timestamp
     }
 
 }

@@ -4,27 +4,27 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties(prefix = "client")
 data class ClientProperties(
-    var kr: Kr,
+    val kr: Kr,
     val en: En
 )
 
 data class Kr(
-    var naver: Naver,
-    var dictionary: Dictionary
+    val naver: Naver,
+    val dictionary: Dictionary
 )
 
 data class En(
-    var requestUrl: String = "",
-    var key: String = ""
+    val requestUrl: String = "",
+    val key: String = ""
 )
 
 data class Dictionary(
-    var requestUrl: String = "",
-    var key: String = ""
+    val requestUrl: String = "",
+    val key: String = ""
 )
 
 data class Naver(
-    var id: String = "",
-    var secret: String = "",
-    var requestUrl: String = ""
+    val id: String = "",
+    val secret: String = "",
+    val requestUrl: String = ""
 )

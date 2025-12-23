@@ -6,15 +6,16 @@ import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECT
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECTED
 import day.widdle.widdle.global.exception.WiddleException
 import day.widdle.widdle.global.support.getToday
-import day.widdle.widdle.global.support.isKorean
+import day.widdle.widdle.global.support.containsHangul
 import day.widdle.widdle.global.support.loggerDelegate
 import day.widdle.widdle.global.support.toJamoList
 import day.widdle.widdle.global.support.toUpperCaseIfEnglish
 import day.widdle.widdle.search.service.SearchService
-import day.widdle.widdle.word.controller.dto.WordResponse
-import day.widdle.widdle.word.controller.dto.WordSaveRequest
-import day.widdle.widdle.word.controller.dto.toResponseDto
+import day.widdle.widdle.word.controller.dto.toDto
 import day.widdle.widdle.word.domain.WordRepository
+import day.widdle.widdle.word.domain.vo.WordId
+import day.widdle.widdle.word.service.dto.WordSaveDto
+import day.widdle.widdle.word.service.dto.DailyWordDto
 import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
 import org.springframework.beans.factory.annotation.Qualifier
@@ -34,11 +35,11 @@ class WordService(
     private val log by loggerDelegate()
 
     @Cacheable(value = ["dailyWord"], key = "#p1.toString() + ':' + #p0", sync = true)
-    fun getDailyWord(isKr: Boolean, date: LocalDate = getToday()): WordResponse {
+    fun getDailyWord(isKr: Boolean, date: LocalDate = getToday()): DailyWordDto {
         log.info("데일리 단어가 있는지 확인합니다. isKr=$isKr, date=$date")
         wordRepository.findByUsedDateByAndKoreanIs(date, isKr)?.let {
             log.info("이미 선택된 단어가 있습니다. wordId=${it}")
-            return it.toResponseDto()
+            return it.toDto()
         }
 
         log.info("새로운 단어를 선택합니다. isKr=$isKr, date=$date")
@@ -46,16 +47,16 @@ class WordService(
         val idx = indexFor(date, list.size)
 
         wordTransactionalService.use(list[idx])
-        return list[idx].toResponseDto()
+        return list[idx].toDto()
     }
 
-    fun use(id: String) = wordTransactionalService.use(id)
+    fun use(id: String) = wordTransactionalService.use(WordId(id))
 
     @Cacheable(value = ["hasWord"], key = "#normalizedWord + ':' + #wordJamo.toString()")
     suspend fun hasWord(normalizedWord: String, wordJamo: List<String>): Boolean = withContext(MDCContext()) {
         log.info("단어 조회 요청 들어옴 word=$normalizedWord, jamo=$wordJamo")
 
-        return@withContext if (!normalizedWord.isKorean()) {
+        return@withContext if (!normalizedWord.containsHangul()) {
             hasEnglishWord(normalizedWord, wordJamo)
         } else {
             hasKoreanWord(normalizedWord, wordJamo)
@@ -89,13 +90,13 @@ class WordService(
         }
     }
 
-    fun save(request: WordSaveRequest): String {
-        val word = request.word.toUpperCaseIfEnglish()
+    fun save(dto: WordSaveDto): String {
+        val word = dto.word.toUpperCaseIfEnglish()
         if (word.existInDatabase())
-            throw WiddleException(if (request.isKorean) "이미 존재하는 단어입니다." else "Already exists.")
+            throw WiddleException(if (dto.isKorean) "이미 존재하는 단어입니다." else "Already exists.")
 
-        val wordJamo = request.jamo ?: word.toJamoList()
-        return wordTransactionalService.saveAndPublish(word, wordJamo, request.isKorean)
+        val wordJamo = dto.jamo ?: word.toJamoList()
+        return wordTransactionalService.saveAndPublish(word, wordJamo, dto.isKorean)
     }
 
     private fun indexFor(date: LocalDate, size: Int): Int = runCatching {
@@ -106,6 +107,6 @@ class WordService(
         throw WiddleException("단어가 존재하지 않습니다.", it)
     }
 
-    private fun String.existInDatabase(): Boolean = wordRepository.existsByWordText(this)
+    private fun String.existInDatabase(): Boolean = wordRepository.existsByWordInfoWordText(this)
 
 }
