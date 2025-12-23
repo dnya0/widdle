@@ -34,11 +34,11 @@ class RankingController(
     fun saveStatistics(@RequestBody request: StatisticsSaveRequest): ResponseData<String> =
         rankingService.save(request.toDto()).toResponse()
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{deviceId}")
     fun updateStatistics(
-        @PathVariable("id") id: String,
+        @PathVariable("deviceId") deviceId: String,
         @RequestBody request: StatisticsUpdateRequest
-    ): ResponseData<String> = rankingService.update(request.toDto(id)).toResponse(HttpStatus.CREATED)
+    ): ResponseData<String> = rankingService.update(request.toDto(deviceId)).toResponse(HttpStatus.CREATED)
 
 
 }

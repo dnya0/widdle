@@ -1,19 +1,18 @@
 package day.widdle.widdle.ranking.service
 
+import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
+import day.widdle.widdle.global.support.getToday
+import day.widdle.widdle.global.support.toTimeRange
 import day.widdle.widdle.ranking.domain.Ranking
 import day.widdle.widdle.ranking.domain.RankingRepository
-import day.widdle.widdle.ranking.domain.exception.RankingIdNotFoundException
 import day.widdle.widdle.ranking.domain.exception.DuplicateNicknameException
+import day.widdle.widdle.ranking.domain.exception.RankingIdNotFoundException
 import day.widdle.widdle.ranking.domain.vo.RankingId
 import day.widdle.widdle.ranking.event.RankingChangedEvent
 import day.widdle.widdle.ranking.service.dto.StatisticsDto
 import day.widdle.widdle.ranking.service.dto.StatisticsListDto
 import day.widdle.widdle.ranking.service.dto.StatisticsSaveDto
 import day.widdle.widdle.ranking.service.dto.StatisticsUpdateDto
-import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
-import day.widdle.widdle.global.support.getToday
-import day.widdle.widdle.global.support.toTimeRange
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -42,7 +41,12 @@ class RankingService(
 
         val currentTop10 = boardRankingReader.findDailyTopRankings(getToday(), dto.isKorean)
 
-        val ranking = Ranking(nickname = dto.nickname, statistics = dto.statistics, isKorean = dto.isKorean)
+        val ranking = Ranking(
+            nickname = dto.nickname,
+            statistics = dto.statistics,
+            deviceId = dto.deviceId,
+            isKorean = dto.isKorean
+        )
         rankingRepository.save(ranking)
 
         if (affectsTopRankings(dto.statistics.todayPlaytime, currentTop10, ranking.id)) {
@@ -53,7 +57,7 @@ class RankingService(
 
     @Transactional
     fun update(dto: StatisticsUpdateDto): String {
-        val ranking = rankingRepository.findByIdOrNull(dto.id) ?: throw RankingIdNotFoundException()
+        val ranking = rankingRepository.findByDeviceId(dto.deviceId) ?: throw RankingIdNotFoundException()
         val currentTop10 = boardRankingReader.findDailyTopRankings(getToday(), ranking.isKorean)
         ranking.updateStatistics(dto.statistics)
 

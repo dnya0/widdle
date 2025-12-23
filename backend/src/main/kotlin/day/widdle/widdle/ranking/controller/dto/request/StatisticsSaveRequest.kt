@@ -1,5 +1,6 @@
 package day.widdle.widdle.ranking.controller.dto.request
 
+import day.widdle.widdle.ranking.domain.vo.DeviceId
 import day.widdle.widdle.ranking.domain.vo.Nickname
 import day.widdle.widdle.ranking.domain.vo.Statistics
 import day.widdle.widdle.ranking.service.dto.StatisticsSaveDto
@@ -11,6 +12,7 @@ data class StatisticsSaveRequest(
     val currentStreak: Int,
     val bestStreak: Int,
     val todayPlaytime: Long,
+    val deviceId: String,
     val isKorean: Boolean
 ) {
     fun toDto(): StatisticsSaveDto = StatisticsSaveDto(
@@ -23,6 +25,7 @@ data class StatisticsSaveRequest(
             todayPlaytime = todayPlaytime,
             totalPlaytime = todayPlaytime
         ),
+        deviceId = DeviceId(deviceId),
         isKorean = isKorean
     )
 }

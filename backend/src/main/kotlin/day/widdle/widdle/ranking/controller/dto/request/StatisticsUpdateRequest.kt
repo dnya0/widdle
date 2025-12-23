@@ -1,6 +1,6 @@
 package day.widdle.widdle.ranking.controller.dto.request
 
-import day.widdle.widdle.ranking.domain.vo.RankingId
+import day.widdle.widdle.ranking.domain.vo.DeviceId
 import day.widdle.widdle.ranking.domain.vo.Statistics
 import day.widdle.widdle.ranking.service.dto.StatisticsUpdateDto
 
@@ -12,7 +12,7 @@ data class StatisticsUpdateRequest(
     val todayPlaytime: Long,
 ) {
     fun toDto(id: String): StatisticsUpdateDto = StatisticsUpdateDto(
-        id = RankingId(id),
+        deviceId = DeviceId(id),
         statistics = Statistics(
             totalStreak = totalStreak,
             successRate = successRate,

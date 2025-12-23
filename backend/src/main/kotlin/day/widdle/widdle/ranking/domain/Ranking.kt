@@ -1,7 +1,8 @@
 package day.widdle.widdle.ranking.domain
 
-import day.widdle.widdle.ranking.domain.vo.RankingId
+import day.widdle.widdle.ranking.domain.vo.DeviceId
 import day.widdle.widdle.ranking.domain.vo.Nickname
+import day.widdle.widdle.ranking.domain.vo.RankingId
 import day.widdle.widdle.ranking.domain.vo.Statistics
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
@@ -22,6 +23,9 @@ class Ranking(
 
     @Embedded
     var nickname: Nickname,
+
+    @Embedded
+    val deviceId: DeviceId,
 
     @Embedded
     var statistics: Statistics,

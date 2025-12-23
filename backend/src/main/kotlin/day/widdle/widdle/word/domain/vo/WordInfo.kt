@@ -8,7 +8,7 @@ import org.hibernate.type.SqlTypes
 @Embeddable
 data class WordInfo(
 
-    @Column(length = 50, unique = true, nullable = false)
+    @Column(name = "word_text", length = 50, unique = true, nullable = false)
     val wordText: String,
 
     @JdbcTypeCode(SqlTypes.ARRAY)

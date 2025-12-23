@@ -1,6 +1,7 @@
 package day.widdle.widdle.ranking.domain
 
 import day.widdle.widdle.ranking.domain.projection.BoardWithRanking
+import day.widdle.widdle.ranking.domain.vo.DeviceId
 import day.widdle.widdle.ranking.domain.vo.RankingId
 import day.widdle.widdle.ranking.domain.vo.Nickname
 import org.springframework.data.jpa.repository.JpaRepository
@@ -24,6 +25,8 @@ interface RankingRepository : JpaRepository<Ranking, RankingId> {
         end: Long,
         isKorean: Boolean
     ): List<Ranking>
+
+    fun findByDeviceId(deviceId: DeviceId): Ranking?
 
     @Query(
         """
