@@ -3,9 +3,9 @@ package day.widdle.widdle.board.controller.dto
 import day.widdle.widdle.board.domain.vo.BoardId
 import day.widdle.widdle.board.domain.vo.Nickname
 import day.widdle.widdle.board.domain.vo.Statistics
-import day.widdle.widdle.board.service.dto.StatisticsSaveDto
+import day.widdle.widdle.board.service.dto.StatisticsUpsertDto
 
-data class StatisticsSaveRequest(
+data class StatisticsUpsertRequest(
     val id: String,
     val nickname: String,
     val totalStreak: Int,
@@ -15,7 +15,7 @@ data class StatisticsSaveRequest(
     val todayPlaytime: Long,
     val isKorean: Boolean
 ) {
-    fun toDto(): StatisticsSaveDto = StatisticsSaveDto(
+    fun toDto(): StatisticsUpsertDto = StatisticsUpsertDto(
         id = BoardId(id),
         nickname = Nickname(nickname),
         statistics = Statistics(

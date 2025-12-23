@@ -1,4 +1,4 @@
-package day.widdle.widdle.board.event.listenter
+package day.widdle.widdle.board.event.listener
 
 import day.widdle.widdle.board.event.RankingChangedEvent
 import day.widdle.widdle.global.support.getToday

@@ -4,7 +4,7 @@ import day.widdle.widdle.board.domain.vo.BoardId
 import day.widdle.widdle.board.domain.vo.Nickname
 import day.widdle.widdle.board.domain.vo.Statistics
 
-data class StatisticsSaveDto(
+data class StatisticsUpsertDto(
     val id: BoardId,
     val nickname: Nickname,
     val statistics: Statistics,

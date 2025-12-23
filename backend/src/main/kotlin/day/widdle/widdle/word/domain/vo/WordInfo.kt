@@ -15,9 +15,6 @@ data class WordInfo(
     @Column(name = "word_jamo", columnDefinition = "text[]", nullable = false)
     val wordJamo: List<String>,
 
-    @Column(nullable = false)
-    val length: Int = wordJamo.size,
-
     @Column(name = "is_korean")
     val isKorean: Boolean = true
 

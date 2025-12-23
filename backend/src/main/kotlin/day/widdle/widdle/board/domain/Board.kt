@@ -43,7 +43,7 @@ class Board(
         this.nickname = nickname
     }
 
-    fun updateStatistics(totalStreak: Int, successRate: Int, currentStreak: Int, bestStreak: Int) {
-        this.statistics = Statistics(totalStreak, successRate, currentStreak, bestStreak)
+    fun updateStatistics(statistics: Statistics) {
+        this.statistics = statistics
     }
 }

@@ -1,7 +1,7 @@
 package day.widdle.widdle.board.controller
 
 import day.widdle.widdle.board.controller.dto.StatisticsListResponse
-import day.widdle.widdle.board.controller.dto.StatisticsSaveRequest
+import day.widdle.widdle.board.controller.dto.StatisticsUpsertRequest
 import day.widdle.widdle.board.service.BoardService
 import day.widdle.widdle.board.service.dto.toStatisticsListResponse
 import day.widdle.widdle.global.base.ResponseData
@@ -28,6 +28,6 @@ class BoardController(
         .toResponse()
 
     @PostMapping
-    fun saveStatistics(@RequestBody request: StatisticsSaveRequest) = boardService.save(request.toDto())
+    fun saveStatistics(@RequestBody request: StatisticsUpsertRequest) = boardService.upsert(request.toDto())
 
 }

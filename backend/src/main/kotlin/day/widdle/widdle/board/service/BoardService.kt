@@ -6,13 +6,14 @@ import day.widdle.widdle.board.domain.vo.BoardId
 import day.widdle.widdle.board.event.RankingChangedEvent
 import day.widdle.widdle.board.service.dto.StatisticsDto
 import day.widdle.widdle.board.service.dto.StatisticsListDto
-import day.widdle.widdle.board.service.dto.StatisticsSaveDto
+import day.widdle.widdle.board.service.dto.StatisticsUpsertDto
 import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.global.support.getToday
 import day.widdle.widdle.global.support.toTimeRange
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
+import kotlin.jvm.optionals.getOrNull
 
 @Service
 class BoardService(
@@ -31,14 +32,13 @@ class BoardService(
     }
 
     @Transactional
-    fun save(dto: StatisticsSaveDto) {
-        if (boardRepository.existsById(dto.id)) {
-            return
-        }
+    fun upsert(dto: StatisticsUpsertDto) {
+        val board = boardRepository.findById(dto.id).getOrNull()?.apply {
+            this.updateNickname(dto.nickname)
+            this.updateStatistics(dto.statistics)
+        } ?: Board(dto.id, dto.nickname, dto.statistics, dto.isKorean)
 
-        val now = getToday()
-        val board = Board(dto.id, dto.nickname, dto.statistics, dto.isKorean)
-        val currentTop10 = boardRankingReader.findDailyTopRankings(now, dto.isKorean)
+        val currentTop10 = boardRankingReader.findDailyTopRankings(getToday(), dto.isKorean)
         boardRepository.save(board)
 
         if (affectsTopRankings(dto, currentTop10)) {
@@ -47,7 +47,7 @@ class BoardService(
     }
 
     private fun affectsTopRankings(
-        dto: StatisticsSaveDto,
+        dto: StatisticsUpsertDto,
         currentTop10: List<StatisticsDto>
     ): Boolean {
         if (currentTop10.any { it.id == dto.id.value }) return true

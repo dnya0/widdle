@@ -7,14 +7,12 @@ data class WordResponse(
     val id: String,
     val word: String,
     val jamo: List<String>,
-    val isKorean: Boolean,
-    val length: Int
+    val isKorean: Boolean
 )
 
 fun Word.toDto(): DailyWordDto = DailyWordDto(
     id = this.id.value,
     word = this.wordInfo.wordText,
     jamo = this.wordInfo.wordJamo,
-    isKorean = this.wordInfo.isKorean,
-    length = this.wordInfo.length
+    isKorean = this.wordInfo.isKorean
 )

@@ -41,7 +41,6 @@ class WordTransactionalService(
             wordInfo = WordInfo(
                 wordText = wordText,
                 wordJamo = jamo,
-                length = jamo.size,
                 isKorean = isKorean,
             )
         )

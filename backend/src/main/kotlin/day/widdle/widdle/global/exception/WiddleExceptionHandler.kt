@@ -17,7 +17,10 @@ class WiddleExceptionHandler {
     fun handleWiddleException(ex: WiddleException): ResponseData<Boolean> = ex.toErrorResponse()
 
     @ExceptionHandler(IllegalArgumentException::class)
-    fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseData<Boolean> = ex.toErrorResponse()
+    fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseData<Boolean> {
+        log.error("🧨 Invalid argument: {}", ex.message)
+        return ex.toErrorResponse(BAD_REQUEST, "잘못된 요청입니다.")
+    }
 
     @ExceptionHandler(Exception::class)
     fun handleException(ex: Exception): ResponseData<Boolean> {
