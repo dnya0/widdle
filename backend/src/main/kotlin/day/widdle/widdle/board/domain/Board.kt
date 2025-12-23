@@ -43,6 +43,13 @@ class Board(
     }
 
     fun updateStatistics(statistics: Statistics) {
-        this.statistics = statistics
+        this.statistics = Statistics(
+            totalStreak = statistics.totalStreak,
+            successRate = statistics.successRate,
+            currentStreak = statistics.currentStreak,
+            bestStreak = statistics.bestStreak,
+            todayPlaytime = statistics.todayPlaytime,
+            totalPlaytime = statistics.todayPlaytime + this.statistics.totalPlaytime,
+        )
     }
 }

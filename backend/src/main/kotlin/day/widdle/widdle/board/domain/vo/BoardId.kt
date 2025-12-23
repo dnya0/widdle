@@ -11,6 +11,6 @@ data class BoardId(
 ) {
     init {
         require(value.isNotBlank()) { "BoardId 빈 칸일 수 없습니다." }
-        require(value.length <= 100) { "BoardId length must not exceed 100 characters" }
+        require(value.length <= 100) { "BoardId 길이는 100자를 초과할 수 없습니다." }
     }
 }

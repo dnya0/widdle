@@ -30,14 +30,14 @@ class BoardController(
         .toResponse()
 
     @PostMapping
-    fun saveStatistics(@RequestBody request: StatisticsSaveRequest) =
+    fun saveStatistics(@RequestBody request: StatisticsSaveRequest): ResponseData<String> =
         boardService.save(request.toDto()).toResponse()
 
     @PatchMapping("/{id}")
     fun updateStatistics(
         @PathVariable("id") id: String,
         @RequestBody request: StatisticsUpdateRequest
-    ) = boardService.update(request.toDto(id))
+    ): ResponseData<String> = boardService.update(request.toDto(id)).toResponse()
 
 
 }
