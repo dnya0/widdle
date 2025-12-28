@@ -10,6 +10,6 @@ data class DeviceId(
 ) {
     init {
         require(value.isNotBlank()) { "deviceId는 비어있을 수 없습니다." }
-        require(value.length in 2..100) { "deviceId는 2자 이상 100자 미만이여야 합니다." }
+        require(value.length in 2..100) { "deviceId는 2자 이상 100자 이하여야 합니다." }
     }
 }

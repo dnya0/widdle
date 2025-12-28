@@ -37,7 +37,7 @@ interface RankingRepository : JpaRepository<Ranking, RankingId> {
              WHERE r2.modifiedAt >= :start 
                AND r2.modifiedAt < :end 
                AND r2.isKorean = :isKorean
-               AND r2.statistics.todayPlaytime > r.statistics.todayPlaytime) as rank
+               AND r2.statistics.todayPlaytime < r.statistics.todayPlaytime) as rank
         FROM Ranking r
         WHERE r.id = :rankingId
           AND r.isKorean = :isKorean
