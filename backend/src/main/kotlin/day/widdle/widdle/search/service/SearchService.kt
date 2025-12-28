@@ -1,6 +1,6 @@
 package day.widdle.widdle.search.service
 
-import day.widdle.widdle.global.event.NewWordEvent
+import day.widdle.widdle.word.event.NewWordEvent
 import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.global.support.loggerDelegate
 import day.widdle.widdle.search.value.DictionaryType
