@@ -13,3 +13,9 @@ CREATE TABLE IF NOT EXISTS ranking
     created_at     BIGINT       NOT NULL,
     modified_at    BIGINT       NOT NULL
 );
+
+CREATE INDEX idx_ranking_today_playtime ON ranking(today_playtime ASC);
+
+CREATE INDEX idx_ranking_success_rate ON ranking(success_rate DESC);
+
+CREATE INDEX idx_ranking_korean_today ON ranking(is_korean, today_playtime ASC);
