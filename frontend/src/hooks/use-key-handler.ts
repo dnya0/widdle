@@ -7,6 +7,44 @@ type Opts = {
   onEnter?: () => void;
 };
 
+export const usePhysicalKeyboard = ({
+  lang,
+  onKeyPress,
+  onBackspace,
+  onEnter,
+}: Opts) => {
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.isComposing) return;
+
+      if (e.key === "Enter") {
+        onEnter?.();
+        return;
+      }
+      if (e.key === "Backspace") {
+        onBackspace?.();
+        return;
+      }
+
+      if (lang === "kr") {
+        const mapped = MAP_2SET[e.code];
+        if (mapped) {
+          onKeyPress(mapped);
+          e.preventDefault();
+        }
+      } else {
+        if (/^Key[A-Z]$/.test(e.code)) {
+          const alphabet = e.code.replace("Key", "");
+          onKeyPress(alphabet);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [lang, onKeyPress, onBackspace, onEnter]);
+};
+
 const MAP_2SET: Record<string, string> = {
   KeyQ: "ㅂ",
   KeyW: "ㅈ",
@@ -34,41 +72,4 @@ const MAP_2SET: Record<string, string> = {
   KeyB: "ㅠ",
   KeyN: "ㅜ",
   KeyM: "ㅡ",
-};
-
-export const usePhysicalKeyboard = ({
-  lang,
-  onKeyPress,
-  onBackspace,
-  onEnter,
-}: Opts) => {
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.isComposing) return;
-
-      if (e.key === "Enter") {
-        onEnter?.();
-        return;
-      }
-      if (e.key === "Backspace") {
-        onBackspace?.();
-        return;
-      }
-
-      if (lang === "kr") {
-        const mapped = MAP_2SET[e.code];
-        if (mapped) {
-          onKeyPress(mapped);
-          e.preventDefault();
-        }
-      } else {
-        if (/^[a-zA-Z]$/.test(e.key)) {
-          onKeyPress(e.key.toUpperCase());
-        }
-      }
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [lang, onKeyPress, onBackspace, onEnter]);
 };
