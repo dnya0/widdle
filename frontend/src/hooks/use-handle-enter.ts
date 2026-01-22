@@ -2,7 +2,7 @@ import { Cell, evaluateGuess, mergeKeyColor } from "@/utils/word-utils";
 import { makeStateAndSave, saveGuess } from "@/utils/history";
 import { hasWord } from "@/utils/api";
 import toast from "react-hot-toast";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { showSuccess } from "@/utils/showToast";
 
 export const useHandleEnter = (
@@ -18,11 +18,15 @@ export const useHandleEnter = (
   lang: "kr" | "en",
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
+  const isProcessingRef = useRef(false);
+  
   const handleEnter = useCallback(async () => {
-    if (isGameOver) return;
+    if (isGameOver || isProcessingRef.current) return;
+    isProcessingRef.current = true;
 
     const guess = board[cur.row].map((c) => c.text);
     if (guess.includes("") || guess.includes(" ")) {
+      isProcessingRef.current = false;
       return;
     }
 
@@ -31,6 +35,7 @@ export const useHandleEnter = (
       const message =
         lang === "kr" ? "단어가 존재하지 않습니다." : "Word does not exist.";
       toast.error(message);
+      isProcessingRef.current = false;
       return;
     }
 
@@ -63,6 +68,7 @@ export const useHandleEnter = (
     saveGuess(lang, guess);
 
     setCur({ row: Math.min(cur.row + 1, ROWS - 1), col: 0 });
+    isProcessingRef.current = false;
   }, [
     isGameOver,
     board,

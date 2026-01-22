@@ -61,7 +61,9 @@ export function makeStateAndSave(
     });
     return;
   }
-  winDistribution[cur.row] = 1;
+  if (cur.row >= 0 && cur.row < winDistribution.length) {
+    winDistribution[cur.row] = 1;
+  }
 
   saveStats({
     bestStreak: 1,
