@@ -11,8 +11,8 @@ import day.widdle.widdle.global.support.loggerDelegate
 import day.widdle.widdle.global.support.toJamoList
 import day.widdle.widdle.global.support.toUpperCaseIfEnglish
 import day.widdle.widdle.search.service.SearchService
-import day.widdle.widdle.word.controller.dto.toDto
 import day.widdle.widdle.word.domain.WordRepository
+import day.widdle.widdle.word.service.dto.toDto
 import day.widdle.widdle.word.domain.vo.WordId
 import day.widdle.widdle.word.service.dto.WordSaveDto
 import day.widdle.widdle.word.service.dto.DailyWordDto
@@ -34,7 +34,7 @@ class WordService(
 
     private val log by loggerDelegate()
 
-    @Cacheable(value = ["dailyWord"], key = "#p1.toString() + ':' + #p0", sync = true)
+    @Cacheable(value = ["dailyWordCache"], key = "#date.toString() + ':' + #isKr", sync = true)
     fun getDailyWord(isKr: Boolean, date: LocalDate = getToday()): DailyWordDto {
         log.info("데일리 단어가 있는지 확인합니다. isKr=$isKr, date=$date")
         wordRepository.findByUsedDateByAndKoreanIs(date, isKr)?.let {

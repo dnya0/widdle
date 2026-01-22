@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.kotlinModule
-import day.widdle.widdle.word.controller.dto.WordResponse
+import day.widdle.widdle.word.service.dto.DailyWordDto
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.cache.RedisCacheConfiguration
@@ -34,7 +34,7 @@ class RedisCacheConfig {
         val keySer = StringRedisSerializer()
         val valueSer = GenericJackson2JsonRedisSerializer(objectMapper)
 
-        val wordSer = Jackson2JsonRedisSerializer(objectMapper, WordResponse::class.java)
+        val wordSer = Jackson2JsonRedisSerializer(objectMapper, DailyWordDto::class.java)
         val boolSer = Jackson2JsonRedisSerializer(objectMapper, Boolean::class.java)
 
         fun configWith(valSer: RedisSerializer<*>, ttl: Duration) =
@@ -51,7 +51,7 @@ class RedisCacheConfig {
 
         return RedisCacheManager.builder(connectionFactory)
             .cacheDefaults(defaultConfig)
-            .withCacheConfiguration("dailyWord", dailyWordConfig)
+            .withCacheConfiguration("dailyWordCache", dailyWordConfig)
             .withCacheConfiguration("hasWord", hasWordConfig)
             .withCacheConfiguration("topRankings", rankingConfig)
             .build()

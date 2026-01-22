@@ -1,6 +1,7 @@
 package day.widdle.widdle.word.service.dto
 
 import day.widdle.widdle.word.controller.dto.WordResponse
+import day.widdle.widdle.word.domain.Word
 
 data class DailyWordDto(
     val id: String,
@@ -14,4 +15,11 @@ fun DailyWordDto.toWordResponse(): WordResponse = WordResponse(
     word = this.word,
     jamo = this.jamo,
     isKorean = this.isKorean
+)
+
+fun Word.toDto(): DailyWordDto = DailyWordDto(
+    id = this.id.value,
+    word = this.wordInfo.wordText,
+    jamo = this.wordInfo.wordJamo,
+    isKorean = this.wordInfo.isKorean
 )

@@ -34,9 +34,13 @@ export const useRestoreGameState = (
     const restoredKeyColors: Record<string, number> = {};
 
     record.guess.forEach(([rowIdx, guess]) => {
+      if (rowIdx < 0 || rowIdx >= ROWS) return;
+      
       const colors = evaluateGuess(guess, jamo);
 
       guess.forEach((ch, colIdx) => {
+        if (colIdx >= COLS) return;
+        
         restoredBoard[rowIdx][colIdx] = {
           text: ch,
           colorIndex: colors[colIdx],
