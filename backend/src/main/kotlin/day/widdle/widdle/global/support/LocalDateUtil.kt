@@ -4,6 +4,11 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 
+fun indexFor(date: LocalDate, size: Int): Int {
+    require(size > 0) { "size must be > 0" }
+    return Math.floorMod(date.toEpochDay(), size.toLong()).toInt()
+}
+
 private val zone = ZoneId.of("Asia/Seoul")
 
 /**
