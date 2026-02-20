@@ -62,6 +62,9 @@ dependencies {
     //database
     runtimeOnly("org.postgresql:postgresql")
 
+    // test database (H2 for integration tests)
+    testImplementation("com.h2database:h2")
+
     //test
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

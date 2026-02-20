@@ -2,8 +2,8 @@ package day.widdle.widdle.ranking.domain
 
 import day.widdle.widdle.ranking.domain.projection.BoardWithRanking
 import day.widdle.widdle.ranking.domain.vo.DeviceId
-import day.widdle.widdle.ranking.domain.vo.RankingId
 import day.widdle.widdle.ranking.domain.vo.Nickname
+import day.widdle.widdle.ranking.domain.vo.RankingId
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -51,6 +51,22 @@ interface RankingRepository : JpaRepository<Ranking, RankingId> {
         @Param("end") end: Long,
         @Param("isKorean") isKorean: Boolean
     ): BoardWithRanking?
+    fun countByIsKorean(isKorean: Boolean): Long
+
+    @Query(
+        """
+        SELECT COALESCE(AVG(r.statistics.todayPlaytime), 0)
+        FROM Ranking r
+        WHERE r.modifiedAt >= :start 
+          AND r.modifiedAt < :end
+          AND r.isKorean = :isKorean
+    """
+    )
+    fun findAverageTodayPlaytime(
+        @Param("start") start: Long,
+        @Param("end") end: Long,
+        @Param("isKorean") isKorean: Boolean
+    ): Double?
 
     fun existsByNickname(nickname: Nickname): Boolean
 }

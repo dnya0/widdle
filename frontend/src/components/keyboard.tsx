@@ -22,7 +22,6 @@ export default function Keyboard({
   return (
     <button
       style={{
-
         width: `${widthSize}rem`,
         height: `${heightSize}rem`,
         minWidth: "30px",
