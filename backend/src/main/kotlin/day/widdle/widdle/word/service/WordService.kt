@@ -4,31 +4,37 @@ import day.widdle.widdle.correction.service.KoreanSpellChecker
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.API_FAILURE
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECT
 import day.widdle.widdle.correction.service.dto.value.CorrectionStatus.CORRECTED
+import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.global.exception.WiddleException
-import day.widdle.widdle.global.support.getToday
 import day.widdle.widdle.global.support.containsHangul
+import day.widdle.widdle.global.support.getToday
+import day.widdle.widdle.global.support.indexFor
 import day.widdle.widdle.global.support.loggerDelegate
 import day.widdle.widdle.global.support.toJamoList
 import day.widdle.widdle.global.support.toUpperCaseIfEnglish
+import day.widdle.widdle.global.transaction.helper.Tx
 import day.widdle.widdle.search.service.SearchService
+import day.widdle.widdle.word.domain.Word
 import day.widdle.widdle.word.domain.WordRepository
-import day.widdle.widdle.word.service.dto.toDto
 import day.widdle.widdle.word.domain.vo.WordId
-import day.widdle.widdle.word.service.dto.WordSaveDto
+import day.widdle.widdle.word.domain.vo.WordInfo
+import day.widdle.widdle.word.event.WordSavedEvent
 import day.widdle.widdle.word.service.dto.DailyWordDto
+import day.widdle.widdle.word.service.dto.WordSaveDto
+import day.widdle.widdle.word.service.dto.toDto
 import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.cache.annotation.Cacheable
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDate
-import kotlin.math.abs
 
 @Service
 class WordService(
     private val wordRepository: WordRepository,
-    private val wordTransactionalService: WordTransactionalService,
     private val searchService: SearchService,
+    private val publisher: WiddleEventPublisher,
     @param:Qualifier("bareunSpellChecker") private val checker: KoreanSpellChecker
 ) {
 
@@ -46,11 +52,14 @@ class WordService(
         val list = wordRepository.findAllByNotUsedWord(isKr)
         val idx = indexFor(date, list.size)
 
-        wordTransactionalService.use(list[idx])
+        Tx.writable { list[idx].use() }
         return list[idx].toDto()
     }
 
-    fun use(id: String) = wordTransactionalService.use(WordId(id))
+    fun use(id: String) = Tx.writable {
+        wordRepository.findByIdOrNull(WordId(id))?.use()
+            ?: throw WiddleException("단어가 존재하지 않습니다.")
+    }
 
     @Cacheable(value = ["hasWord"], key = "#normalizedWord + ':' + #wordJamo.toString()")
     suspend fun hasWord(normalizedWord: String, wordJamo: List<String>): Boolean = withContext(MDCContext()) {
@@ -90,23 +99,31 @@ class WordService(
         }
     }
 
-    fun save(dto: WordSaveDto): String {
+    fun createWordFromDtoTx(dto: WordSaveDto): String {
         val word = dto.word.toUpperCaseIfEnglish()
-        if (word.existInDatabase())
-            throw WiddleException(if (dto.isKorean) "이미 존재하는 단어입니다." else "Already exists.")
-
         val wordJamo = dto.jamo ?: word.toJamoList()
-        return wordTransactionalService.saveAndPublish(word, wordJamo, dto.isKorean)
+        return createWordAndPublishTx(word, wordJamo, dto.isKorean)
     }
 
-    private fun indexFor(date: LocalDate, size: Int): Int = runCatching {
-        val seed = date.toString().hashCode()
-        val positive = if (seed == Int.MIN_VALUE) 0 else abs(seed)
-        positive % size
-    }.getOrElse {
-        throw WiddleException("단어가 존재하지 않습니다.", it)
+    fun createWordAndPublishTx(wordText: String, jamo: List<String>, isKorean: Boolean): String = Tx.writable {
+        if (!persistIfAbsentCore(wordText, jamo, isKorean))
+            throw WiddleException(if (isKorean) "이미 존재하는 단어입니다." else "Already exists.")
+        publisher.publishEvent(WordSavedEvent(wordText, jamo))
+        "successfully saved $wordText"
+    }
+
+    fun createWordIfAbsentTx(wordText: String, jamo: List<String>, isKorean: Boolean) = Tx.writable {
+        persistIfAbsentCore(wordText, jamo, isKorean)
     }
 
     private fun String.existInDatabase(): Boolean = wordRepository.existsByWordInfoWordText(this)
 
+    /**
+     * public 엔트리포인트에서 트랜잭션 경계 잡을 것
+     */
+    private fun persistIfAbsentCore(wordText: String, jamo: List<String>, isKorean: Boolean): Boolean {
+        if (wordText.existInDatabase()) return false
+        wordRepository.save(Word(wordInfo = WordInfo(wordText, jamo, isKorean)))
+        return true
+    }
 }

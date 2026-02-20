@@ -3,19 +3,21 @@ package day.widdle.widdle.ranking.service
 import day.widdle.widdle.global.event.publisher.WiddleEventPublisher
 import day.widdle.widdle.global.support.getToday
 import day.widdle.widdle.global.support.toTimeRange
+import day.widdle.widdle.global.transaction.helper.Tx
 import day.widdle.widdle.ranking.domain.Ranking
 import day.widdle.widdle.ranking.domain.RankingRepository
 import day.widdle.widdle.ranking.domain.exception.DuplicateNicknameException
 import day.widdle.widdle.ranking.domain.exception.RankingIdNotFoundException
 import day.widdle.widdle.ranking.domain.vo.RankingId
 import day.widdle.widdle.ranking.event.RankingChangedEvent
+import day.widdle.widdle.ranking.service.dto.RankSummaryDto
 import day.widdle.widdle.ranking.service.dto.StatisticsDto
 import day.widdle.widdle.ranking.service.dto.StatisticsListDto
 import day.widdle.widdle.ranking.service.dto.StatisticsSaveDto
 import day.widdle.widdle.ranking.service.dto.StatisticsUpdateDto
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
+import kotlin.math.roundToInt
 
 @Service
 class RankingService(
@@ -24,17 +26,25 @@ class RankingService(
     private val widdleEventPublisher: WiddleEventPublisher
 ) {
 
-    fun getRankingStatistics(id: String, isKorean: Boolean, date: LocalDate = getToday()): StatisticsListDto {
+    fun getRankingStatistics(
+        id: String, isKorean: Boolean, date: LocalDate = getToday()
+    ): StatisticsListDto = Tx.readable {
         val rankingId = RankingId(id)
+        val (start, end) = date.toTimeRange()
 
-        return StatisticsListDto(
+        val totalUser = rankingRepository.countByIsKorean(isKorean).toInt()
+        val avgPlaytime = rankingRepository
+            .findAverageTodayPlaytime(start, end, isKorean)
+            ?.roundToInt() ?: 0
+
+        StatisticsListDto(
+            summary = RankSummaryDto(totalUser = totalUser, avgPlaytime = avgPlaytime),
             rankings = boardRankingReader.findDailyTopRankings(date, isKorean),
             me = rankingRepository.findMyDailyStatus(rankingId, date, isKorean)
         )
     }
 
-    @Transactional
-    fun save(dto: StatisticsSaveDto): String {
+    fun save(dto: StatisticsSaveDto): String = Tx.writable {
         if (rankingRepository.existsByNickname(dto.nickname)) {
             throw DuplicateNicknameException()
         }
@@ -52,11 +62,10 @@ class RankingService(
         if (affectsTopRankings(dto.statistics.todayPlaytime, currentTop10, ranking.id)) {
             widdleEventPublisher.publishEvent(RankingChangedEvent(ranking.id, dto.isKorean))
         }
-        return ranking.id.value
+        ranking.id.value
     }
 
-    @Transactional
-    fun update(dto: StatisticsUpdateDto): String {
+    fun update(dto: StatisticsUpdateDto): String = Tx.writable {
         val ranking = rankingRepository.findByDeviceId(dto.deviceId) ?: throw RankingIdNotFoundException()
         val currentTop10 = boardRankingReader.findDailyTopRankings(getToday(), ranking.isKorean)
         ranking.updateStatistics(dto.statistics)
@@ -65,7 +74,7 @@ class RankingService(
             widdleEventPublisher.publishEvent(RankingChangedEvent(ranking.id, ranking.isKorean))
         }
 
-        return ranking.id.value
+        ranking.id.value
     }
 
     private fun affectsTopRankings(

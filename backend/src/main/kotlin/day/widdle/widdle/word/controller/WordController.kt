@@ -34,7 +34,7 @@ class WordController(
 
     @PostMapping
     fun saveWord(@RequestBody request: WordSaveRequest): ResponseData<String> =
-        wordService.save(request.toDto()).toResponse(CREATED)
+        wordService.createWordFromDtoTx(request.toDto()).toResponse(CREATED)
 
     @PatchMapping("/{id}")
     fun updateWordToUse(@PathVariable id: String) = wordService.use(id)

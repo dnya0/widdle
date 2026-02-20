@@ -25,7 +25,7 @@ class RankingController(
 
     @GetMapping("/{language}/{id}")
     fun getRanking(
-        @PathVariable language: String, @PathVariable("id") id: String
+        @PathVariable language: String, @PathVariable id: String
     ): ResponseData<StatisticsListResponse> = rankingService.getRankingStatistics(id, language.isKoreanCode())
         .toStatisticsListResponse()
         .toResponse()
