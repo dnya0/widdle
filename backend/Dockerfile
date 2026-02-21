@@ -1,15 +1,18 @@
-FROM eclipse-temurin:21
+FROM gradle:8.5-jdk17 AS build
+WORKDIR /app
+COPY build.gradle settings.gradle ./
+COPY gradle ./gradle
+COPY src ./src
+RUN gradle build -x test --no-daemon -Pspring.profiles.active=prod
+
+
+# ---- Base Image ----
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-COPY bareun_ai_intermediate.pem /tmp/bareun_ai_intermediate.pem
-RUN keytool -import -trustcacerts \
-    -alias bareun_ai_cert \
-    -file /tmp/bareun_ai_intermediate.pem \
-    -keystore $JAVA_HOME/lib/security/cacerts \
-    -storepass changeit \
-    -noprompt
-RUN rm /tmp/bareun_ai_intermediate.pem
-
+# ---- Application ----
 COPY build/libs/widdle-0.0.1-SNAPSHOT.jar app.jar
+
+# ---- Runtime ----
 ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-jar", "app.jar"]
 CMD ["--spring.profiles.active=prod"]
