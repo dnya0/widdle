@@ -59,22 +59,19 @@ class BareunSpellChecker(
 
     private fun isProfileDevThanSetSSLIgnore(builder: WebClient.Builder): WebClient.Builder {
         val isDevProfile = env.acceptsProfiles(Profiles.of("dev"))
-
-        return if (isDevProfile) {
-            val sslContext = SslContextBuilder.forClient()
+        val appliedSslContext = if (isDevProfile) {
+            val devSslContext = SslContextBuilder.forClient()
                 .trustManager(InsecureTrustManagerFactory.INSTANCE)
                 .build()
-
-            val httpClient = HttpClient.create()
-                .secure { t -> t.sslContext(sslContext) }
-
-            builder.clientConnector(ReactorClientHttpConnector(httpClient))
+            devSslContext
         } else {
-            val httpClient = HttpClient.create()
-                .secure { t -> t.sslContext(sslContext) }
-
-            builder.clientConnector(ReactorClientHttpConnector(httpClient))
+            sslContext
         }
+
+        val httpClient = HttpClient.create()
+            .secure { t -> t.sslContext(appliedSslContext) }
+
+        return builder.clientConnector(ReactorClientHttpConnector(httpClient))
     }
 
     private fun handleErrorResponse(clientResponse: ClientResponse): Mono<Throwable> =
