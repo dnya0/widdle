@@ -1,8 +1,8 @@
 package day.widdle.widdle.global.config
 
+import java.time.Duration
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.netty.channel.ChannelOption
-import io.netty.handler.ssl.SslContext
 import io.netty.handler.timeout.ReadTimeoutHandler
 import io.netty.handler.timeout.WriteTimeoutHandler
 import org.springframework.context.annotation.Bean
@@ -18,12 +18,10 @@ import org.springframework.util.MimeType
 import org.springframework.web.reactive.function.client.ExchangeStrategies
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.netty.http.client.HttpClient
-import java.time.Duration
 
 @Configuration
 class WebClientConfig(
     private val objectMapper: ObjectMapper,
-    private val sslContext: SslContext,
 ) {
 
     private fun clientConnector() = ReactorClientHttpConnector(
@@ -34,7 +32,6 @@ class WebClientConfig(
                 c.addHandlerLast(ReadTimeoutHandler(5))
                     .addHandlerLast(WriteTimeoutHandler(5))
             }
-            .secure { it.sslContext(sslContext) }
     )
 
     @Bean
