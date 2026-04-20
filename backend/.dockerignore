@@ -6,8 +6,4 @@
 .vscode
 
 .gradle
-gradle
-gradlew
 gradlew.bat
-
-src

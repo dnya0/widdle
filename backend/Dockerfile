@@ -1,16 +1,23 @@
-FROM gradle:8.5-jdk21 AS build
+# syntax=docker/dockerfile:1.7
+
+FROM gradle:8.14.3-jdk21 AS build
 WORKDIR /app
-COPY build.gradle settings.gradle ./
+
+COPY build.gradle.kts settings.gradle.kts ./
 COPY gradle ./gradle
+
 COPY src ./src
-RUN gradle build -x test --no-daemon -Pspring.profiles.active=prod
+RUN --mount=type=cache,target=/home/gradle/.gradle \
+    gradle bootJar --no-daemon --max-workers=1 \
+    -Dorg.gradle.jvmargs="-Xms512m -Xmx1536m -XX:MaxMetaspaceSize=512m" \
+    -Pspring.profiles.active=prod
 
 
 # ---- Base Image ----
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
-RUN adduser -D appuser
+RUN useradd --create-home --shell /usr/sbin/nologin appuser
 USER appuser
 
 # ---- Application ----
