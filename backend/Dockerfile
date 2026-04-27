@@ -7,7 +7,7 @@ COPY build.gradle.kts settings.gradle.kts ./
 COPY gradle ./gradle
 
 COPY src ./src
-RUN --mount=type=cache,target=/home/gradle/.gradle \
+RUN --mount=type=cache,target=/home/gradle/.gradle,sharing=locked \
     gradle bootJar --no-daemon --max-workers=1 \
     -Dorg.gradle.jvmargs="-Xms512m -Xmx1536m -XX:MaxMetaspaceSize=512m" \
     -Pspring.profiles.active=prod
