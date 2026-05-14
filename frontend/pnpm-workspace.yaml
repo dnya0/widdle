@@ -1,0 +1,6 @@
+minimumReleaseAge: 10080
+
+allowBuilds:
+  '@tailwindcss/oxide': true
+  sharp: true
+  unrs-resolver: true
